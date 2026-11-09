@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "results": [
+    {
+      "name": "mobilitaetsplattform-bamberg",
+      "kind": "local",
+      "source": "sqmkit-eval/eval/repos/mobilitaetsplattform-bamberg",
+      "repository": "https://gitlab.opencode.de/smart-city-bamberg/mobilitaetsplattform",
+      "evaluation": {
+        "name": "Project Description, Project Structure and Security Policy",
+        "weight": 1.0,
+        "status": "evaluated",
+        "score": 0.5,
+        "reason": "Weighted score of evaluated measurements",
+        "children": [
+          {
+            "name": "Project Description",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.62,
+            "reason": "Evaluation of the README file:\n\nproject_purpose:\nScore (avg): 5.0\n[CODING] The README explains the purpose clearly and at several levels. The \"Vision der Mobilit\u00e4tsplattform\" section states that the aim was/is for Bamberg residents to plan routes via one app, choosing their focus (sustainability, speed, convenience), combining any modes of transport, bookable flexibly and payable with a single ticket. The \"Projektaufbau\" section explains the two-part structure (seamless linking of public transport with private and rented vehicles in both route planning and payment), what is already achieved (\"Bei der Routenplanung ist das weitgehend erreicht\") and what is not (payment). The \"Nutzen f\u00fcr die Kommune\" section explains the concrete civic benefit: municipal data sovereignty, central management of street maps, timetable data, sensor/traffic-counting data, scooter no-go zones and \u00d6PNV usage data. This is a thorough, audience-appropriate statement of purpose and usefulness, so the score is 5.\n\nsetup_instructions:\nScore (avg): 2.0\n[CODING] The main README contains no setup instructions at all. There is no description of prerequisites, dependencies, installation commands, environment variables/configuration, build or run steps, or how to start the database/backend/frontend. The \"Technische Dokumentation\" section only provides two links \u2014 [Web App](web-app/README.md) and [Mobile App](mobile-app/README.md) \u2014 which may contain technical documentation and possibly setup details, but nothing in this file describes how to get the project running. Since the README does point readers toward component-level documentation (a partial mitigation), but provides no actual setup content itself, a score of 2 is appropriate.\n\ninfo_project_status:\nScore (avg): 4.0\n[CODING] The README conveys the project's status in an implicit but fairly detailed way. The \"Meilensteine und Organisation\" section states that a major milestone was reached with the publication of the open source code in September 2025. The \"Projektaufbau\" section explains that route planning is largely complete but that the payment function could not be implemented because coordination with payment processes in the Verkehrsverbund Gro\u00dfraum N\u00fcrnberg was not finished by 2025, and that some system parts must use commercial code for budget reasons. It also states that real-world operation in Bamberg (\"Echtbetrieb\") is a further goal requiring open technical and non-technical questions to be resolved. This gives a clear picture of a partially delivered, still-incomplete system. However, there is no explicit status statement (e.g., \"actively developed\", \"maintenance mode\", \"no longer maintained\"), no release/version information, and no roadmap, hence a score of 4 rather than 5.\n\ninfo_maintainer:\nScore (avg): 3.0\n[CODING] The README identifies the organizations involved but does not clearly designate a maintainer or describe how to contribute. The \"Meilensteine und Organisation\" section says the initiative came from the Verkehrsbetrieb der Stadtwerke Bamberg (STVP), which became a partner of the Smart City program and received parts of the budget via a Mittelweiterleitungsvertrag to carry out the project independently, and that the code was developed \"In Kooperation mit dem Bamberger Startup wikimove\". The \"F\u00f6rderung\" section names the BMWSB and KfW as funders. So contributors/owners are identifiable to a degree. However, there is no dedicated maintainer/contact section, no maintainers' names or contact channels, no contributing guidelines, issue-tracker policy, or governance/decision-making information \u2014 the maintainer role is only inferable from the project history narrative. This partial coverage warrants a score of 3.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          },
+          {
+            "name": "Project Structure",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.88,
+            "reason": "Project structure evaluation:\n\ndirectory_organization:\nScore (avg): 5.0\n[CODING] Question: Does the project follow appropriate directory organization conventions for its technology stack? Yes. The repository is organized as a clear multi-application monorepo: `backend/`, `mobile-app/`, `web-app/`, and `logo/`, plus root-level `README.md`, `LICENSE`, and `publiccode.yml`. Each application follows its ecosystem\u2019s standard layout. The Spring/Gradle backend has `src/main/java`, `src/main/resources` with `application.yaml`, `db/`, and `graphql/`, plus `build.gradle.kts`, `settings.gradle.kts`, and `buildSrc/`. The Flutter app has `lib/`, `test/`, `android/`, `ios/`, `assets/`, `l10n.yaml`, and `pubspec.yaml`. The React/Vite web app has `src/`, `public/`, `cypress/`, `.storybook/`, `deploy/`, `scripts/`, and standard root configuration files. Infrastructure components (`keycloak/`, `routing/`) are also grouped appropriately. The only minor omission is that the root has no separate `docs/` directory, but the per-module READMEs provide documentation and the overall organization is very strong.\n\nnaming_conventions:\nScore (avg): 4.0\n[CODING] Question: Does the project use consistent naming conventions for files and directories? Mostly yes, with conventions largely aligned to each technology stack. Top-level modules use kebab-case (`mobility-manager-backend-svc`, `mobile-app`, `web-app`), Flutter files use Dart\u2019s snake_case (`app_failure.dart`, `date_time_extension.dart`), and the React app generally uses PascalCase for components (`VehicleInformationModal`, `TripOverview.tsx`) and camelCase for hooks/state utilities (`useUrlParamsState.ts`, `convertToQueryString.ts`). However, there are notable inconsistencies and typographical errors: `README.md`, `Readme.md`, and `README.adoc` all appear; filenames such as `PalnningModePreviewPredicatesView.tsx`, `TripBudgedRefundForm.tsx`, `biekAndScooter.svg`, and `baterryLow.svg` contain spelling mistakes; and the web app mixes PascalCase and camelCase in places (`DateMethods.ts`, `constants.ts`, `utils/` versus `wmv-components/`). These issues prevent a top score, but the naming is generally predictable and conventional.\n\nseparation_of_concerns:\nScore (avg): 4.0\n[CODING] Question: Does the project properly separate different concerns into appropriate directories? Yes, though not perfectly uniformly. Application code, assets, configuration, deployment, and documentation are well separated: the Flutter app keeps platform code in `android/` and `ios/`, assets in `assets/`, localization in `lib/l10n/`, and tests in `test/`. The web app separates source under `src/`, static assets under `public/`, deployment under `deploy/`, end-to-end tests under `cypress/`, Storybook under `.storybook/`, and configuration files at the app root. The backend separates Java source, resources, database migrations, GraphQL schemas, and runtime configuration under `src/main/resources`. Infrastructure configuration for Keycloak and routing is also separated from application source. The weaker point is test separation: web tests are co-located with source and also under `__tests__`, while the backend tree shows no `src/test` directory and the mobile app has only a small `test/` directory. This is acceptable for the individual stack conventions but is not entirely consistent across the repository.\n\nmodularity:\nScore (avg): 5.0\n[CODING] Question: Does the project demonstrate good modularity with a logical breakdown of components or modules? Yes. The repository is decomposed into independently understandable applications: `backend/` contains separate Keycloak, backend service, and routing/OTP/Pelias configuration areas; `mobile-app/` separates `data/`, `ui/`, `common/`, and feature-specific UI modules such as `home/`, `itinerary/`, and `routing/`; and `web-app/` has a clear structure of `components/`, `pages/`, `services/`, `state/`, `models/`, `hooks/`, `configs/`, `plugins/`, `wmv-components/`, and `utils/`. Business logic is further decomposed into focused services and state slices, for example `services/zone/`, `state/zones-management/`, and `models/budget-plan/`. The presence of reusable `wmv-components`, Storybook stories, and separate cypress and storybook directories reinforces the component/module boundaries. While there are many files and some very large feature directories, the modular breakdown remains logical and consistent with each technology stack.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          },
+          {
+            "name": "Security Policy",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.0,
+            "reason": "SECURITY.md file not found in root folder.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          }
+        ],
+        "evaluated_measurements": 3,
+        "total_measurements": 3,
+        "coverage": 1.0
+      },
+      "error": null
+    }
+  ]
+}

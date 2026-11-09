@@ -1,0 +1,70 @@
+[build-system]
+requires = ["setuptools>=80"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "sqmkit"
+version = "0.1.0"
+description = "A software quality model kit for assessing software repositories"
+readme = "README.md"
+license = "AGPL-3.0-or-later"
+license-files = ["LICENSE"]
+
+authors = [
+  { name="Matthias Gerbershagen", email="matthias.gerbershagen@iese.fraunhofer.de" },
+  { name="Jonathan Ullrich", email="jonathan.ullrich@iese.fraunhofer.de" },
+]
+
+requires-python = ">=3.12"
+
+# Direct runtime dependencies only. Transitive dependencies are pinned in
+# uv.lock, which is the source of truth for exact versions.
+dependencies = [
+    "aiohttp==3.13.5",
+    "anyio==4.13.0",
+    "certifi>=2026.10.23",
+    "compose-lint>=0.24.0",
+    "cyclonedx-python-lib[validation]==11.7.0",
+    "gitpython==3.1.46",
+    "gql==4.0.0",
+    "langchain-text-splitters>=1.1.2",
+    "license-expression==30.4.4",
+    "lizard>=1.24.3",
+    "pathspec==1.0.4",
+    "pydantic==2.13.3",
+    "pydantic-ai-slim[anthropic,openai]>=2.55.0",
+    "pydantic-settings==2.14.0",
+    "python-dotenv==1.2.2",
+    "reuse==6.3.0",
+    "rich>=15.0.0",
+    "spdx-tools==0.8.5",
+    "typer>=0.26.8",
+]
+
+[dependency-groups]
+dev = [
+    "mypy==1.20.2",
+    "pytest==9.2.0",
+    "ruff==0.17.3",
+]
+
+[project.scripts]
+sqmkit = "sqmkit.cli.main:main"
+
+[tool.mypy]
+plugins = ['pydantic.mypy']
+
+[[tool.mypy.overrides]]
+module = "license_expression"
+ignore_missing_imports = true
+
+[tool.ruff]
+exclude = [".venv"]
+target-version = "py312"
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+# Non-Python assets that the runtime loads. Without these, an installed wheel cannot load the bundled quality models or the license allow-list.
+[tool.setuptools.package-data]
+"*" = ["*.json", "*.txt", "*.toml", "py.typed"]

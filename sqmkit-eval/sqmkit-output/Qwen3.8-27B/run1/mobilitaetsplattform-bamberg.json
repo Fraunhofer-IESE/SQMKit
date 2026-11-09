@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "results": [
+    {
+      "name": "mobilitaetsplattform-bamberg",
+      "kind": "local",
+      "source": "sqmkit-eval/eval/repos/mobilitaetsplattform-bamberg",
+      "repository": "https://gitlab.opencode.de/smart-city-bamberg/mobilitaetsplattform",
+      "evaluation": {
+        "name": "Project Description, Project Structure and Security Policy",
+        "weight": 1.0,
+        "status": "evaluated",
+        "score": 0.3966666666666666,
+        "reason": "Weighted score of evaluated measurements",
+        "children": [
+          {
+            "name": "Project Description",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.5,
+            "reason": "Evaluation of the README file:\n\nproject_purpose:\nScore (avg): 5.0\n[QWEN] The README provides an excellent description of the project's purpose and usefulness. The \"Vision der Mobilit\u00e4tsplattform\" section clearly articulates the goal: enabling Bamberg residents to plan routes via a single app, with the ability to prioritize sustainability, speed, or convenience, while using various mobility options with flexible booking and a single ticket. The \"Projektaufbau\" section explains that the project seamlessly connects public transport with private and rented vehicles in both route planning and payment. The \"Nutzen f\u00fcr die Kommune\" section further strengthens the usefulness narrative by explaining that the platform gives the municipality sovereignty over mobility data, consolidating street maps, timetable data, sensor data, prohibition zone management, and public transport usage data. The purpose and value proposition are thoroughly and clearly communicated.\n\nsetup_instructions:\nScore (avg): 1.0\n[QWEN] The README contains no setup instructions whatsoever. There are no sections for \"Installation,\" \"Getting Started,\" \"Prerequisites,\" \"Build,\" \"Run,\" or \"Requirements.\" The only related content is a \"Technische Dokumentation\" section that links to sub-READMEs for the web app (web-app/README.md) and mobile app (mobile-app/README.md), but these are merely references to documentation and do not constitute setup instructions within this main README. A user would have no idea how to clone, install, configure, or run the project from this document alone. This is a significant gap for an open source project.\n\ninfo_project_status:\nScore (avg): 3.0\n[QWEN] The README does not include an explicit project status statement (e.g., \"This project is under active development\" or \"This project is no longer maintained\"). However, the content strongly implies an ongoing, active project through contextual clues: the September 2025 open-source code release is described as a recent milestone, the payment functionality is noted as not yet implemented (pending coordination until 2025), and real-world deployment in Bamberg is described as \"ein weiteres Ziel des Projekts\" (another goal of the project) requiring further technical and non-technical clarification. These statements paint a picture of a project in progress, but without an explicit status label or mention of maintenance cadence, a reader must infer the current state. The information is partially sufficient but lacks directness.\n\ninfo_maintainer:\nScore (avg): 3.0\n[QWEN] The README identifies key contributors and initiators: the project initiative came from Stadtwerke Bamberg (STVP), the code was developed in cooperation with the Bamberg startup wikimove, and the project is funded by the German Federal Ministry (BMWSB) and KfW. However, there is no explicit statement about who currently maintains the project going forward, who is responsible for handling issues or pull requests, or how to contact maintainers for support. The funding attribution (BMWSB and KfW) describes financial backers, not maintainers. While the historical contributors are clearly described, the ongoing maintenance responsibility and contributor guidelines are absent, leaving it ambiguous who to approach for the project's continued development.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          },
+          {
+            "name": "Project Structure",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.69,
+            "reason": "Project structure evaluation:\n\ndirectory_organization:\nScore (avg): 4.0\n[QWEN] The project is a monorepo in which each subproject closely follows the conventions of its own technology stack. The Java service (backend/mobility-manager-backend-svc) has a textbook Gradle layout: build.gradle.kts, settings.gradle.kts, buildSrc/, gradlew/gradlew.bat, and src/main/java with src/main/resources (containing application.yaml, application-local-dev.yaml, db/, graphql/, META-INF/). The Flutter mobile app follows canonical Flutter structure: lib/ (with a further lib/src/ split into data/, ui/, common/), test/, assets/, android/, ios/, pubspec.yaml, analysis_options.yaml, l10n.yaml. The React app uses the standard Vite layout: src/, public/, index.html, vite.config.ts, tsconfig.json, with e2e tests isolated in cypress/ and Storybook config in .storybook/. Infrastructure concerns (keycloak/, routing/ with otp-build, otp-config, nginx-proxy) are sensibly grouped under backend/. Root-level LICENSE, README.md, publiccode.yml, and logo/ are appropriate. Two minor deductions: the backend tree shows only src/main (no visible src/test), and the Flutter app's test/ directory contains only a single widget_test.dart, so the \"tests/\" convention is thin in two of three subprojects despite being structurally present.\n\nnaming_conventions:\nScore (avg): 3.0\n[QWEN] There is broad consistency at the structural level \u2014 top-level directories are kebab-case (mobility-manager-backend-svc, nginx-proxy, otp-build, mobile-app, web-app), Dart files use snake_case per language convention (app_failure.dart, date_time_extension.dart), React components use PascalCase (Header.tsx, ConfirmationModal.tsx), and hooks use camelCase (useUrlParamsState.ts). However, several visible inconsistencies prevent a higher score: (1) README file casing alternates between README.md and Readme.md (keycloak/Readme.md, routing/nginx-proxy/Readme.md, otp-build/Readme.md, otp-config/Readme.md vs. README.md elsewhere); (2) test file placement and naming mix conventions \u2014 co-located CustomPopover.test.tsx and Header.test.tsx vs. hooks/__tests__/useUrlParamsState.test.tsx and state/toUpdate/actions.test.ts; (3) within web-app/src/components, PascalCase folders (CustomerDatabase, FormFields) sit next to kebab-case ones (table-column-defs, validation-schemas); (4) web-app assets mix camelCase (arrowDown.svg, batteryFull.svg) with kebab (support-request.svg, e-moped.svg, e-scooter.svg) and snake_case (crosshairs_noMiddleCircle.svg), plus apparent typos (baterryLow.svg, biekAndScooter.svg, maiaudoProvider.svg vs. meiaudoCar.svg in the mobile app); (5) environment files use different abbreviation styles in two places: .env.development/.env.production/.env.test at the web-app root versus deploy/envs/.env.dev/.env.prod/.env.test; (6) src/__mocks__ mixes .ts and .js files (create-membership.js next to cancel-failed-attempt.ts); (7) a filename typo PalnningModePreviewPredicatesView.styles.ts. These are real, if not pervasive, deviations.\n\nseparation_of_concerns:\nScore (avg): 4.0\n[QWEN] Concerns are largely well separated. In the mobile app, the data layer (repositories and models under lib/src/data/, split by domain: vehicle, zones, routing, location, email, app_status) is cleanly separated from presentation (lib/src/ui/ with home, itinerary, routing feature folders), with vehicle/ showing a proper abstraction pattern (interface files plus impl/). The backend separates application code (src/main/java), configuration (resources/application*.yaml), schema/migrations (resources/db, resources/graphql), and infrastructure (keycloak/, routing/) from each other. The web app partitions src/ into pages/, components/, wmv-components/ (reusable design-system layer), models/ (domain types by feature), services/ (API and domain logic), state/ (Redux), hooks/, configs/ (i18n, keycloak), assets/, and api/. Deductions: some concerns leak across boundaries \u2014 utils/ contains presentational components (CustomIcon.tsx, CustomIllustrations.tsx), mock data lives inside a feature (components/Map/mockData/) alongside src/__mocks__ at the root, the app maintains two overlapping state-management paradigms (state/ Redux including a \"toUpdate\" folder plus jotai atoms/ and components/Map/atoms/), and raw .env files (.env.development, .env.production, .env.test) plus a committed mobile .metadata sit in app roots, a hygiene/separation weakness. Per-module duplication of LICENSE/ECLA/ICLA/CONTRIBUTING is defensible for independent modules but adds redundancy.\n\nmodularity:\nScore (avg): 4.0\n[QWEN] The repository demonstrates strong modularity at multiple levels. Top-level, the platform is cleanly decomposed into independently buildable modules: a backend (itself split into mobility-manager-backend-svc, keycloak, and routing, the latter further broken into nginx-proxy, otp-build, otp-config, each with its own Readme), a Flutter mobile app, and a React web app \u2014 each with its own build files, CI config, and documentation. Within the mobile app, domain decomposition is logical (data/vehicle with repository interfaces plus impl/, data/zones with separate graph and rest repository variants, ui/ feature folders each holding page/cubit/state). The web app shows fine-grained component modularity (dozens of self-contained feature folders such as TripDetailsAndManagement, CustomerDatabase, VehicleInformationModal, each with its own table-column-defs and validation-schemas), a reusable component library (wmv-components/ with per-component index.ts exports and matching Storybook stories in stories/wmv-components/), domain models organized by bounded feature (budget-plan, budget-plan-membership, trip, vehicle-fee-pricing, customer-budget-membership, fleet-management), and per-domain service packages (services/trip, services/zone, services/layer-management). Deductions keep this from a 5: the two frontends duplicate GraphQL client/model code rather than sharing a module (mobile lib/src/data/model/graphql vs. web src/api/Graphql.js), the dual Redux+jotai state stacks split state logic, stories/example/ retains unmodified Storybook boilerplate in production source, and the enormous flat assets/map/generated_markers directory (hundreds of near-identical badge PNGs repeated across 2x/3x) is a static, non-compositional asset approach.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          },
+          {
+            "name": "Security Policy",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.0,
+            "reason": "SECURITY.md file not found in root folder.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          }
+        ],
+        "evaluated_measurements": 3,
+        "total_measurements": 3,
+        "coverage": 1.0
+      },
+      "error": null
+    }
+  ]
+}

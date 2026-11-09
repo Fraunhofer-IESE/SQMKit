@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "results": [
+    {
+      "name": "behoerden-klartext-backend",
+      "kind": "local",
+      "source": "sqmkit-eval/eval/repos/behoerden-klartext-backend",
+      "repository": "https://gitlab.opencode.de/behoerden-klartext/backend",
+      "evaluation": {
+        "name": "Project Description, Project Structure and Security Policy",
+        "weight": 1.0,
+        "status": "evaluated",
+        "score": 0.39666666666666667,
+        "reason": "Weighted score of evaluated measurements",
+        "children": [
+          {
+            "name": "Project Description",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.31,
+            "reason": "Evaluation of the README file:\n\nproject_purpose:\nScore (avg): 2.0\n[CODING] The README provides only an SPDX header, the title \"# Beh\u00f6rden-KlarText Backend\", and a section called \"## Allgemeine Informationen\" whose body is a single include directive: `::include{file=docs/general-information.md}`. No prose in the README itself states what the project does or why it is useful. A reader can infer from the name that this is a backend microservice related to \"KlarText\" (plain-language text) for public authorities, and the heading \"## Wie man diesen Microservice nutzt\" (\"How to use this microservice\") confirms it is a microservice, but the actual problem statement, target users, and value proposition are hidden in an external file that is not part of the evaluated content. Because the purpose is only implied by a title and a section heading rather than described, the criterion is poorly satisfied.\n\nsetup_instructions:\nScore (avg): 3.0\n[CODING] The README's table of contents clearly signals that setup/usage material exists: \"### API-Dokumentation\" (`docs/api.md`), \"### Konfiguration\" (`docs/configuration.md`), \"### Bereitstellung\" (`docs/build.md`), \"### Python Image aus eigener Artifactory / Container Registry\" (`docs/python-image.md`), plus dependency and tooling sections for \"requirements.in vs. requirements.txt\", pre-commit, Dev-Container and \"## Tests\" (`docs/tests.md`). This structure covers the important setup topics (configuration, container build, dependency installation, dev environment, tests). However, the evaluated content contains none of the actual commands, prerequisites, environment variables, or step-by-step instructions \u2014 every body is an unresolved `::include{...}` directive. On a literal reading of the file, the setup instructions are referenced but not described, so the score is neutral/acceptable rather than good.\n\ninfo_project_status:\nScore (avg): 2.0\n[CODING] There is no explicit statement about project status such as \"active development\", \"beta\", \"deprecated\" or \"no longer maintained\" anywhere in the visible content. The presence of a \"## Fahrplan\" (roadmap) section \u2014 implemented via `::include{file=docs/roadmap.md}` \u2014 weakly suggests ongoing/planned development, and the copyright notice \"SPDX-FileCopyrightText: 2025-present Bundesministerium f\u00fcr Arbeit und Soziales (BMAS)\" implies the project has been maintained at least since 2025. Nevertheless, the roadmap content itself is not present, so neither maturity level, stability guarantees, nor maintenance status are actually described in the README.\n\ninfo_maintainer:\nScore (avg): 2.0\n[CODING] The README ends with a \"## Credits\" section (`::include{file=docs/credits.md}`), which by convention would list authors and contributors, and the SPDX header names the copyright holder and contact: \"Bundesministerium f\u00fcr Arbeit und Soziales (BMAS) <info@denkfabrik-bmas.de>\". This identifies the owning organization but not the maintainers or how to contribute. There is no CONTRIBUTING reference, no governance or maintainer list, no guidance on reporting issues or submitting pull requests, and the credits content itself is not included in the evaluated file. Therefore maintainership and contribution paths are only indirectly hinted at, not described.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          },
+          {
+            "name": "Project Structure",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.88,
+            "reason": "Project structure evaluation:\n\ndirectory_organization:\nScore (avg): 5.0\n[CODING] Question evaluated: Does the project follow appropriate directory organization conventions for its technology stack? Yes. This is a Python/FastAPI-style backend with a clear src-layout (`src/app.py`, `src/endpoints.py`, `src/models/`, `src/services/`, `src/utils/`) and a dedicated `tests/` directory, which matches common Python project conventions. It also has dedicated `docs/`, `configs/`, `secrets/`, `LICENSES/`, and CI directories (`.gitlab/`, `CI_config/`). Deployment files (`Dockerfile`, `docker-compose*.yml`) and dependency manifests (`requirements*.in/.txt`) are placed at the repository root, which is conventional. The only minor deviation is the root-level `main.py` alongside `src/app.py`, but that is a common entrypoint pattern and does not undermine the otherwise strong organization.\n\nnaming_conventions:\nScore (avg): 4.0\n[CODING] Question evaluated: Does the project use consistent naming conventions for files and directories? Mostly yes. Python modules and packages use standard snake_case names such as `api_input.py`, `api_output.py`, `base_logger.py`, `model_selector.py`, and `process_configs.py`. Directory names are generally lowercase (`src`, `services`, `models`, `utils`, `configs`, `tests`, `docs`). However, there are visible inconsistencies: `CI_config/` uses uppercase letters and an underscore while most project directories are lowercase; `.gitlab/issue_templates/Default.md` is capitalized while `.gitlab/merge_request_templates/default.md` is lowercase. These are minor but keep naming from being fully consistent. Standard files such as `README.md`, `Dockerfile`, `LICENSES/`, `.gitlab-ci.yml`, and `.pre-commit-config.yaml` follow their ecosystem conventions.\n\nseparation_of_concerns:\nScore (avg): 5.0\n[CODING] Question evaluated: Does the project properly separate different concerns into appropriate directories? Yes. Application source code is isolated under `src/`, tests are separated under `tests/` with further distinction between endpoint tests (`tests/test_endpoints.py`) and unit tests (`tests/unittests/`), documentation is under `docs/`, and configuration data is under `configs/` (for example `general.yml`, `llm_models.yml`, `prompt_maps.yml`, and `protected_words.yml`). CI configuration is separated into `.gitlab-ci.yml`, `.gitlab/`, and `CI_config/`; secrets have their own `secrets/` directory with an example file; licensing is under `LICENSES/`; and container/deployment configuration is represented separately by `Dockerfile` and the `docker-compose*.yml` files. Inside `src/`, API models, services, and utilities are also separated into dedicated packages.\n\nmodularity:\nScore (avg): 4.0\n[CODING] Question evaluated: Does the project demonstrate good modularity with a logical breakdown of components or modules? Yes, largely. The source is divided into clear concerns: `src/app.py` for application setup, `src/endpoints.py` for routes, `src/models/` for API and domain data models, `src/services/` for business logic, and `src/utils/` for supporting helpers. The `src/services/simplify/` subpackage is a particularly good modular split, separating the `openai.py` implementation from `registry.py`. Settings are centralized in `src/settings.py`. The score is not a 5 because `endpoints.py` appears to be a single top-level route module, `utils/` is a broad collection of otherwise unrelated helpers (`otel.py`, `stem.py` is under services, `process_configs.py`, `model_selector.py`, etc.), and the root `main.py` alongside `src/app.py` suggests some entrypoint duplication. Overall, however, the module boundaries are logical and easy to navigate.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          },
+          {
+            "name": "Security Policy",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.0,
+            "reason": "SECURITY.md file not found in root folder.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          }
+        ],
+        "evaluated_measurements": 3,
+        "total_measurements": 3,
+        "coverage": 1.0
+      },
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "results": [
+    {
+      "name": "ocm-open-playground-manager",
+      "kind": "local",
+      "source": "sqmkit-eval/eval/repos/ocm-open-playground-manager",
+      "repository": "https://gitlab.opencode.de/open-playground-manager/backend",
+      "evaluation": {
+        "name": "Project Description, Project Structure and Security Policy",
+        "weight": 1.0,
+        "status": "evaluated",
+        "score": 0.4866666666666666,
+        "reason": "Weighted score of evaluated measurements",
+        "children": [
+          {
+            "name": "Project Description",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.19,
+            "reason": "Evaluation of the README file:\n\nproject_purpose:\nScore (avg): 1.0\n[CODING] Question: Does the README describe the project's purpose and why it is useful?\n\nThe README provides only the title \u201cWolfsburg OPM GO Backend\u201d and then immediately moves into \u201cLocal Config,\u201d dependency installation, building, and running instructions. It does not explain what \u201cOPM\u201d is, what the backend does, which problems it solves, who its users are, or why someone would want to use it. A reader can infer that it is a Go backend related to Wolfsburg OPM, but the README contains no substantive purpose or usefulness description. Therefore, this criterion is very poorly addressed.\n\nsetup_instructions:\nScore (avg): 4.0\n[CODING] Question: Does the README describe the setup instructions?\n\nThe README gives substantial setup guidance. It explains adding the development hosts entry to `/etc/hosts`, installing `swagger-cli` via npm, building with `make build` or `docker build`, running the local environment with `make dc-up` and `make dc-down`, initializing Keycloak with `make keycloak-init`, and running the backend with `make run`. It also documents default local URLs and GoLand debugging setup, including the EnvFile plugin configuration. These instructions are useful and concrete. However, the README lacks broader prerequisites such as Go, Docker, Make, and npm installation requirements, does not mention cloning the repository, and does not fully explain configuration/environment variables beyond optional `.env` files. These omissions prevent a top score, but the setup section is still good overall.\n\ninfo_project_status:\nScore (avg): 1.0\n[CODING] Question: Does the README describe the project's status (active development, no longer maintained, etc.)?\n\nThe README does not mention the project\u2019s status anywhere. There is no statement about whether it is actively developed, stable, experimental, deprecated, archived, or no longer maintained. It also lacks versioning, release information, or support lifecycle details. The presence of local development and debugging instructions suggests development activity, but this is only an inference and not an explicit project-status description. Therefore, the criterion is not addressed.\n\ninfo_maintainer:\nScore (avg): 1.0\n[CODING] Question: Does the README describe who maintains and contributes to the project?\n\nThe README contains no maintainer information. It does not name maintainers, list contributors, provide contact details, identify an organization or team responsible for the project, or link to contribution guidelines. Although the hostnames include \u201cawesome-it.de,\u201d which may hint at an organization, the README does not explicitly state who maintains or contributes to the project. Therefore, this criterion is not addressed at all.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          },
+          {
+            "name": "Project Structure",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.69,
+            "reason": "Project structure evaluation:\n\ndirectory_organization:\nScore (avg): 4.0\n[CODING] The repository broadly follows conventions for a Go backend: `cmd/backend/main.go` is the binary entry point, `api/` contains OpenAPI specifications (`api/openapi.yaml`, `api/objects/`, `api/paths/`), `backend/` contains implementation packages, and deployment assets are under `docker/`. Separate `scripts/`, `resources/`, and `test/` directories also exist. However, the use of `backend/` rather than the more idiomatic Go `internal/` or `pkg/` layout is unconventional, and `local/` is a vague directory name for reusable internal packages such as `local/oidc`, `local/scheduler`, and `local/utils`. There is also no dedicated `docs/` directory; documentation is limited to root-level `README.md` and `SECURITY.md`. Overall organization is good and understandable, but not fully aligned with common Go project conventions.\n\nnaming_conventions:\nScore (avg): 3.0\n[CODING] Most files and directories use lowercase snake_case, and the OpenAPI object/path files are consistently named (e.g., `geo_object_group_geo_object_inspection_picture.yaml`, `work_order_picture.yaml`), while migration files use a consistent numbered prefix. However, there are noticeable inconsistencies within the same packages: `backend/logic/` mixes names such as `inspection_checklist.go`, `inspection_interval.go`, and `work_order_picture.go` with `inspectionstate.go`, `workorder.go`, `workordergroup.go`, and `workorderurgency.go`. There are also spelling errors in paths such as `backend/logic/user_subsitute_geo_object.go` and `test/inpsection_checklist/`, an abbreviation in `backend/database/seaweedfs/swfs.go`, and a gap in the migration sequence after `000069_add_external_flag_inspection.up.sql` directly to `000071_add_tile_provider_config.up.sql`. These issues reduce consistency, though the project remains mostly understandable.\n\nseparation_of_concerns:\nScore (avg): 4.0\n[CODING] The project separates many distinct concerns into clear directories: API contracts under `api/`, application code under `backend/` and `local/`, the executable under `cmd/backend/`, integration test helpers and tests under `test/`, deployment configuration under `docker/`, automation under `scripts/`, and static resources under `resources/`. Database migrations and raw SQL are kept in `backend/database/postgres/migrations/` and `backend/database/postgres/sql_queries/`, while configuration code is in `backend/config/`. Tests are partly colocated with packages as is standard in Go (e.g., `local/csv/csv_test.go`, `local/simpletime/time_test.go`) and partly in `test/`, which is acceptable. The separation is strong, although the limited number of tests and the broad, catch-all nature of `local/` slightly weaken the structure.\n\nmodularity:\nScore (avg): 4.0\n[CODING] Modularity is generally good. The backend is decomposed into recognizable layers and components: `backend/api/v1`, `backend/logic`, `backend/database/dbops`, `backend/database/postgres`, `backend/database/fsstore`, `backend/database/seaweedfs`, `backend/sync/gis`, `backend/sync/xlsx`, `backend/documents/pdf`, `backend/monitoring`, and supporting packages such as `errorkeys` and `logging`. Reusable utilities and services are separated under `local/` (`csv`, `oidc`, `scheduler`, `simpletime`, `thumbnail`, `utils`). OpenAPI specifications are also split into individual object and path files, improving navigability. The main weakness is that `backend/logic/` and `backend/database/postgres/` are very large flat packages with dozens of domain files and no further subpackaging by domain, which can make boundaries less explicit. Nonetheless, the component breakdown is logical and maintainable overall.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          },
+          {
+            "name": "Security Policy",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.58,
+            "reason": "Evaluation of the SECURITY.md file:\n\nsecurity_contact_information:\nScore (avg): 5.0\n[CODING] Criterion question: Does the document provide clear contact information for security-related inquiries? Yes. Under \"Reporting a Bug,\" it explicitly states: \"Report security bugs by emailing us at support@awesome-it.de.\" This gives users a direct and actionable email address for security reports. Although it is a general support address rather than a dedicated security address, the contact information is clear and unambiguous.\n\nvulnerability_reporting_process:\nScore (avg): 4.0\n[CODING] Criterion question: Does the document clearly describe the process for reporting security vulnerabilities? The document is generally clear: it instructs reporters to email support@awesome-it.de, states that the lead maintainer will acknowledge the email within approximately two workdays, says the team will review the findings and keep the reporter informed, and advises reporting third-party module bugs to the relevant maintainers. However, it does not specify important reporting details such as what information should be included in a report (affected version, reproduction steps, impact), whether a dedicated security channel or encryption should be used, or expected timelines beyond initial acknowledgment. Therefore, the reporting process is good but not fully comprehensive.\n\nsupported_versions:\nScore (avg): 1.0\n[CODING] Criterion question: Does the document specify which versions of the software are currently supported with security updates? No. The document never lists supported versions, version numbers, an end-of-life policy, or a version support matrix. It only refers generally to preparing fixes for \"all releases still under maintenance,\" without identifying which releases those are. This is insufficient to tell users whether their version of OCM is currently supported with security updates.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          }
+        ],
+        "evaluated_measurements": 3,
+        "total_measurements": 3,
+        "coverage": 1.0
+      },
+      "error": null
+    }
+  ]
+}

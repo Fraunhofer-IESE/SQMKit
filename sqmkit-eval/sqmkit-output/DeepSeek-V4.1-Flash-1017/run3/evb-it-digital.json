@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "results": [
+    {
+      "name": "evb-it-digital",
+      "kind": "local",
+      "source": "sqmkit-eval/eval/repos/evb-it-digital",
+      "repository": "https://gitlab.opencode.de/evb-it/digital/evb-it-digital",
+      "evaluation": {
+        "name": "Project Description, Project Structure and Security Policy",
+        "weight": 1.0,
+        "status": "evaluated",
+        "score": 0.41666666666666663,
+        "reason": "Weighted score of evaluated measurements",
+        "children": [
+          {
+            "name": "Project Description",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.31,
+            "reason": "Evaluation of the README file:\n\nproject_purpose:\nScore (avg): 2.0\n[CODING] The README identifies the project only as an \"'EVB-IT digital' contract tool\" and links to pre-built \"Designer\" and \"Player\" HTML files. This gives a minimal indication of what the project is, but it does not explain the tool's features, target users, the problem it solves, or why it is useful. The remaining content focuses on project structure, building, and SBOM generation rather than describing the project's purpose or value.\n\nsetup_instructions:\nScore (avg): 5.0\n[CODING] The README provides clear setup instructions. It lists prerequisites (\"Node 16\" and \"npm 8\"), gives exact development commands under \"Getting Started\" (\"cd app\", \"npm install\", \"npm run dev\"), and explains local building through \"./build.sh\". It also lists the five generated HTML outputs and points readers to \"the application's README\" for more detailed building instructions.\n\ninfo_project_status:\nScore (avg): 1.0\n[CODING] The README contains no statement about the project's status. It does not say whether the project is actively developed, maintained, deprecated, archived, stable, experimental, or no longer maintained. Sections such as \"Project Structure\", \"Getting Started\", \"Building locally\", and \"Generating a Software Bill of Materials (SBOM)\" do not address project status or maintenance activity.\n\ninfo_maintainer:\nScore (avg): 1.0\n[CODING] The README does not identify any maintainers, contributing organizations, or individual contributors. It also provides no contact information, contribution guidelines, governance details, or instructions for how others can contribute. The document is limited to usage, build, and SBOM information.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          },
+          {
+            "name": "Project Structure",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.94,
+            "reason": "Project structure evaluation:\n\ndirectory_organization:\nScore (avg): 5.0\n[CODING] The project follows Vue 3 + Vite conventions very closely and cleanly. The root cleanly separates documentation (README.md, CHANGELOG.md, LICENSE, publiccode.yml), build artifacts (built-html/), assets/screenshots (screenshots/, evb-it_logo.svg), and the application itself under app/. Inside app/, the standard Vue scaffold is present: src/, public/, cypress/, scripts/, patches/, and all tooling config files at the app root (vite.config.ts, tailwind.config.js, postcss.config.js, .eslintrc.cjs, .prettierrc.json, tsconfig*.json, cypress.config.ts). The src/ tree uses idiomatic Vue directories: components/, views/, router/, stores/, assets/, utils/, plus supporting folders (composition/, config/, dialog/, i18n/, lib/, generated/, types/, test/). Views are further split by feature/product area (creator/, player/, shared/, verification/), and lib/core is well structured (constructors/, interfaces/, migrations/, services/, types/, utils/, validators/). The only minor gap is the absence of a dedicated docs/ directory (documentation lives in README/CHANGELOG and inline), and the presence of a top-level built-html/ with committed build artifacts, but neither undermines the otherwise textbook organization.\n\nnaming_conventions:\nScore (avg): 4.0\n[CODING] Naming is strong and largely consistent. Vue components use PascalCase and are grouped in matching folders (e.g., AppButton/AppButton.vue, InspectorQuestion/InspectorQuestion.vue, VariableSelect/VariableSelectTree.vue). TypeScript stores and modules use lower camelCase/dot suffixes (block.store.ts, library.store.ts, survey.store.ts), test files use the .spec.ts convention (AppInput.spec.ts, migrate-*.spec.ts), Cypress e2e tests use .cy.ts and are grouped by feature (block/, playbook/, player/, regressions/, v1/), and fixtures use descriptive kebab-case (block-with-two-nested-blocks.json, questionnaire-preview-what-if-mode.cy.ts). However, there are several inconsistencies that keep this from a perfect score: (1) the Cypress e2e directory uses camelCase for one group (cypress/e2e/libraryManagement/) while all siblings are lowercase (block, playbook, player, regressions, v1); (2) test suffixes are mixed \u2014 most use .spec.ts but AppExpressionInput/lib.test.ts uses .test.ts; (3) utility/lib naming mixes kebab-case (render-pipeline.ts, app-data.ts, html-schema.util.ts) with camelCase (composables.util.ts, playbookDocument.ts) and a typo in node-view-props-composible.ts (\"composible\" instead of \"composable\"); (4) helper naming in src/utils uses a mix of .util.ts (block.util.ts, schema.util.ts) and bare names (date.ts, uuid.ts, array.ts). These are minor and do not significantly hinder navigation.\n\nseparation_of_concerns:\nScore (avg): 5.0\n[CODING] Concerns are well isolated. Source lives under app/src/, while tests are split between co-located unit/component specs (e.g., AppDialog.spec.ts beside AppDialog.vue, migrate-design-data.spec.ts beside its migration, utils/*.spec.ts) and end-to-end tests in a dedicated app/cypress/ tree that includes its own support/ helpers (commonActions.ts, navigationActions.ts, playbookActions.ts, etc.), fixtures/, and tsconfig.json. Configuration is separated from source and consolidated at the app root (vite.config.ts, cypress.config.ts, tailwind.config.js, postcss.config.js, .eslintrc.cjs, .prettierrc.json, tsconfig.app.json, tsconfig.node.json, tsconfig.test.json). Build/tooling concerns are isolated too: patches/, scripts/write-player-shell.js, build-extras.mjs, and generated/ outputs (player-shell.ts, verification-shell.ts). Domain logic is separated from UI: src/lib/core (constructors, validators, migrations, services, types) holds business logic while src/components and src/views hold presentation. Assets are isolated in src/assets/ (fonts, base.css) with a separate LICENSE.txt for the bundled Roboto font, and i18n/localization is confined to src/i18n/. Repositories/adapters (lib/adapters/api, docx, repositories, window) further isolate I/O from core logic. This is a clean separation of source vs. tests vs. configuration vs. build artifacts.\n\nmodularity:\nScore (avg): 5.0\n[CODING] The project demonstrates excellent, granular modularity. Components are decomposed into small, single-responsibility units grouped by domain: generic UI primitives (AppButton, AppDialog, AppInput, AppSwitch), form controls (components/form/AppDatePicker, AppNumberSelect, FormBuilder/), editor extensions (TipTapExtensions/ with one subfolder per extension, e.g., IfBlocks, CustomTable, ContentPlaceholder), inspector panels (components/inspector/ separated per question type: InspectorQuestionFreeText, InspectorQuestionMultiChoice, InspectorQuestionTable, etc.), library management dialogs (components/library/), modals (components/modals/), and shared partials (components/partials/*MoveMenu). Each module typically co-locates its supporting logic and types (e.g., AppRichTextEditor with configs.ts, lib.ts, types.ts, formatting-options.ts; MoveMenu with lib.ts and lib.spec.ts). The core domain layer is similarly modularized in src/lib/core/services (conditions/, deletion/, expressions/, lookup/, render-template/) and validators (base, block, library, logic/, playbook, survey-results, visual-condition), with migrations each in a dedicated file plus matching spec (migrate-document-page-margin.ts/.spec.ts). Feature views in src/views are split into self-contained folder-per-feature units (BlockList/, PlaybookDocuments/, PlayerQuestions/, VerificationFingerprint/). State management is modularized into per-domain Pinia-style stores (block.store.ts, playbook.store.ts, survey.store.ts, verification.store.ts). This logical, feature-oriented breakdown with clear intra-module co-location of code, tests, and types is a hallmark of strong modularity.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          },
+          {
+            "name": "Security Policy",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.0,
+            "reason": "SECURITY.md file not found in root folder.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          }
+        ],
+        "evaluated_measurements": 3,
+        "total_measurements": 3,
+        "coverage": 1.0
+      },
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "name": "Project Description, Project Structure and Security Policy",
+  "weight": 1,
+  "measurement": null,
+  "submodels": [
+    {
+      "name": "Project Description",
+      "weight": 0.3333333333333333,
+      "measurement": "project-description",
+      "submodels": []
+    },
+    {
+      "name": "Project Structure",
+      "weight": 0.3333333333333333,
+      "measurement": "project-structure",
+      "submodels": []
+    },
+    {
+      "name": "Security Policy",
+      "weight": 0.3333333333333333,
+      "measurement": "security-policy",
+      "submodels": []
+    }
+  ]
+}

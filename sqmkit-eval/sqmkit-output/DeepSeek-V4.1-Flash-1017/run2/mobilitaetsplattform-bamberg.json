@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "results": [
+    {
+      "name": "mobilitaetsplattform-bamberg",
+      "kind": "local",
+      "source": "sqmkit-eval/eval/repos/mobilitaetsplattform-bamberg",
+      "repository": "https://gitlab.opencode.de/smart-city-bamberg/mobilitaetsplattform",
+      "evaluation": {
+        "name": "Project Description, Project Structure and Security Policy",
+        "weight": 1.0,
+        "status": "evaluated",
+        "score": 0.5,
+        "reason": "Weighted score of evaluated measurements",
+        "children": [
+          {
+            "name": "Project Description",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.75,
+            "reason": "Evaluation of the README file:\n\nproject_purpose:\nScore (avg): 5.0\n[CODING] The README clearly explains the project's purpose and value. The \"Vision der Mobilit\u00e4tsplattform\" section describes a Bamberg mobility app that lets residents plan routes across different transport modes according to sustainability, speed, or convenience, with flexible booking and a single ticket. The \"Projektaufbau\" section explains that the platform aims to connect public transport with private and rented vehicles for both routing and payment. The \"Nutzen f\u00fcr die Kommune\" section further explains the municipal benefit of data sovereignty and centralized management of maps, schedules, sensor data, restricted zones, and public transport usage. This is a strong, concrete description of why the project exists and why it is useful.\n\nsetup_instructions:\nScore (avg): 2.0\n[CODING] The README does not provide actual setup instructions. It only states under \"Technische Dokumentation\" that further technical documentation can be found in the Web App and Mobile App README files, with links to web-app/README.md and mobile-app/README.md. There are no prerequisites, installation steps, configuration details, environment variables, build/run commands, or deployment guidance in this README. The links are useful pointers, but the README itself does not describe how to set up the project.\n\ninfo_project_status:\nScore (avg): 5.0\n[CODING] The README gives a detailed and clear account of the project's current status. It states that route planning has largely been achieved, while payment could not yet be implemented because coordination with payment processes in the Verkehrsverbund Gro\u00dfraum N\u00fcrnberg was not completed by 2025. It also explains that not all parts of the overall system could be developed as open source due to budget constraints and that some commercial code is not published here. Additionally, it identifies the open-source release in September 2025 as an important milestone and states that real-world operation in Bamberg remains a goal requiring further technical and non-technical clarification. This conveys both completed work and remaining limitations and future work.\n\ninfo_maintainer:\nScore (avg): 4.0\n[CODING] The README identifies the key organizations involved and describes how the project is organized. It states that the initiative came from the Verkehrsbetrieb der Stadtwerke Bamberg (STVP), that STVP became an important partner of the Smart City program and received part of the Smart City budget to carry out the project independently, and that the code was developed in cooperation with the Bamberg startup wikimove. This provides good information about the project owner, executing organization, and development contributor. However, it does not explicitly name a current maintainer, provide contact details for maintainers, or describe contribution guidelines or maintainer responsibilities, so the maintenance model could be clearer.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          },
+          {
+            "name": "Project Structure",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.75,
+            "reason": "Project structure evaluation:\n\ndirectory_organization:\nScore (avg): 4.0\n[CODING] The repository is a well-organized monorepo whose top level maps cleanly onto deliverables: backend/, mobile-app/, web-app/, logo/, plus LICENSE, README.md and publiccode.yml. Each module then follows its ecosystem's conventions: backend/mobility-manager-backend-svc uses a standard Gradle/Kotlin-Spring layout (build.gradle.kts, settings.gradle.kts, buildSrc/, src/main/java/me/..., src/main/resources with application.yaml, db/ and graphql/ folders, .gitlab-ci.yml, .scripts/); mobile-app follows standard Flutter layout (lib/, test/, android/, ios/, assets/, pubspec.yaml, analysis_options.yaml, l10n.yaml); web-app follows a standard React/Vite layout (src/, public/, cypress/, deploy/, .storybook/, scripts/, package.json, vite.config.ts, tsconfig.json, index.html). backend/routing and backend/keycloak are split out sensibly as infrastructure/config-only modules. Docked points only for smaller deviations: there is no top-level docs/ directory (documentation is scattered as README/CONTRIBUTING/ECLA/ICLA copies in nearly every module), the backend service appears to expose src/main only with no src/test tree, and root-level brand assets (logo/) sit beside source rather than under an assets/docs area. Overall the layout is idiomatic and easy to navigate.\n\nnaming_conventions:\nScore (avg): 4.0\n[CODING] Within each stack the casing conventions are largely followed and consistent: Dart files use snake_case (app_failure.dart, date_time_extension.dart, graph_zone_repository.dart, snapshot_vehicle_repository.dart); Java/Kotlin uses standard package/directory structure (src/main/java/me/...); React components use PascalCase folders/files (CustomerDatabase/, TripDetailsAndManagement/, CustomPopover/, WmvTabs/) while hooks and util modules use camelCase (useUrlParamsState.ts, date-related helpers, feature-flags-atoms.ts), and state slices use kebab/lowercase with actions.ts/reducer.ts/selectors.ts. Asset naming is systematic (pin_selected_mobility_station_badge_count_10_plus.png, marker_leg_start_train.png, @2x/@3x style 2x/3x folders). Inconsistencies that keep this from a 5: README casing is mixed (\"README.md\" at root vs \"Readme.md\" in backend/keycloak and in routing/nginx-proxy, otp-build, otp-config), two scripts differ in case style (scripts/set-app-version-in-env.js vs configs/translations/OrderTranslationFiles.sh), and there are typos embedded in file/folder names that undermine consistency (biekAndScooter.svg, baterryLow.svg, PalnningModePreviewPredicatesView.tsx, i18n folder \"OrderTranslationFiles.sh\"). The use of both \"components/\" and \"wmv-components/\" alongside \"design-system/\" also creates naming overlap. Still, the dominant conventions per technology are clear and respected.\n\nseparation_of_concerns:\nScore (avg): 4.0\n[CODING] Concerns are separated along two axes. First, by application: backend/ (three deployable services: keycloak, mobility-manager-backend-svc, routing), mobile-app/, web-app/. Second, by concern within modules: web-app keeps application source in src/, end-to-end tests in cypress/, deployment artifacts in deploy/ (default.conf, envs/.env.dev|.env.prod|.env.test), storybook config in .storybook/, build scripts in scripts/, and environment files (.env.development/.env.production/.env.test), lint/format configs (.eslintrc, .prettierrc.json, .stylelintrc.json), Vite/TS configs and sonar-project.properties at the root; mobile-app separates lib/ (source), test/ (tests), assets/, l10n config, and platform folders android/ ios/; the backend module separates build logic (buildSrc/, build.gradle.kts), CI (.gitlab-ci.yml), local orchestration (compose.yaml), and resources (application*.yaml, db/, graphql/). Weaknesses: test coverage is thin and inconsistently located (mobile-app has only test/widget_test.dart while the backend service shows no src/test tree; within web-app tests are scattered as co-located *.test.tsx, src/hooks/__tests__/, and src/services/UserService.test.ts), and legal/community docs (LICENSE, CONTRIBUTING.md, ECLA.md, ICLA.md) are duplicated in almost every sub-project rather than centralized or referenced, which slightly blurs the separation of project-level vs module-level documentation.\n\nmodularity:\nScore (avg): 4.0\n[CODING] Modularity is a strength. The monorepo is decomposed into three backend services plus two client apps, each independently buildable (own Dockerfile/compose.yaml/.gitlab-ci.yml/pubspec.yaml/package.json). Inside web-app the code is factored into feature modules (src/pages/Dashboard, Zones, Analytics, Support; src/components/CustomerDatabase, TripDetailsAndManagement, VehicleInformationModal), a reusable design-system library (src/wmv-components/ with Checkbox, ConfirmationModal, WmvModal, WmvTabs, etc., and its own Storybook stories in src/stories/wmv-components/), plus clear technical layers (models/, services/, state/, hooks/, plugins/, utils/, configs/, api/). The mobile app mirrors a layered architecture: lib/src/data (repositories with impl/ subfolder for controllable_vehicle_repository, zones/, vehicle/, routing/), lib/src/ui grouped by feature (home/, itinerary/, routing/, common/), lib/src/common/ shared utilities, lib/src/model/, DI in di.dart, and GraphQL schema/query kept in data/routing. The backend isolates build tooling in buildSrc/ and keeps db migrations and graphql schemas in dedicated resources folders. Points deducted because some cross-cutting boundaries are blurred: web-app retains both a Redux store (src/state/) and Recoil atoms (src/atoms/, plus component-level atoms/ folders), i.e., two competing state-management approaches; models mix domain and presentation concerns (src/models/ui/* alongside business models); and large flat asset trees (web-app src/assets/icons/fill and outline with 150+ SVGs, mobile app generated_markers with duplicated 2x/3x/root copies) show some duplication rather than shared structure. Overall the component/module breakdown is logical and maintainable.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          },
+          {
+            "name": "Security Policy",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.0,
+            "reason": "SECURITY.md file not found in root folder.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          }
+        ],
+        "evaluated_measurements": 3,
+        "total_measurements": 3,
+        "coverage": 1.0
+      },
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "results": [
+    {
+      "name": "ferienabenteuer",
+      "kind": "local",
+      "source": "sqmkit-eval/eval/repos/ferienabenteuer",
+      "repository": "https://gitlab.opencode.de/smart-city-bamberg/ferienabenteuer",
+      "evaluation": {
+        "name": "Project Description, Project Structure and Security Policy",
+        "weight": 1.0,
+        "status": "evaluated",
+        "score": 0.4766666666666667,
+        "reason": "Weighted score of evaluated measurements",
+        "children": [
+          {
+            "name": "Project Description",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.62,
+            "reason": "Evaluation of the README file:\n\nproject_purpose:\nScore (avg): 5.0\n[CODING] The README clearly and thoroughly explains what the project is and why it is useful. The title \"Ferienabenteuer - Ferienangebote einfach online buchen\" states the core function, and the introduction explains that it is an offering of the \"Familienregion Bamberg, das berufst\u00e4tige Eltern bei der Vereinbarkeit von Familie und Beruf unterst\u00fctzen m\u00f6chte\" \u2014 clearly identifying the target audience (working parents) and the value proposition (easier holiday childcare booking). It further describes the two user groups and frontends (\"Frontend Buchung\" for the public/families, supporting registration and booking, and \"Frontend Verwaltung\" for organizers/administrators managing events, providers and discounts), includes screenshots of both, an architecture diagram, and a breakdown of the three sub-projects (Keystone 6 CMS, two Angular apps). A live site (https://ferienportal-bamberg.de) and funding sources are also referenced. This gives an excellent, complete picture of the project's purpose and usefulness.\n\nsetup_instructions:\nScore (avg): 2.0\n[CODING] The README contains no actual setup instructions. There are no prerequisites, installation steps, dependency requirements, environment configuration, or build/run commands for any of the three sub-projects (CMS, Verwaltungs Frontend, Buchungs Frontend). The only related content is the \"Architektur\" section listing the sub-projects with links to their individual README files (e.g. \"CMS: Keystone 6 CMS\", \"Verwaltungs Frontend: Angular Web-App\") and the sentence \"Dokumentation ist in den einzelnen Unterprojekten im entsprechenden Verzeichnis hinterlegt.\" This delegates documentation to sub-project files, which may or may not contain setup details, but the root README itself provides no guidance for getting the project running. Hence the score is poor (2).\n\ninfo_project_status:\nScore (avg): 5.0\n[CODING] The project status is stated very explicitly and prominently at the top of the README in a warning callout: \"> [!warning] Wichtiger Hinweis: In diesem Repository ist ein \u00e4lterer Softwarestand enthalten. > Die Weiterentwicklung sowie der aktuelle Code befinden sich in [diesem Repository](https://gitlab.opencode.de/smart-city-bamberg/projekt_ferienportal).\" This clearly informs readers that this repository holds an older software version and that ongoing development and the current code are located in a different repository, complete with a link. This is exactly the kind of status information a reader needs, so it scores excellent (5).\n\ninfo_maintainer:\nScore (avg): 2.0\n[CODING] The README does not describe who maintains or contributes to the project. There is no maintainer section, no named contact persons, no contribution guidelines, no governance or \"how to contribute\" information. The closest content is the implicit attribution that the project is \"ein Angebot der Familienregion Bamberg\" and that \"Stadt und Landkreis Bamberg\" operate the homepage, plus the funding note (\"gef\u00f6rdert durch das Bundesministerium f\u00fcr Wohnen, Stadtentwicklung und Bauwesen und die Kreditanstalt f\u00fcr Wiederaufbau\"). The only hint about where development happens is the status warning linking to the GitLab repository under the \"smart-city-bamberg\" namespace, which indirectly suggests the owning organization. However, no maintainers, contributors, or points of contact are explicitly identified, so the score is poor (2).",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          },
+          {
+            "name": "Project Structure",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.81,
+            "reason": "Project structure evaluation:\n\ndirectory_organization:\nScore (avg): 4.0\n[CODING] Question evaluated: Does the project follow appropriate directory organization conventions for its technology stack? The repository uses a clear multi-application layout: root-level README.md, docs/, and publiccode.yml, with application code under src/backend, src/frontend-buchung, and src/frontend-verwaltung. Each application has its own README, package metadata, Dockerfile, docker-compose files, and framework-specific configuration (e.g., keystone.ts / schema.prisma for the backend, angular.json for the Angular frontends). Dedicated docs/ folders exist at both the repository and application levels (e.g., docs/Architektur.png, src/backend/docs/cms-dashboard.jpg, src/frontend-buchung/docs/Veranstaltungen.png). This is appropriate for a Keystone/Prisma backend plus two Angular frontends. The score is not 5 because there are no test directories or test files anywhere in the tree, and the repository lacks a root-level orchestration/build layout tying the three applications together; nonetheless, the general src/ and docs/ conventions are followed well.\n\nnaming_conventions:\nScore (avg): 4.0\n[CODING] Question evaluated: Does the project use consistent naming conventions for files and directories? Naming is largely role- and framework-appropriate. Backend TypeScript modules use camelCase (e.g., auth.session.ts, codeGenerator.ts, eventQueue.ts), Angular source files use kebab-case with .component/.module/.service suffixes (e.g., cart-info.component.ts, app-routing.module.ts, click-outside.directive.ts), and migration directories use a consistent timestamp_snake_case pattern (e.g., 20231116165406_bookings_and_tickets/). Email template folders consistently use snake_case (e.g., booking_confirmed/, waiting_list_ticket_reserved/). However, naming is not perfectly consistent across the whole repository: root documentation assets mix styles such as Logo_BMI.jpg, Kombilogo_BMWSB_KFW.png, Logo.png, and logo-familienregion.svg; backend and frontend assets also differ in capitalization. There is also an apparent accidental duplicate directory named \"account_deleted_due_to_inactivity copy\", which violates clean naming. These issues prevent a score of 5, but the dominant conventions are clear and understandable.\n\nseparation_of_concerns:\nScore (avg): 4.0\n[CODING] Question evaluated: Does the project separate different concerns into appropriate directories? The structure separates several concerns well: backend database migrations are isolated in src/backend/migrations/, email templates in src/backend/email_templates/, backend GraphQL extensions by role in extensions/mutations/, extensions/queries/, and extensions/worker/, and event/message handlers in messaging/handlers/ with mailing-specific handlers in messaging/handlers/mailing/. Frontend concerns are separated into Angular modules, routing, graphql/, components/, directives/, pipes/, sites/, and NgRx stores/ feature directories. Configuration is generally placed at each application root (Dockerfile, docker-compose.yml, tsconfig files, angular.json, tailwind.config.ts) or under environments/ (environment.ts, environment.development.ts), while static files are under assets/. Documentation is also separated into docs/ directories. The score is 4 rather than 5 because tests are entirely absent, so there is no separation of test code from production code, and application-level documentation/configuration is scattered across three subprojects without a root-level test or deployment configuration.\n\nmodularity:\nScore (avg): 5.0\n[CODING] Question evaluated: Does the project demonstrate good modularity with a logical breakdown of components or modules? Modularity is strong. The backend splits GraphQL operations into single-purpose files under extensions/mutations/ (e.g., addTicketsToCart.ts, approveDiscount.ts, cancelTicket.ts, registerPayment.ts) and has separate worker modules (deleteInactiveUsers.ts, markOverdueBookings.ts, findFinishedEvents.ts). Messaging logic is decomposed by event type (e.g., cartTimeout.ts, createBookingWhenDiscountApplicationGrantedOrRejected.ts) and mailing handlers are split into focused files such as sendEmailWhenBookingCreated.ts and sendEmailWhenWaitinglistTicketConvertedToBooking.ts. The Angular applications are organized into feature modules and site directories (landing/, auth/, account/, checkout/, events/), with shared components/directives/pipes and dedicated NgRx store slices per domain (auth/, bookings/, checkout/, children/, discounts/, events/, etc.). This clear domain/file-level breakdown makes the codebase easy to navigate and extend. Minor coupling remains in backend root files such as keystone.ts, schema.ts, and auth.ts, but overall the modularity is excellent.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          },
+          {
+            "name": "Security Policy",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.0,
+            "reason": "SECURITY.md file not found in root folder.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          }
+        ],
+        "evaluated_measurements": 3,
+        "total_measurements": 3,
+        "coverage": 1.0
+      },
+      "error": null
+    }
+  ]
+}

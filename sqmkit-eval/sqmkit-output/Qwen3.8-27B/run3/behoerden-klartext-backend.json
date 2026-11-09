@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "results": [
+    {
+      "name": "behoerden-klartext-backend",
+      "kind": "local",
+      "source": "sqmkit-eval/eval/repos/behoerden-klartext-backend",
+      "repository": "https://gitlab.opencode.de/behoerden-klartext/backend",
+      "evaluation": {
+        "name": "Project Description, Project Structure and Security Policy",
+        "weight": 1.0,
+        "status": "evaluated",
+        "score": 0.45666666666666667,
+        "reason": "Weighted score of evaluated measurements",
+        "children": [
+          {
+            "name": "Project Description",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.56,
+            "reason": "Evaluation of the README file:\n\nproject_purpose:\nScore (avg): 2.0\n[QWEN] The provided README content does not actually describe the project's purpose or why it is useful. The title \"Beh\u00f6rden-KlarText Backend\" only implies that the project is a backend microservice related to a government \"KlarText\" (plain language) initiative, and the first section \"Allgemeine Informationen\" (General Information) exists solely as a directive \"::include{file=docs/general-information.md}\" whose content is not visible in the evaluated text. There is no prose anywhere in the visible content explaining what the service does, who its target users are, or what problem it solves. Since all descriptive content is delegated to external files, the purpose is only hinted at by the title and section headings, which is weak for a reader evaluating the README as given.\n\nsetup_instructions:\nScore (avg): 4.0\n[QWEN] The README is clearly structured around getting the project running and developing it. Under \"Wie man diesen Microservice nutzt\" (How to use this microservice) it provides subsections for \"Konfiguration\" (docs/configuration.md) and \"Bereitstellung\" (docs/build.md, i.e., deployment/build), plus guidance on building a \"Python Image aus eigener Artifactory / Container Registry\" (docs/python-image.md). Under \"Python requirements\" it covers the difference between \"requirements.in\" and \"requirements.txt\" (docs/requirements-overview.md), a file overview (docs/requirements-files.md), \"pre-commit\" setup (docs/pre-commit.md), and a \"Dev-Container\" (docs/dev-container.md) \u2014 which is a standard, low-friction way to set up a working development environment. Together these sections cover environment setup, dependencies, code-style tooling, configuration, and deployment, which is a thorough setup documentation structure. The only drawback is that the concrete step-by-step instructions live in the included files and are not visible in the evaluated content, so full verification is not possible; hence 4 rather than 5.\n\ninfo_project_status:\nScore (avg): 3.0\n[QWEN] The README contains no explicit statement about the project's status (e.g., \"actively developed,\" \"in maintenance mode,\" or \"no longer maintained\"). The only indirect signals are the \"Fahrplan\" (Roadmap) section (::include{file=docs/roadmap.md}), which suggests ongoing planning and active development, and the SPDX copyright line \"2025-present Bundesministerium f\u00fcr Arbeit und Soziales (BMAS),\" indicating recent/continuing activity. However, because the roadmap's actual content is not visible and no explicit maintenance status is declared anywhere in the provided text, the criterion is only partially satisfied, warranting a neutral score.\n\ninfo_maintainer:\nScore (avg): 4.0\n[QWEN] The SPDX header explicitly identifies the responsible organization: \"Bundesministerium f\u00fcr Arbeit und Soziales (BMAS)\" (the German Federal Ministry of Labour and Social Affairs), including a concrete contact address (info@denkfabrik-bmas.de). Additionally, a \"Credits\" section (::include{file=docs/credits.md}) is included, which conventionally acknowledges contributors and external credits. This gives a reader a clear point of contact and an implied list of contributors. What is missing is a dedicated \"Maintainers\"/team section, individual maintainer names, and information about how to contribute (e.g., contribution guidelines or code of conduct), which prevents a top score.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          },
+          {
+            "name": "Project Structure",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.81,
+            "reason": "Project structure evaluation:\n\ndirectory_organization:\nScore (avg): 4.0\n[QWEN] The project follows well-established Python project layout conventions. It uses the `src/` layout for application code, with top-level `tests/` for test suites, `docs/` for documentation, `configs/` for runtime configuration, and `secrets/` for secret examples. Auxiliary tooling is appropriately placed: `CI_config/` (containing `build_images.yml`, `code_quality.yml`, `security_checks.yml`, `testing.yml`) groups pipeline stages, `.gitlab/` holds issue and MR templates, and `.coveragerc`, `ruff.toml`, and `.pre-commit-config.yaml` sit at the root as is conventional. Docker assets (`Dockerfile`, `docker-compose.yml`, `docker-compose-dev.yml`, `docker-compose-testing.yml`) and dependency files (`requirements*.in`/`requirements*.txt`) are all in expected root locations, and `LICENSES/Apache-2.0.txt` uses the SPDX directory convention. Two minor deviations keep this from a perfect score: `main.py` sits at the project root rather than inside `src/` (which slightly weakens the purity of the src layout), and no `pyproject.toml` is visible to declare the package, entry point, and build metadata, which is the modern Python convention. Otherwise the directory tree is clean, conventional, and immediately understandable to a Python developer.\n\nnaming_conventions:\nScore (avg): 4.0\n[QWEN] Naming is largely consistent and idiomatic. All Python modules use `snake_case` throughout (e.g., `api_input.py`, `api_output.py`, `base_logger.py`, `check_model_api_availability.py`, `model_selector.py`, `openai_custom_auth.py`, `process_configs.py`, `test_endpoints.py`, `test_openai.py`), directories use `snake_case` (`models/`, `services/`, `simplify/`, `utils/`, `CI_config/`), and documentation files consistently use `kebab-case` (`general-information.md`, `python-image.md`, `requirements-overview.md`), which is a sensible, self-consistent convention for markdown. A few small inconsistencies prevent a top score: (1) the GitLab templates use mismatched casing \u2014 `issue_templates/Default.md` (capital D) versus `merge_request_templates/default.md` (lowercase); (2) the `configs/` directory mixes extensions for the same kind of file \u2014 `general.yml`, `llm_models.yml`, `prompt_maps.yml`, `protected_words.yml` use `.yml` while `otel_collector.yaml` uses `.yaml`; (3) `llm_api.secret.example` uses dotted segments that are a slightly irregular pattern. These are minor and localized, so the overall scheme reads as consistent.\n\nseparation_of_concerns:\nScore (avg): 5.0\n[QWEN] Concerns are cleanly partitioned across dedicated directories. Source code is isolated in `src/` (with `app.py`, `endpoints.py`, `models/`, `services/`, `settings.py`, `utils/`), and is fully separated from `tests/` (which further splits integration-level `test_endpoints.py` from `unittests/` for `test_openai.py` and `test_settings.py`). Runtime configuration lives exclusively in `configs/` (`general.yml`, `llm_models.yml`, `prompt_maps.yml`, `protected_words.yml`, `otel_collector.yaml`), documentation in `docs/` (API, build, configuration, tests, roadmap, etc.), secret material in `secrets/` (only a `.example` file, correctly avoiding real secret leakage), CI definition split between `.gitlab-ci.yml` and `CI_config/`, and container/deployment concerns in the Dockerfile and compose files. Dependency pinning is separated from source via `requirements*.in` (inputs) and generated `requirements*.txt` (locks), each paired with a `.license` file. The result is that a developer can find code, tests, config, docs, CI, and packaging concerns in predictable, non-overlapping locations with essentially no leakage between them.\n\nmodularity:\nScore (avg): 4.0\n[QWEN] The `src/` package shows a logical, layered decomposition. `endpoints.py` handles the API surface; `services/` holds business logic (`feedback.py`, `stem.py`) and \u2014 notably \u2014 a dedicated `simplify/` subpackage that pairs a provider implementation (`openai.py`) with a `registry.py`, indicating a pluggable provider-registry pattern that allows additional LLM backends to be added without touching core code. Data structures are cleanly isolated in `models/` (`api_input.py`, `api_output.py`, `general.py`, `llms.py`), separating request/response schemas from configuration and LLM definitions. Cross-cutting helpers live in `utils/` (`base_logger.py`, `otel.py`, `model_selector.py`, `openai_custom_auth.py`, `process_configs.py`, `check_model_api_availability.py`), keeping them distinct from domain services, and `settings.py` centralizes configuration loading. Each module has a single, clear responsibility and `__init__.py` files mark proper package boundaries. The main areas that keep this from a perfect score are that `endpoints.py` is a single flat file (which can become a hotspot as routes grow) and `services/` mixes several distinct domains (`feedback`, `stem`, `simplify`) at one level rather than grouping them into clearly separated feature modules, but the existing structure scales well and the provider-registry design is a strong sign of deliberate modularity.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          },
+          {
+            "name": "Security Policy",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.0,
+            "reason": "SECURITY.md file not found in root folder.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          }
+        ],
+        "evaluated_measurements": 3,
+        "total_measurements": 3,
+        "coverage": 1.0
+      },
+      "error": null
+    }
+  ]
+}

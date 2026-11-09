@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "results": [
+    {
+      "name": "evb-it-digital",
+      "kind": "local",
+      "source": "sqmkit-eval/eval/repos/evb-it-digital",
+      "repository": "https://gitlab.opencode.de/evb-it/digital/evb-it-digital",
+      "evaluation": {
+        "name": "Project Description, Project Structure and Security Policy",
+        "weight": 1.0,
+        "status": "evaluated",
+        "score": 0.39666666666666667,
+        "reason": "Weighted score of evaluated measurements",
+        "children": [
+          {
+            "name": "Project Description",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.38,
+            "reason": "Evaluation of the README file:\n\nproject_purpose:\nScore (avg): 3.0\n[QWEN] The README provides a partial description of the project's purpose. The title identifies it as a \"contract tool\" for \"EVB-IT digital,\" and it explains that pre-built, executable HTML files are offered for a \"Designer\" and \"Player\" mode. However, it does not explain what EVB-IT is (a German standard for IT service order forms), what problem the tool solves, or why it is useful to users. There is no description of the key features, target audience, or benefits. The \"why it is useful\" aspect is largely missing \u2014 a reader unfamiliar with EVB-IT would not understand the value proposition. The description is functional (what it is) rather than purposeful (why it matters).\n\nsetup_instructions:\nScore (avg): 5.0\n[QWEN] The README provides excellent and comprehensive setup instructions. It includes a clear \"Prerequisites\" section specifying Node 16 and npm 8 for building. The \"Getting Started\" section gives step-by-step commands to run the application in development mode (cd app, npm install, npm run dev). A \"Building locally\" section explains how to use the provided build.sh script, notes the dependencies it checks, and documents all five output HTML files produced. Additionally, a detailed \"Generating a Software Bill of Materials (SBOM)\" section provides a full workflow with specific commands for installation, pruning dev dependencies, generating SPDX output, and postprocessing. Instructions are well-organized, use code blocks for clarity, and reference the app's README for further detail.\n\ninfo_project_status:\nScore (avg): 1.0\n[QWEN] The README contains no information whatsoever about the project's status. There is no indication of whether the project is in active development, in maintenance mode, deprecated, or archived. There is no status badge, no \"roadmap\" section, no \"changelog\" reference, no mention of release cadence, and no statement such as \"This project is actively maintained\" or \"This project is no longer maintained.\" A potential user has no way to determine the health or future of the project from this README.\n\ninfo_maintainer:\nScore (avg): 1.0\n[QWEN] The README provides no information about who maintains or contributes to the project. There is no \"Maintainers,\" \"Authors,\" \"Contributors,\" or \"Team\" section. No individual names, organizational names, email addresses, GitHub handles, or links to contributing guidelines are present. The only implicit reference is the mention of an \"EVB-IT branded version,\" which hints at a connection to the EVB-IT organization, but no explicit maintainer or contribution information is given. A user seeking support, wanting to report a bug, or interested in contributing has no guidance on whom to contact or how to participate.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          },
+          {
+            "name": "Project Structure",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.81,
+            "reason": "Project structure evaluation:\n\ndirectory_organization:\nScore (avg): 4.0\n[QWEN] The project follows Vue 3 / Vite / TypeScript conventions very well. The main application lives in app/ with a standard src/ directory (src/components, src/views, src/stores, src/router, src/i18n, src/assets), a public/ directory for static assets, multiple entry HTML files (index.html, creator.html, player.html, verification.html) matching the multi-page setup with separate entry points (main.ts, main-creator.ts, main-player.ts, main-verification.ts), and all expected config files at the app/ root (vite.config.ts, tsconfig*.json, tailwind.config.js, postcss.config.js, .eslintrc.cjs, .prettierrc.json, cypress.config.ts, .storybook/). The cypress/ directory follows the official Cypress layout exactly (cypress/e2e, cypress/fixtures, cypress/support with commands and helpers), and root-level open-source files (README.md, CHANGELOG.md, LICENSE, publiccode.yml, build.sh, screenshots/) are placed appropriately. Deductions: built-html/ contains committed build artifacts (EVB-IT_digital_Designer.html, EVB-IT_digital_Player.html), which is unusual to ship in the repository; there is no dedicated docs/ directory; and the root contains two duplicate logo files with inconsistent naming (EVB-IT_Logo-2025_v1.2.svg and evb-it_logo.svg). A few directories also appear empty in the listing (e.g., components/library/headers/partials/, PasswordModal/store/), which would be untidy if genuinely empty.\n\nnaming_conventions:\nScore (avg): 4.0\n[QWEN] Naming is largely consistent and idiomatic for the stack: PascalCase for Vue components and component folders (AppButton/AppButton.vue, InspectorDocument/InspectorDocument.vue, QuestionFreeText.vue), kebab-case for plain TS modules and utilities (string-utils.ts, block.util.ts, render-pipeline.ts), kebab-case for e2e specs (block-output-variables.cy.ts, questionnaire-preview.cy.ts) and JSON fixtures (document-with-table.json), and a uniform lib.ts/types.ts/forms.ts pattern inside feature folders. However, several inconsistencies exist: (1) unit tests mix .spec.ts and .test.ts suffixes (AppDialog.spec.ts, AppInput.spec.ts vs AppExpressionInput/lib.test.ts); (2) the cypress/e2e/libraryManagement/ folder is camelCase while its siblings (block, playbook, player, regressions, v1, visual-condition-editor) are kebab-case; (3) stores are named *.store.ts except layout.ts, which breaks the pattern (block.store.ts, library.store.ts, playbook.store.ts vs layout.ts); (4) entry files mix separators (main-creator.ts, main-player.ts vs main.primevue.ts); (5) root assets are badly mismatched: EVB-IT_Logo-2025_v1.2.svg (uppercase, hyphens, embedded version) vs evb-it_logo.svg (lowercase, underscore); (6) survey-results-v1_6_0.ts uses underscores for the version number instead of kebab-case. These are relatively minor deviations in an otherwise well-named codebase.\n\nseparation_of_concerns:\nScore (avg): 4.0\n[QWEN] Concerns are separated cleanly across the project. Application source is isolated in app/src, e2e testing is fully separated in app/cypress (with its own e2e specs, fixtures, support commands, and tsconfig.json), and build/tooling configuration (vite.config.ts, tsconfig files, eslint, prettier, tailwind, postcss, storybook) sits at the app/ root as expected. Within src/, domain logic is isolated from presentation: lib/core contains business rules (constructors, interfaces, migrations, services such as render-pipeline and render-template, types, validators, utils), lib/adapters wraps external concerns (api, docx, repositories, window), while components/, views/, stores/, and router/ handle UI and state. The three application modes (creator, player, verification) are each given their own main entry, router file (router/creator.ts, router/player.ts, router/verification.ts), and view tree (views/creator, views/player, views/verification, plus views/shared). Unit test fixtures are grouped in src/test/ and lib/core/migrations/fixtures. Minor concerns: public/ holds test data (test-valid-playbook.json, test-invalid-playbook.json) that belongs in a test area; unit specs are co-located with source rather than in a dedicated tests/ folder (an accepted Vue convention, but it does mix test and source files); and build outputs are stored inside the repository (built-html/), which conflates build artifacts with source.\n\nmodularity:\nScore (avg): 5.0\n[QWEN] The project demonstrates excellent modularity. Every feature has a self-contained folder combining its Vue component with its logic, types, stories, and tests: e.g., AppButton/ (AppButton.vue, AppButton.stories.ts, types.ts), AppDraggableList/ (with nested MoveMenu/lib.ts and lib.spec.ts), AppRichTextEditor/ (configs.ts, editor-helpers.ts, lib.ts, types.ts plus sub-components), VariableSelect/ (lib.ts, lib.spec.ts, floating.ts, __fixtures__/). Business logic is extracted from UI via a consistent lib.ts/forms.ts convention (FormBuilder/lib.ts, InspectorQuestion/lib.ts, partials/*/lib.ts). The core domain is cleanly decomposed into small, single-purpose modules: constructors (base, block, playbook, document, logic), validators per entity, per-concern services (conditions, deletion, expressions, lookup, render-pipeline, render-template), and granular, individually tested migrations (migrate-document-page-margin.ts + .spec.ts, v1-to-v2-playbook.migration.ts + .spec.ts). The TipTap extensions are modularized per feature (IfBlocks, CustomImage, Page, SectionBlock, etc.). The multi-app architecture (creator/player/verification) is cleanly sliced into separate entry points, routers, and view trees with shared pieces in views/shared/columns. E2E coverage is modularized by feature area (block/, playbook/, player/, libraryManagement/, regressions/, visual-condition-editor/) with dedicated support helpers (playbookActions.ts, questionActions.ts, surveyActions.ts). The only minor nit is some over-fragmentation into single-file folders (e.g., AppCheckbox/, AppHotkey/) and the coexistence of src/utils/ and src/lib/core/utils/, but the logical breakdown is thorough and consistent overall.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          },
+          {
+            "name": "Security Policy",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.0,
+            "reason": "SECURITY.md file not found in root folder.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          }
+        ],
+        "evaluated_measurements": 3,
+        "total_measurements": 3,
+        "coverage": 1.0
+      },
+      "error": null
+    }
+  ]
+}

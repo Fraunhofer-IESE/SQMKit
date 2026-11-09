@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "results": [
+    {
+      "name": "kausal-paths",
+      "kind": "local",
+      "source": "sqmkit-eval/eval/repos/kausal-paths",
+      "repository": "https://github.com/kausaltech/kausal-paths",
+      "evaluation": {
+        "name": "Project Description, Project Structure and Security Policy",
+        "weight": 1.0,
+        "status": "evaluated",
+        "score": 0.39666666666666667,
+        "reason": "Weighted score of evaluated measurements",
+        "children": [
+          {
+            "name": "Project Description",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.44,
+            "reason": "Evaluation of the README file:\n\nproject_purpose:\nScore (avg): 4.0\n[QWEN] The opening section clearly states the project's purpose: \"Kausal Paths is a tool for predicting the future emissions of cities based on historical emission data and various climate actions,\" and adds that \"Users can compare how emissions develop in different scenarios\" with \"Data is provided using a GraphQL API.\" The EU Interreg Baltic Sea Region / Climate-4-CAST funding badge further contextualizes its origin and relevance. This adequately explains what the project does and why it is useful (scenario comparison for emissions forecasting). I score it 4 rather than 5 because the description is brief and does not elaborate on the intended audience, real-world use cases, or broader motivation beyond the single opening paragraph.\n\nsetup_instructions:\nScore (avg): 5.0\n[QWEN] The README provides an exceptionally thorough \"Installation\" section. It lists prerequisites (package manager, git, python, uv, direnv) with \"Beginner Hints\" on hooking direnv into bash/zsh, then walks through: initializing the kausal_common submodule, `direnv allow`, creating and activating a venv (`uv venv` / `source .venv/bin/activate`), `uv sync` (including an explanation of the src layout and editable install), the optional private/extensions submodule with an explicit `--checkout` flag and note that a dangling symlink is harmless, an optional `--group notebook` dependency, a copy-pasteable `local_settings.py` template, extensive macOS-specific notes (snappy, postgresql@16, psycopg2, gdal/geos library paths, hashicorp vault), `migrate`, `createsuperuser` (even with Finnish translation hints for the prompts), `compilemessages`, Vault credentials via switch-region.sh, database restore commands, and finally `python manage.py runserver` with a concrete verification URL (`http://127.0.0.1:8000/v1/graphql/`). This is comprehensive, step-by-step, and covers edge cases well.\n\ninfo_project_status:\nScore (avg): 1.0\n[QWEN] The README contains no statement about the project's status. There is no mention of whether the project is under active development, in beta, archived, or no longer maintained, and no roadmap, release cadence, or deprecation notice. The only contextual clue is the Climate-4-CAST / EU Interreg funding badge, which hints at an active funded project but does not itself describe the project's development or maintenance status. The criterion is effectively unmet.\n\ninfo_maintainer:\nScore (avg): 1.0\n[QWEN] The README does not identify who maintains or contributes to the project. There is no maintainer or contributors section, no named individuals, no organization/repository links, no contact or issue-tracker pointers, and no contribution guidelines. The only indirect hints are internal-instructions such as \"ask a team member for access\" (for the private extensions) and \"ask a team mate where to find it\" (for the scripts repository), which imply an internal team exists but reveal nothing about who actually maintains or contributes to this project. The criterion is not met.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          },
+          {
+            "name": "Project Structure",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.75,
+            "reason": "Project structure evaluation:\n\ndirectory_organization:\nScore (avg): 4.0\n[QWEN] The project follows well-established conventions for its Django/Python + Playwright stack. Backend code lives under src/ (as documented by docs/src-layout-migration.md), with standard Django entry points at the root (manage.py, conftest.py, run_tests.py, pyproject.toml, uv.lock). Dedicated top-level directories match their purpose: docs/ for documentation (with subfolders architecture/, operations/, plans/), configs/ for model data, e2e-tests/ for browser tests with its own package.json and playwright.config.ts, tools/ for operational scripts, notebooks/ for exploratory code, docker/ and .devcontainer/ for containerization, locale/ for i18n catalogs (cs, de, fi, etc.), and .github/workflows/ for CI (ci.yaml, lint.yaml, test.yaml, ui-e2e-tests.yaml). Unit tests are co-located in per-app tests/ packages (e.g., src/nodes/tests/, src/datasets/tests/), which is the idiomatic Django arrangement. Minor deductions: kausal_common/ at the root appears to be an empty leftover directory, src/kausal_paths_extensions is an extensionless entry (symlink/package) that is ambiguous in a tree listing, and a root-level script load_nodes.py would fit better under tools/.\n\nnaming_conventions:\nScore (avg): 4.0\n[QWEN] Naming is largely consistent within each domain: Python modules use snake_case (models.py, views.py, test_dataset_authorization.py, bulk_action_tags.py), migrations follow Django's auto-generated numbered scheme, documentation files use kebab-case (dataset-csv-format.md, fault-tolerance.md, lucia-model-simplification.md), CI workflows use kebab-case (ui-e2e-tests.yaml), and city configs mostly use kebab-case (aarhus-c4c.yaml, tampere-c4c.yaml, zuerich-2024.yaml). However, there are visible inconsistencies: configs/pirkkala_hinku.yaml uses an underscore while all sibling city configs use hyphens; notebooks/ mixes Title-Cased hyphenated names (C4C-Dataset-Actions.py, NZC-CCV-Dataset-Processor.py) with snake_case (manage_datasets.py, mcda.py); configs/modules/bisko/GERMANY_commerce_and_industry_statistics.yaml uses all-caps; configs/zuerich-dev/2kw-emissions-dev.yaml starts with a digit; and tooling configuration is duplicated/ambiguous with both root-level mise.toml/mise.dev.toml and a mise/ directory containing config.toml, config.dev.toml, and lock files. These are exceptions rather than the rule, so the project still reads as consistently named.\n\nseparation_of_concerns:\nScore (avg): 4.0\n[QWEN] Concerns are cleanly partitioned: application code (src/), human documentation (docs/), declarative model data (configs/, split between per-city files and thematic modules/), browser E2E tests (e2e-tests/ with isolated lockfiles), maintenance scripts (tools/), experimental/analysis code (notebooks/), i18n resources (locale/), container infrastructure (docker/, .devcontainer/, docker-compose*.yml), CI (github workflows), and lint/review tooling (.pre-commit-config.yaml, .reviewdog.yml, .hooks/reviewdog.sh). Each Django app keeps its own migrations/, tests/, and admin/wagtail hooks, and the GraphQL client is separated into src/gql_client with .gql query files. Deductions: a few stray items sit at the repo root (load_nodes.py, fnox.toml, kausal-paths.Rproj alongside the Python setup, empty kausal_common/), template assets are split between a root templates/ plus static_overrides/ and per-app templates/static directories (src/admin_site/templates, src/people/static), and a private/ directory is present at the top level, which is unusual for open source even if likely gitignored.\n\nmodularity:\nScore (avg): 4.0\n[QWEN] The Django app decomposition is logical and domain-driven: nodes (computation engine), datasets (data storage, validation, manifests), frameworks (public framework/NZC front-end logic), users, orgs, people, pages (Wagtail content), params (parameter registry/scenarios), paths (project shell: settings, urls, middleware, celery, asgi/wsgi), request_log, devtool (CLI client), gql_client, common (shared polars/base32/cache utilities), admin_site, and optimizer. Large domains are further sub-divided: src/nodes/pipeline/ (executor, IR, ops), src/nodes/constraints/ (solver, compile, rules), src/nodes/actions/ (action node types), src/nodes/defs/ (data definitions), and src/nodes/graphql/types/ (typed schema objects). configs/ is modular per city and per thematic module (transportation/, health/, forestry/, values/, fair_share/), and docs/ is grouped by concern (architecture/, operations/, plans/, trailhead/). The main caveat is that the nodes app is very large (68 migrations, ~85 test files, and many top-level modules such as instance_parser.py, instance_graph.py, explanations.py, transforms.py), making it the de facto core 'god module' of the system; a further split (e.g., separating instance import/export or dataset materialization) would improve isolation. Overall the breakdown is logical and maintainable.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          },
+          {
+            "name": "Security Policy",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.0,
+            "reason": "SECURITY.md file not found in root folder.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          }
+        ],
+        "evaluated_measurements": 3,
+        "total_measurements": 3,
+        "coverage": 1.0
+      },
+      "error": null
+    }
+  ]
+}

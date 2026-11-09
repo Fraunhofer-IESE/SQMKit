@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "results": [
+    {
+      "name": "kausal-paths",
+      "kind": "local",
+      "source": "sqmkit-eval/eval/repos/kausal-paths",
+      "repository": "https://github.com/kausaltech/kausal-paths",
+      "evaluation": {
+        "name": "Project Description, Project Structure and Security Policy",
+        "weight": 1.0,
+        "status": "evaluated",
+        "score": 0.37666666666666665,
+        "reason": "Weighted score of evaluated measurements",
+        "children": [
+          {
+            "name": "Project Description",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.38,
+            "reason": "Evaluation of the README file:\n\nproject_purpose:\nScore (avg): 4.0\n[CODING] Question evaluated: Does the README describe the project's purpose and why it is useful? The opening paragraph clearly states that Kausal Paths \"is a tool for predicting the future emissions of cities based on historical emission data and various climate actions\" and that users can \"compare how emissions develop in different scenarios.\" It also notes that data is provided through a GraphQL API. This gives a concise, understandable purpose and a practical use case for climate-action planning. The score is not a 5 because the README does not explicitly explain the intended users, the kinds of decisions the tool supports, or the benefits of scenario comparison in more detail.\n\nsetup_instructions:\nScore (avg): 4.0\n[CODING] Question evaluated: Does the README describe the setup instructions? The README is substantially detailed: it lists prerequisites (git, Python, uv, direnv), explains submodule initialization, `direnv allow`, creating and activating a virtual environment with `uv venv`, installing dependencies with `uv sync`, creating `local_settings.py`, running migrations, creating a superuser, compiling translations, restoring the database, and starting the server at `http://127.0.0.1:8000/v1/graphql/`. It also includes macOS-specific notes and optional notebook/private-extension setup. However, it is not fully self-contained: users are told to ask a team member for access to Vault and the scripts repository, and the private submodule requires special access. Because key setup steps depend on private team resources and are not reproducible from the README alone, the score is 4 rather than 5.\n\ninfo_project_status:\nScore (avg): 1.0\n[CODING] Question evaluated: Does the README describe the project's status (active development, no longer maintained, etc.)? The README contains a \"Development\" section, but that section describes local development setup rather than the project's lifecycle status. There is no explicit statement such as \"actively maintained,\" \"in active development,\" \"beta,\" \"stable,\" \"deprecated,\" or \"no longer maintained.\" A reader cannot reliably determine the project's current status from this document, so the README fails this criterion.\n\ninfo_maintainer:\nScore (avg): 1.0\n[CODING] Question evaluated: Does the README describe who maintains and contributes to the project? The README does not name any maintainers, contributing organizations, or governance structure. References to \"a team member,\" \"your team,\" and \"a team mate\" imply an internal group with access to private resources, but they do not identify who maintains the project. The Climate-4-CAST logo indicates project funding, but that is not the same as describing maintenance or contribution. There is also no contributing guide, maintainer contact information, or list of contributors.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          },
+          {
+            "name": "Project Structure",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.75,
+            "reason": "Project structure evaluation:\n\ndirectory_organization:\nScore (avg): 4.0\n[CODING] The project follows the conventions expected of a modern Python/Django stack and even documents the choice (`docs/src-layout-migration.md`). Application code lives under `src/` with one package per Django app (`src/nodes/`, `src/datasets/`, `src/frameworks/`, `src/orgs/`, `src/people/`, `src/pages/`, `src/params/`, `src/paths/`, `src/users/`, `src/admin_site/`, `src/devtool/`, `src/common/`), each carrying its own `migrations/`, `apps.py` and `tests/` \u2014 the canonical Django layout. Supporting concerns occupy their own top-level directories: `docs/` (further organized into `architecture/`, `operations/`, `plans/`, `trailhead/`, `logos/`), `e2e-tests/` (Playwright config + `tests/`), `docker/` (db image, pre-entry and post-migrate hooks), `mise/` + `mise.toml` (toolchain), `locale/<lang>/LC_MESSAGES/` (gettext), `configs/` (framework/city YAML data), `tools/`, `notebooks/`, `.github/workflows/`, `.devcontainer/`. Root holds only the entry points (`manage.py`, `pyproject.toml`, `uv.lock`, `docker-compose*.yml`, `conftest.py`). Points deducted: several loose scripts sit at the repository root (`load_nodes.py`, `run_tests.py`, `check-dev-environment.sh`, `apollo.config.js`) that would fit better in `tools/`; `notebooks/` mixes `.py`, `.ipynb` and an R file (`city_value_comparison.R`); `configs/` is a very flat directory of ~90 YAML files at the top level mixed with sub-directories (`frameworks/`, `modules/`, `quantities/`, `athens/`, `zuerich/`, `zuerich-2024/`, `zuerich-2025/`, `zuerich-dev/`), and could be grouped by city/framework; `.agents/skills/debugging-code` duplicates `.claude/skills/debugging-code`; `private/extensions` and `src/kausal_paths_extensions` appear as empty submodule mount points. Overall the organization is still well above average.\n\nnaming_conventions:\nScore (avg): 4.0\n[CODING] Inside `src/` naming is highly consistent snake_case for modules (`instance_graph_cache.py`, `dataset_materialization.py`, `input_bindings.py`, `graphql_helpers.py`), standard Django file names (`models.py`, `apps.py`, `schema.py`, `signals.py`, `wagtail_hooks.py`), standard migration names (`0001_initial.py` \u2026 `0074_instanceconfig_in_customer_use.py`), and uniform `test_*.py` test modules (e.g. `src/nodes/tests/test_constraint_solver.py`, `src/datasets/tests/test_prepared.py`). Sub-packages are singular/lowercase (`actions/`, `constraints/`, `defs/`, `pipeline/ops/`, `graphql/types/`). Deviations preventing a 5: `configs/` mixes kebab-case and snake_case within the same directory \u2014 kebab (`aarhus-c4c.yaml`, `zuerich-2024.yaml`, `koeln-gpc.yaml`, `testcity-bisko.yaml`, `syke-multidim.yaml`, `demo-stadt-bisko.yaml`) alongside snake (`pirkkala_hinku.yaml`, `hinku_tuuli.yaml`, `standard_dims.yaml`, `dut_transport_actions.yaml`); `notebooks/` mixes CamelCase/hyphenated names (`C4C-Dataset-Actions.py`, `C4C-YAML.py`, `NZC-CCV-Dataset-Processor.py`) with snake_case (`manage_datasets.py`, `notebook_support.py`, `analytica_analyzer.py`); the config file `.miserc.toml` sits next to `mise.toml`, `mise.dev.toml` and `mise/config*.toml` (an inconsistent/opaque name); `.hooks/reviewdog.sh` is a shell-only oddity. Kebab-case in `e2e-tests/` and in `.agents/skills/debugging-code` is acceptable because those follow JS/skill conventions. Net: strong, near-uniform convention across the codebase, with localized inconsistencies in the data/notebook directories.\n\nseparation_of_concerns:\nScore (avg): 4.0\n[CODING] Concerns are cleanly partitioned: production code exclusively in `src/`; unit/integration tests in per-app `tests/` packages (`src/nodes/tests/`, `src/frameworks/tests/`, `src/datasets/tests/`, `src/people/tests/`, `src/params/tests/`, `src/orgs/tests/`, `src/devtool/tests/`, `src/paths/tests/`); browser-level tests isolated in `e2e-tests/` with their own `package.json`, `playwright.config.ts`, `tests/auth.setup.ts` and `tests/datasets.spec.ts`; domain data separated from code in `configs/`; documentation in `docs/` (architecture vs. operations vs. plans vs. trailhead); infrastructure in `docker/`, `.devcontainer/`, `docker-compose{,.dev}.yml`, `mise/`; CI in `.github/workflows/{ci,lint,test,ui-e2e-tests}.yaml`; translations in `locale/`; static/template overrides in `static_overrides/` and `templates/`. Weaknesses: a few tests escape the pattern \u2014 `src/admin_site/test_admin.py` sits at app root while every other app uses a `tests/` package, and `src/pages/` has both a `tests/` package and a root-level `tests.py`; Django settings are spread between `src/paths/settings.py` and root `mise`/`docker` config; root-level `conftest.py`, `run_tests.py`, `load_nodes.py` and `check-dev-environment.sh` blur the boundary between tooling and the repository root; and `notebooks/` contains operational scripts (`push_data.py`, `manage_datasets.py`, `use_ids.py`) that overlap with `src/nodes/management/commands/` and `tools/`, i.e. some responsibility duplication.\n\nmodularity:\nScore (avg): 4.0\n[CODING] The decomposition is domain-driven and readable at a glance: `src/nodes/` (modeling graph), `src/datasets/` (data ingestion/validation/prepared data), `src/frameworks/` (framework/measure templates), `src/paths/` (project wiring: settings, urls, schema, permissions), `src/pages/` (Wagtail CMS), `src/orgs/`, `src/people/`, `src/users/`, `src/params/` (parameter definitions/registry/storage), `src/optimizer/`, `src/gql_client/` (GraphQL documents in `queries/*.gql`), `src/devtool/` (CLI split into `cli.py`, `auth.py`, `client.py`, `instances.py`, `local_import.py`) and `src/common/` (polars/cache utilities). Deeper nesting is also logical: `src/nodes/defs/` (action/binding/edge/node/port/transform definitions), `src/nodes/constraints/` (compile, solver, rules, validation), `src/nodes/pipeline/` with `ir.py`, `executor.py`, `compare.py` and `ops/`, `src/nodes/graphql/types/` split one file per type (`node.py`, `metric.py`, `scenario.py`, `layout.py`, \u2026), `src/nodes/actions/` split per action family (`gpc.py`, `kpr.py`, `linear.py`, `shift.py`, `energy_saving.py`), plus domain adapters `src/nodes/ch/zuerich.py` and `src/nodes/finland/`. GraphQL/API and Wagtail admin are separated per app (`api.py`, `schema.py`, `wagtail_hooks.py`, `wagtail_admin.py`). Deductions: `src/nodes/` remains an oversized app \u2014 roughly 60 top-level modules spanning unrelated concerns (graph layout `graph_layout.py`, `excel_results.py`, `email_templates/`, `notifications.py`, `health.py`, `costs.py`, `units.py`, `debug.py`) that are not grouped into sub-packages, so cohesion at that level is weaker; `configs/` is largely monolithic data with only partial grouping into `modules/` and `frameworks/`; and the `models.py` files are single large modules rather than split packages. Still, the module boundaries and naming make the system easy to navigate.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          },
+          {
+            "name": "Security Policy",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.0,
+            "reason": "SECURITY.md file not found in root folder.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          }
+        ],
+        "evaluated_measurements": 3,
+        "total_measurements": 3,
+        "coverage": 1.0
+      },
+      "error": null
+    }
+  ]
+}

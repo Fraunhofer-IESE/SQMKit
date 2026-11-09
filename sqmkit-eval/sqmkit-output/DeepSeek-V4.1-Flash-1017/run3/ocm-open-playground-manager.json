@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "results": [
+    {
+      "name": "ocm-open-playground-manager",
+      "kind": "local",
+      "source": "sqmkit-eval/eval/repos/ocm-open-playground-manager",
+      "repository": "https://gitlab.opencode.de/open-playground-manager/backend",
+      "evaluation": {
+        "name": "Project Description, Project Structure and Security Policy",
+        "weight": 1.0,
+        "status": "evaluated",
+        "score": 0.4866666666666666,
+        "reason": "Weighted score of evaluated measurements",
+        "children": [
+          {
+            "name": "Project Description",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.19,
+            "reason": "Evaluation of the README file:\n\nproject_purpose:\nScore (avg): 1.0\n[CODING] The README provides only the title \"Wolfsburg OPM GO Backend\" and does not explain what the project does, what problem it solves, who it is for, or why it is useful. Technical references to Keycloak, Swagger, and backend commands are present, but the meaning of \"OPM\" and the project's role are not described. Therefore, the project's purpose is effectively undocumented.\n\nsetup_instructions:\nScore (avg): 4.0\n[CODING] The README gives substantial setup guidance: adding an `/etc/hosts` entry for the local Keycloak and API domains, installing `swagger-cli` via npm with an `.npmrc` prefix, building with `make build` or `docker build`, initializing Keycloak with `make keycloak-init`, starting and stopping the development environment with `make dc-up` and `make dc-down`, running the backend with `make run`, and configuring GoLand debugging with the EnvFile plugin and `docker/.env` files. It is not a perfect score because it omits explicit prerequisites such as required Go, Docker, `make`, and npm versions, and does not fully describe environment-variable setup or troubleshooting.\n\ninfo_project_status:\nScore (avg): 1.0\n[CODING] The README contains no statement about the project's development status, such as active development, maintenance mode, deprecated status, release stage, or stability. References to `dev-int` and a local development environment describe infrastructure and workflow rather than project status. Therefore, there is no information to evaluate on this criterion.\n\ninfo_maintainer:\nScore (avg): 1.0\n[CODING] The README does not identify any maintainer, contributing organization, contact person, or contribution process. Although the domain `awesome-it.de` appears in URLs, the text never states who maintains the project or how others can contribute, report issues, or get support. Thus, maintainer and contributor information is absent.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          },
+          {
+            "name": "Project Structure",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.69,
+            "reason": "Project structure evaluation:\n\ndirectory_organization:\nScore (avg): 4.0\n[CODING] The layout largely follows Go ecosystem conventions. A standard `cmd/backend/main.go` entry point is present, the OpenAPI specification is isolated under `api/` (with `objects/`, `paths/`, `parameters/`), and supporting assets are grouped sensibly into `docker/`, `scripts/`, `resources/`, and `test/`. `go.mod`/`go.sum` sit at the root, as expected. Where it falls short of a perfect score is that the primary application code lives in a top-level `backend/` package rather than the more conventional `internal/` or `pkg/` directory, and reusable helpers are split between a top-level `local/` package and root-level folders, which is somewhat non-standard. Overall the organization is clear and idiomatic but not fully strict to canonical Go project layout.\n\nnaming_conventions:\nScore (avg): 3.0\n[CODING] The project generally uses consistent snake_case for file names (`geo_object.go`, `work_order_urgency.go`, `async_jobs.yaml`, `dashboard_queries.sql`) and directory names. However, there are several noticeable inconsistencies and typos that break uniformity: some files drop the underscore in compound names, e.g. `workordergroup.go` vs. `work_order_group.go`, `workorderurgency.go` vs. `work_order_urgency.go`, `workorder.go`, `inspectionstate.go` vs. `inspection_state.go`. There are also spelling errors in identifiers such as the directory `test/inpsection_checklist/` (should be \"inspection\") and `logic/user_subsitute_geo_object.go` (should be \"substitute\"). Migration files are consistently numbered and named, which is good, but the mixed compound-word conventions and typos prevent a higher score.\n\nseparation_of_concerns:\nScore (avg): 4.0\n[CODING] Concerns are well separated. Source code lives under `backend/`, `cmd/`, and `local/`; tests are both colocated as idiomatic Go `_test.go` files (e.g. `geo_types_test.go`, `time_test.go`, `csv_test.go`) and collected in a dedicated `test/` directory with helpers (`test/helper/base.go`, docker/podman helpers) for integration testing. Configuration and deployment are cleanly isolated in `docker/` (compose files, nginx.conf, keycloak import), `Dockerfile`, `internal.Dockerfile`, `.gitlab-ci.yml`, and `Makefile`. The API contract is separated into `api/`, scripts into `scripts/`, and generated/runtime assets into `resources/swagger-ui/`. The only minor detraction is the dual package naming (`backend/` and `local/`) that split what is essentially application vs. utility code without an `internal/` boundary, but overall separation is strong.\n\nmodularity:\nScore (avg): 4.0\n[CODING] The codebase is broken down into logical, cohesive modules: `backend/api` (routing/handlers), `backend/logic` (business logic), `backend/database` with sub-packages `dbops`, `postgres`, `fsstore`, `seaweedfs` (storage implementations), `backend/sync` (with `gis` and `xlsx` adapters), `backend/documents` (PDF/widgets), `backend/monitoring`, `backend/config`, `backend/defaults`, `backend/errorkeys`, and `backend/logging`. The `local/` tree further modularizes cross-cutting utilities (`oidc`, `scheduler`, `thumbnail`, `simpletime`, `utils`, `geo_api`). This is a clean layered separation of API, logic, and persistence. The main weakness is the very flat `backend/logic/` directory containing ~60 files (e.g. many `geo_object_*` and `work_order_*` logic files) and the equally flat `backend/database/postgres/` folder, which could be grouped into sub-packages for finer-grained modularity. Overall modularity is good but could be improved with deeper grouping.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          },
+          {
+            "name": "Security Policy",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.58,
+            "reason": "Evaluation of the SECURITY.md file:\n\nsecurity_contact_information:\nScore (avg): 5.0\n[CODING] Under \u201cReporting a Bug,\u201d the document explicitly states: \u201cReport security bugs by emailing us at support@awesome-it.de.\u201d This provides a direct, actionable contact channel for security-related inquiries. Although it uses a general support address rather than a dedicated security alias, the contact information itself is clear and unambiguous.\n\nvulnerability_reporting_process:\nScore (avg): 4.0\n[CODING] The document clearly explains the initial reporting method\u2014emailing support@awesome-it.de\u2014and states that the lead maintainer will acknowledge the report within approximately two workdays, review the findings, keep the reporter informed, and may request additional information. It also directs reporters of third-party module issues to the relevant module maintainers. However, the process is relatively brief and does not specify what information reporters should include, whether encrypted reporting is available, or provide alternative reporting channels, so it is good but not fully comprehensive.\n\nsupported_versions:\nScore (avg): 1.0\n[CODING] The document does not identify which versions of OCM are currently supported with security updates. The \u201cDisclosure Policy\u201d mentions determining \u201cthe affected versions\u201d and preparing fixes for \u201call releases still under maintenance,\u201d but it provides no list or version policy defining which releases are supported. Therefore, this criterion is not met.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          }
+        ],
+        "evaluated_measurements": 3,
+        "total_measurements": 3,
+        "coverage": 1.0
+      },
+      "error": null
+    }
+  ]
+}

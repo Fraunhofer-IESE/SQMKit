@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "results": [
+    {
+      "name": "cib-seven",
+      "kind": "local",
+      "source": "sqmkit-eval/eval/repos/cib-seven",
+      "repository": "https://gitlab.opencode.de/regierung-von-oberbayern/cibseven",
+      "evaluation": {
+        "name": "Project Description, Project Structure and Security Policy",
+        "weight": 1.0,
+        "status": "evaluated",
+        "score": 0.6,
+        "reason": "Weighted score of evaluated measurements",
+        "children": [
+          {
+            "name": "Project Description",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.44,
+            "reason": "Evaluation of the README file:\n\nproject_purpose:\nScore (avg): 5.0\n[CODING] The README clearly explains that CIB seven is an open-source BPMN platform and a flexible framework for workflow and process automation. It identifies the core BPMN 2.0 process engine running on the JVM, describes embeddability in Java applications and runtime containers, and lists the components around the BPM lifecycle (engine, REST API, Spring/CDI integration, Camunda Modeler, Cockpit, Admin, Tasklist, and related toolkits). The \u201cA Framework\u201d section further explains why it is useful: it is highly integrable and embeddable, allowing developers to add BPM technology to their projects. This provides a strong and specific description of both purpose and value.\n\nsetup_instructions:\nScore (avg): 3.0\n[CODING] The README provides a \u201cGetting Started\u201d link to https://docs.cibseven.org/get-started/ and a \u201cTests\u201d section linking to TESTING.md for running tests. However, it does not directly describe installation, build, dependency, configuration, or run steps within the README itself. The setup guidance is therefore present only by reference to external documentation, making it acceptable but not a complete or self-contained setup description.\n\ninfo_project_status:\nScore (avg): 1.0\n[CODING] The README does not explicitly describe the project\u2019s current status, such as whether it is in active development, stable, deprecated, or no longer maintained. It includes a badge for the \u201clatest\u201d manual and links to discussions and an issue tracker, but these do not communicate maintenance status, release cadence, roadmap, or lifecycle stage. Because the status is essentially absent, this criterion is not satisfied.\n\ninfo_maintainer:\nScore (avg): 2.0\n[CODING] The README provides some contribution-related information: a \u201cContributing\u201d section links to CONTRIBUTING.md, and it links to GitHub Discussions and an issue tracker. It also mentions \u201cCommunity Extensions\u201d provided and maintained by \u201cour great open source community.\u201d However, it does not identify the core maintainers, the organization or team responsible for the project, governance structure, or who specifically maintains the main CIB seven platform. Thus, contributor guidance is present, but maintainer information is largely missing, so the criterion is only weakly addressed.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          },
+          {
+            "name": "Project Structure",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.94,
+            "reason": "Project structure evaluation:\n\ndirectory_organization:\nScore (avg): 5.0\n[CODING] Question: Does the project follow appropriate directory organization conventions for its technology stack? Yes. This is a Maven multi-module Java project and it consistently uses the expected layout: a root `pom.xml`, a reusable `parent/pom.xml`, and per-module `pom.xml` files with `src/main/java`, `src/main/resources`, `src/test/java`, and `src/test/resources` (for example `engine/`, `connect/core/`, `spin/core/`, `model-api/bpmn-model/`, and `engine-dmn/engine/`). Integration-test conventions are also respected, such as `clients/java/client/src/it/java` and the separate `qa/integration-tests-engine/` module. Frontend assets are organized in `webapps/frontend/` with `package.json`, `webpack.*.js`, and `public/`, while distribution/assembly resources are grouped under `distro/`. Pom-only modules such as `bom/camunda-bom/`, `database/`, and `spring-boot-4-starter/starter/` are appropriate packaging/BOM aggregators rather than violations. Minor versioned variants such as `distro/run` and `distro/run4` add complexity but still follow the same Maven/module conventions.\n\nnaming_conventions:\nScore (avg): 4.0\n[CODING] Question: Does the project use consistent naming conventions for files and directories? Mostly yes. Maven module and directory names are overwhelmingly kebab-case and descriptive: `engine-rest`, `engine-spring`, `spring-boot-starter`, `test-db-indexes-in-scripts`, `integration-tests-engine`, and `model-api/bpmn-model`. Java sources follow standard package-directory structure under `org/cibseven/...`, and module documentation files are consistently named `README.md`, `README.adoc`, or `README.asciidoc`. CI workflow names are likewise consistently kebab-case, e.g. `java-dependency-check.yml`, `renovate-auto-merge.yml`, and `sync-label-colors.yml`. There are some inconsistencies that prevent a perfect score: `.github/renovate_camunda.json5` uses an underscore while the adjacent file is `renovate.json5`; root `Jenkinsfile` and `Jenkinsfile.cib` differ from the `.ci/*/Jenkinsfile` structure; and legacy Camunda-branded names such as `camunda-bom`, `camunda-only-bom`, `camunda-bpm-sdk-js`, and `camunda-commons-ui` coexist with CIB Seven naming. These are understandable historical/versioned exceptions, but they are still naming inconsistencies.\n\nseparation_of_concerns:\nScore (avg): 5.0\n[CODING] Question: Does the project properly separate different concerns into appropriate directories? Yes. Production code, test code, and test resources are separated per Maven module, for example in `engine/src/main/java`, `engine/src/test/java`, and `engine/src/test/resources`. Test infrastructure and non-production validation are further isolated in `qa/`, including `qa/integration-tests-engine`, `qa/integration-tests-webapps`, `qa/performance-tests-engine`, `qa/large-data-tests`, and `qa/test-db-instance-migration`, while reusable test utilities are under `test-utils/`. CI configuration is separated into `.ci/` for Jenkins pipelines and scripts, `.github/` for GitHub workflows/templates/automation, and `settings/` for IDE and Maven configuration. Documentation is distributed appropriately through module-level README files, plus dedicated locations such as `engine-rest/docs/` and `TESTING.md`. Distribution and packaging concerns are isolated under `distro/`, BOM concerns under `bom/` and per-area BOM modules, and frontend assets under `webapps/frontend/`. The only minor weakness is that documentation is somewhat scattered rather than centralized, but the core source/test/configuration separation is strong.\n\nmodularity:\nScore (avg): 5.0\n[CODING] Question: Does the project demonstrate good modularity with a logical breakdown of components or modules? Yes. The repository is decomposed into coherent domains rather than one monolithic build: `engine/`, `model-api/` with separate BPMN/CMMN/DMN/XML models, `engine-dmn/` with distinct `feel-api`, `feel-juel`, and `feel-scala` modules, `engine-plugins/` with separate connector, LDAP, SCIM, and Spin plugins, `connect/` with `core`, `http-client`, and `soap-http-client`, and `spin/` with core and data-format modules. Higher-level integrations are also separated: `engine-spring/`, `spring-boot-starter/`, `spring-boot-4-starter/`, `quarkus-extension/`, and `clients/java/`. Cross-cutting concerns have dedicated modules such as `commons/`, `test-utils/`, `bom/`, and `parent/`, while distributions and container-specific packaging are isolated under `distro/`. Some duplication exists between versioned module trees such as `distro/run` and `distro/run4`, and between `spring-boot-starter` and `spring-boot-4-starter`, but this appears intentional for supported variants. Overall, the module boundaries are logical, consistent, and appropriate for a large multi-module platform.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          },
+          {
+            "name": "Security Policy",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.42,
+            "reason": "Evaluation of the SECURITY.md file:\n\nsecurity_contact_information:\nScore (avg): 3.0\n[CODING] The document provides a security-reporting channel by linking to GitHub Security Advisories at https://github.com/cibseven/cibseven/security/advisories/new, and it points readers to a separate Security Guide in the documentation. However, it does not provide explicit security contact details such as an email address, security team contact, or a clear distinction between vulnerability reports and general security inquiries. The GitHub advisory link is actionable for reporting vulnerabilities, but the contact information is partial and dependent on the external documentation for anything beyond reporting.\n\nvulnerability_reporting_process:\nScore (avg): 4.0\n[CODING] The document clearly identifies where to report a vulnerability: \"If you want to report a vulnerability please report it here through github,\" with a direct link to the repository's private security advisory submission page. This is an actionable and appropriate reporting mechanism. It is not rated 5 because the document does not describe the reporting process in detail\u2014for example, what information reporters should include, expected response times, whether reports are private, or how disclosure and triage will be handled.\n\nsupported_versions:\nScore (avg): 1.0\n[CODING] The document does not mention supported versions at all. It contains no version numbers, release branches, support lifecycle, or statement identifying which versions currently receive security updates. Although it links to an external Security Guide, this document itself provides no supported-version information, so the criterion is not met.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          }
+        ],
+        "evaluated_measurements": 3,
+        "total_measurements": 3,
+        "coverage": 1.0
+      },
+      "error": null
+    }
+  ]
+}

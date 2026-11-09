@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "results": [
+    {
+      "name": "cib-seven",
+      "kind": "local",
+      "source": "sqmkit-eval/eval/repos/cib-seven",
+      "repository": "https://gitlab.opencode.de/regierung-von-oberbayern/cibseven",
+      "evaluation": {
+        "name": "Project Description, Project Structure and Security Policy",
+        "weight": 1.0,
+        "status": "evaluated",
+        "score": 0.5266666666666666,
+        "reason": "Weighted score of evaluated measurements",
+        "children": [
+          {
+            "name": "Project Description",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.5,
+            "reason": "Evaluation of the README file:\n\nproject_purpose:\nScore (avg): 4.0\nDecision model output\n\nsetup_instructions:\nScore (avg): 2.0\nDecision model output\n\ninfo_project_status:\nScore (avg): 3.0\nDecision model output\n\ninfo_maintainer:\nScore (avg): 3.0\nDecision model output",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          },
+          {
+            "name": "Project Structure",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.75,
+            "reason": "Project structure evaluation:\n\ndirectory_organization:\nScore (avg): 5.0\nDecision model output\n\nnaming_conventions:\nScore (avg): 5.0\nDecision model output\n\nseparation_of_concerns:\nScore (avg): 1.0\nDecision model output\n\nmodularity:\nScore (avg): 5.0\nDecision model output",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          },
+          {
+            "name": "Security Policy",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.33,
+            "reason": "Evaluation of the SECURITY.md file:\n\nsecurity_contact_information:\nScore (avg): 3.0\nDecision model output\n\nvulnerability_reporting_process:\nScore (avg): 3.0\nDecision model output\n\nsupported_versions:\nScore (avg): 1.0\nDecision model output",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          }
+        ],
+        "evaluated_measurements": 3,
+        "total_measurements": 3,
+        "coverage": 1.0
+      },
+      "error": null
+    }
+  ]
+}

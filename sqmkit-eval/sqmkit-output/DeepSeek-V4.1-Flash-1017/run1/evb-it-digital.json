@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "results": [
+    {
+      "name": "evb-it-digital",
+      "kind": "local",
+      "source": "sqmkit-eval/eval/repos/evb-it-digital",
+      "repository": "https://gitlab.opencode.de/evb-it/digital/evb-it-digital",
+      "evaluation": {
+        "name": "Project Description, Project Structure and Security Policy",
+        "weight": 1.0,
+        "status": "evaluated",
+        "score": 0.41666666666666663,
+        "reason": "Weighted score of evaluated measurements",
+        "children": [
+          {
+            "name": "Project Description",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.31,
+            "reason": "Evaluation of the README file:\n\nproject_purpose:\nScore (avg): 2.0\n[CODING] The README only implies the purpose through its title (\"EVB-IT digital contract tool\") and its artifact list. It states that \"A pre-built, executable HTML file for each, EVB-IT digital **Designer** and **Player** is offered in the directory *built-html*\", and the build section lists outputs such as `EVB-IT digital Designer.html`, `EVB-IT digital.html` (containing both modes), and `EVB-IT digital Pr\u00fcftool.html` (\"only built to be inlined within the branded EVB-IT build\"). From these fragments a reader can infer that the tool deals with EVB-IT digital contracts and offers a creation mode (Designer) and a viewing mode (Player), plus a checking tool (\"Pr\u00fcftool\"). However, the README never explicitly explains what the tool does, what problem it solves, who the intended users are (e.g., public administration, IT vendors), or why it is useful. There is no introductory paragraph describing the application's functionality beyond the file names, and no mention of what an \"EVB-IT\" contract or the \"EVB-IT branded version\" actually is. The \"Project Structure\" section is limited to one-line labels (`./app`: \"Frontend application\", `./build`: \"Tooling required for build / release\"), which do not add functional context. Because the purpose is only weakly inferable from filenames rather than described, the score is 2.\n\nsetup_instructions:\nScore (avg): 5.0\n[CODING] The setup instructions are strong and concrete. The README has explicit \"Prerequisites\" (Node 16, npm 8), a \"Getting Started\" section with copy-paste commands (`cd app`, `npm install`, `npm run dev`), a \"Building locally\" section explaining that `./build.sh` \"can be used to build the application with one command. It requires [`node`](https://nodejs.org/en/) to be installed, and will check for those dependencies before the build process\", followed by a precise list of the five HTML artifacts produced. It also links to \"[the application's README](app/README.md)\" for \"more detailed building instructions\", and includes a complete, reproducible SBOM workflow with commands (`npm prune --omit=dev`, `syft app --catalogers javascript-package --output spdx-tag-value > SPDX_app.raw.spdx`, `python3 build/process_spdx.py ...`) and a link to the `syft` project. Minor gaps: `python3` is used in the SBOM workflow but is not listed under Prerequisites, and there is no guidance on serving/opening the built HTML files or running tests. These are small omissions relative to the otherwise thorough, step-by-step instructions, so the score is 5.\n\ninfo_project_status:\nScore (avg): 1.0\n[CODING] The README contains no statement about the project's status whatsoever. There is no mention of release versions, whether the project is in active development, feature-frozen, archived, or no longer maintained. There are no badges, no changelog or release notes reference, no \"last updated\" indication, and no statement about maturity or stability (e.g., whether the tool is production-ready for contract creation). The only forward-looking statements concern build outputs (e.g., \"When successful, five HTML files have been created\") and the SBOM artifact policy (\"`SPDX_app.spdx` is the final SBOM that should be shared externally\"), neither of which communicates project lifecycle status. Because the criterion is entirely unaddressed, the score is 1.\n\ninfo_maintainer:\nScore (avg): 1.0\n[CODING] The README does not identify any maintainer, author, contributing organization, or contact point. There is no \"Maintainers\", \"Contributors\", \"Authors\", \"Contact\", or \"Getting help\" section; no link to an issue tracker, discussion forum, or mailing list; no governance or contribution guidelines; and no reference to a license or copyright holder. The only external links are to tool documentation ([`node`](https://nodejs.org/en/) and [`syft`](https://github.com/anchore/syft)), which are third-party dependencies rather than project stewardship information. The mention of an \"EVB-IT branded version\" hints at an organizational context, but no stakeholder or maintainer is named. Since the criterion is completely unaddressed, the score is 1.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          },
+          {
+            "name": "Project Structure",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.94,
+            "reason": "Project structure evaluation:\n\ndirectory_organization:\nScore (avg): 5.0\n[CODING] Question: Does the project follow appropriate directory organization conventions for its technology stack? Score: 5. The Vue 3/Vite/TypeScript project is centralized under app/ with conventional app/src, app/cypress, app/public, app/scripts, app/.storybook, and root-level Vite, TypeScript, ESLint, Prettier, and Cypress configuration files. Inside src/, route views are in views/{creator,player,verification,shared}, reusable components in components/, state in stores/, routing in router/, domain logic in lib/core and adapters in lib/adapters, with supporting composition, config, i18n, dialog, and utils directories. Unit tests are co-located as *.spec.ts, while Cypress E2E tests are under cypress/e2e with separate fixtures/ and support/ directories. Minor caveats are the extra app/ nesting and checked-in generated/build outputs (built-html/, src/generated/), but the overall layout is highly appropriate for the stack.\n\nnaming_conventions:\nScore (avg): 4.0\n[CODING] Question: Does the project use consistent naming conventions for files and directories? Score: 4. The dominant conventions are clear: Vue component folders and SFCs use PascalCase (AppButton/AppButton.vue, InspectorDocument/InspectorDocument.vue), TypeScript helpers generally use kebab-case with role suffixes (block.util.ts, playbook.store.ts, variables.types.ts, render-pipeline.spec.ts), Cypress specs use kebab-case *.cy.ts, fixtures use kebab-case JSON, and special folders use __fixtures__/ and __snapshots__/. However, there are inconsistencies: cypress/e2e subfolders mix kebab-case (visual-condition-editor) and camelCase (libraryManagement), root assets mix SPDX_app.spdx, evb-it_logo.svg, and EVB-IT_Logo-2025_v1.2.svg, and \u201ccomposible\u201d is misspelled in node-view-props-composible.ts. These are minor but prevent a perfect score.\n\nseparation_of_concerns:\nScore (avg): 5.0\n[CODING] Question: Does the project properly separate different concerns into appropriate directories? Score: 5. Application code is under app/src; unit tests are co-located beside their implementation; E2E tests, fixtures, and support helpers are isolated under app/cypress; shared test fixtures are under src/test; build/config files sit at the app root; and static assets are under public/ and src/assets/. Within src/, presentation is separated into components/ and views/, state into stores/, routing into router/, domain logic into lib/core, external integrations into lib/adapters, and cross-cutting support into composition/, config/, i18n/, dialog/, and utils/. Repository-level packaging files (build.sh, publiccode.yml, screenshots/, built-html/) are also kept outside the app source. The use of co-located unit tests and scoped fixture locations is intentional and well organized.\n\nmodularity:\nScore (avg): 5.0\n[CODING] Question: Does the project demonstrate good modularity with a logical breakdown of components or modules? Score: 5. The codebase is broken into coherent modules: reusable UI components (App*, form/, icons/), domain features (questions/, inspector/, library/, modals/, survey/, partials/), application views by mode (creator/, player/, verification/, shared/), domain core layers (constructors/, interfaces/, migrations/, services/, types/, utils/, validators/), adapters (api/, docx/, repositories/, window/), stores, and mode-specific routers. Modules frequently include their Vue component plus lib.ts, types.ts, forms, specs, stories, and snapshots, which supports independent development and testing. Cypress helpers are similarly decomposed into focused files such as questionActions.ts, playbookActions.ts, and datatable.ts. A few top-level groups are large, but they are further subdivided logically.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          },
+          {
+            "name": "Security Policy",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.0,
+            "reason": "SECURITY.md file not found in root folder.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          }
+        ],
+        "evaluated_measurements": 3,
+        "total_measurements": 3,
+        "coverage": 1.0
+      },
+      "error": null
+    }
+  ]
+}

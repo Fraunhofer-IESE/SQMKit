@@ -1,0 +1,132 @@
+{
+  "name": "SQMKit OSS Adoption",
+  "weight": 1,
+  "measurement": null,
+  "submodels": [
+    {
+      "name": "Operations",
+      "weight": 0.2,
+      "measurement": null,
+      "submodels": [
+        {
+          "name": "Docker Best Practices",
+          "weight": 0.3333333333333333,
+          "measurement": "docker-best-practices",
+          "submodels": []
+        },
+        {
+          "name": "SBOM Availability",
+          "weight": 0.3333333333333333,
+          "measurement": "sbom-availability",
+          "submodels": []
+        },
+        {
+          "name": "Installation Guide",
+          "weight": 0.3333333333333333,
+          "measurement": "installation-guide",
+          "submodels": []
+        }
+      ]
+    },
+    {
+      "name": "Legal",
+      "weight": 0.2,
+      "measurement": null,
+      "submodels": [
+        {
+          "name": "License Compliance",
+          "weight": 0.5,
+          "measurement": "license-compliance",
+          "submodels": []
+        },
+        {
+          "name": "License Coverage",
+          "weight": 0.5,
+          "measurement": "license-coverage",
+          "submodels": []
+        }
+      ]
+    },
+    {
+      "name": "Security",
+      "weight": 0.2,
+      "measurement": null,
+      "submodels": [
+        {
+          "name": "Security Policy",
+          "weight": 0.5,
+          "measurement": "security-policy",
+          "submodels": []
+        },
+        {
+          "name": "Vulnerabilities",
+          "weight": 0.5,
+          "measurement": "vulnerabilities",
+          "submodels": []
+        }
+      ]
+    },
+    {
+      "name": "Code Quality",
+      "weight": 0.2,
+      "measurement": null,
+      "submodels": [
+        {
+          "name": "Project Structure",
+          "weight": 0.5,
+          "measurement": "project-structure",
+          "submodels": []
+        },
+        {
+          "name": "Code Duplication",
+          "weight": 0.5,
+          "measurement": "code-duplication",
+          "submodels": []
+        }
+      ]
+    },
+    {
+      "name": "Maintenance and Support",
+      "weight": 0.2,
+      "measurement": null,
+      "submodels": [
+        {
+          "name": "Solved Issues",
+          "weight": 0.2,
+          "measurement": "solved-issues",
+          "submodels": []
+        },
+        {
+          "name": "Commit Trend",
+          "weight": 0.2,
+          "measurement": "commit-trend",
+          "submodels": []
+        },
+        {
+          "name": "Project Description",
+          "weight": 0.15,
+          "measurement": "project-description",
+          "submodels": []
+        },
+        {
+          "name": "Community Guidelines",
+          "weight": 0.15,
+          "measurement": "community-guidelines",
+          "submodels": []
+        },
+        {
+          "name": "Community Discussions",
+          "weight": 0.15,
+          "measurement": "community-discussions",
+          "submodels": []
+        },
+        {
+          "name": "Bus Factor",
+          "weight": 0.15,
+          "measurement": "bus-factor",
+          "submodels": []
+        }
+      ]
+    }
+  ]
+}

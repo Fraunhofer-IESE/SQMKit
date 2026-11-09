@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "results": [
+    {
+      "name": "bumap-core",
+      "kind": "local",
+      "source": "sqmkit-eval/eval/repos/bumap-core",
+      "repository": "https://gitlab.opencode.de/bwi/bundesmessenger/admin-portal/bumap-core",
+      "evaluation": {
+        "name": "Project Description, Project Structure and Security Policy",
+        "weight": 1.0,
+        "status": "evaluated",
+        "score": 0.5433333333333333,
+        "reason": "Weighted score of evaluated measurements",
+        "children": [
+          {
+            "name": "Project Description",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.88,
+            "reason": "Evaluation of the README file:\n\nproject_purpose:\nScore (avg): 4.0\n[CODING] The README clearly identifies the project at the top: \"bumap-core\" is a REST API for administering the BundesMessenger and is part of the BundesMessenger Admin Portal. It also explains important functional purposes, such as delegating authentication/authorization to the Matrix Authentication Service, caching Synapse data to reduce API calls and improve response times, persisting audit logs, and documenting long-running import tasks. These details make the project's role and usefulness understandable. However, the opening description is brief, and the README does not provide a fuller explanation of the specific user problems solved or concrete usage scenarios beyond the administrative API context.\n\nsetup_instructions:\nScore (avg): 5.0\n[CODING] The README provides very complete setup instructions for multiple audiences. For developers, it lists prerequisites (Python 3.14.x and Poetry 2.4.1) and gives numbered steps for cloning the repository, installing dependencies with \"poetry install\", installing pre-commit hooks, running formatting and tests, and building the package. It also explains how to run the local Swagger environment, including configuring settings, starting services with docker-compose, registering and provisioning an admin user in the Matrix Authentication Service, starting the server with \"poetry run dev\", and opening the Swagger UI at localhost:8080/docs. For administrators, it includes a pip installation command and extensive configuration guidance covering environment variables, YAML settings, secret files, database options, and the uvicorn start command. The minor typo in the clone URL (\"bundesmessaenger\") does not materially reduce the usefulness of the setup documentation.\n\ninfo_project_status:\nScore (avg): 5.0\n[CODING] The README explicitly describes the project's status and update model. The \"Updates\" section states that regular updates are provided and that security incidents receive short-term hotfixes. The \"Forks\" section further explains that this repository is a mirror of an internal BWI repository and that active development does not take place in this public repository. It also warns that Git history is rewritten during mirroring and that forks will require additional effort for updates. This gives a clear picture of an actively developed project whose canonical development happens internally.\n\ninfo_maintainer:\nScore (avg): 4.0\n[CODING] The README identifies BWI as the organization behind the project: it states that the repository is a mirror of an internal BWI repository, that active development happens there, and that the BundesMessenger name and logo are protected by BWI GmbH. It also provides repository and issue-tracker links for errors and improvement suggestions, and explains the update and fork model. This sufficiently describes who maintains and develops the project. However, it does not name a specific maintainer or team, provide explicit contribution guidelines, or describe how external contributors can participate beyond filing issues or creating forks.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          },
+          {
+            "name": "Project Structure",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.75,
+            "reason": "Project structure evaluation:\n\ndirectory_organization:\nScore (avg): 4.0\n[CODING] The layout is recognizably a conventional modern Python/packaging setup: `pyproject.toml`, `README.md`, `LICENSE`, `CHANGELOG.md`, `.gitignore`, `.pre-commit-config.yaml` and `publiccode.yml` at the root; the importable package `bumap_core/` alongside it; a top-level `tests/` tree; a `config/` directory holding `bumap_core_settings.yaml`; and `docs/` containing `openapi.json`. A `secrets/` directory and the Alembic configuration (`alembic_local.ini`) plus `poetry_scripts.py` are also where you would expect them. Deductions: the project uses a \"flat layout\" (package at repository root) instead of the `src/` layout that is now commonly recommended for libraries, and `docs/` contains only a generated `openapi.json` (no `docs/index.md`, guides, or architecture notes). Database migrations live inside the package at `bumap_core/database/migrations/versions/`, which is acceptable but mixes generated revision files with importable source. Overall it is well-organized and conventional, just not exemplary.\n\nnaming_conventions:\nScore (avg): 4.0\n[CODING] Naming is highly consistent: everything is `snake_case` \u2014 package `bumap_core/`, modules such as `authorization_code_flow_cookie.py`, `request_context_manager.py`, `tracked_ttl_cache.py`, test files uniformly prefixed `test_` (`test_authorization_validator.py`, `test_user_query_params.py`), and config files named with clear suffixes (`bumap_core_settings.yaml`, `bumap_core_settings.test.yaml`). Alembic revision files follow the standard `<rev_id>_migrations_for_<version>.py` pattern. However there are notable inconsistencies: (a) a typo in `tests/repositories/test_user_respository.py` (should be `test_user_repository.py`), while the source is `user_repository.py`; (b) singular/plural drift between the schema layer `bumap_core/model/` and the ORM layer `bumap_core/database/models/`, which makes the two similarly-named directories easy to confuse; (c) modules named after third-party/stdlib packages \u2014 `bumap_core/starlette/` and `bumap_core/logging/` \u2014 which is legal but poor practice for import clarity; (d) directory naming is not uniform in depth/shape, e.g. `audit_log/model/content.py` (nested `model/`) versus the top-level `model/` used for all other schemas. These are minor blemishes on an otherwise consistent convention.\n\nseparation_of_concerns:\nScore (avg): 4.0\n[CODING] Concerns are cleanly divided: application code in `bumap_core/`, tests mirroring that tree in `tests/`, runtime configuration in `config/bumap_core_settings.yaml`, test fixtures in `tests/config/*.test.yaml`, API documentation in `docs/openapi.json`, and tooling config in `pyproject.toml`/`.pre-commit-config.yaml`. Inside the package there is an explicit layered architecture: `endpoints/` (HTTP), `services/` (business logic), `repositories/` (persistence), `database/models/` (ORM), `model/` (API schemas), `middleware/`, `settings/`, and `utils/`. Deductions: real secret material is checked into version control (`secrets/database.password`, `secrets/authorization.client_secret`, and duplicated at `tests/secrets/authorization.client_secret`), which blurs the boundary between code, configuration and secrets and is a serious separation-of-concerns smell even if these are placeholders; configuration is split across `config/`, `bumap_core/settings/`, and root-level `alembic_local.ini`, so there is no single configuration surface; and `settings` concerns appear both in `bumap_core/settings/` and in feature modules (`auth/authorization_settings.py`, `synapse/synapse_settings.py`, `app_config/app_config_settings.py`), which is pragmatic but inconsistent.\n\nmodularity:\nScore (avg): 4.0\n[CODING] The package is decomposed into coherent, well-named modules by domain and layer: `auth/` (cookies, code flow, server, validator), `cache/`, `context/`, `audit_log/`, `endpoints/` split per resource (`rooms.py`, `users.py`, `media.py`, `federation.py`, `license.py`, ...) with versioned routing in `endpoints/routers/{legacy_router,v1_router}.py`, plus `services/` and `repositories/` pairs per aggregate (`room_service.py`/`room_repository.py`, `user_service.py`/`user_repository.py`). Tests mirror this modularity one-for-one, which is a strong sign of clean boundaries. Deductions: there is duplication and ambiguous placement of models \u2014 `model/matrix_authentication_service.py` and `model/logger.py`/`model/logging.py` sit beside dedicated `matrix_authentication_service/` and `logging/` packages, and audit-log modeling is spread across `audit_log/model/content.py`, `database/models/audit_log.py` and `audit_log_repository.py`; `__init__.py` files are present only for some subpackages (e.g. `auth/`, `endpoints/`, `database/models/`, `settings/` have them, while `app_config/`, `audit_log/`, `repositories/`, `services/`, `utils/`, `starlette/`, `model/`... does have one, `database/migrations/versions/` do not), which weakens explicit package boundaries and API surface definition. `model/` also bundles unrelated 40+ flat schema modules without further grouping. Still, the overall modular decomposition is logical and easy to navigate.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          },
+          {
+            "name": "Security Policy",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.0,
+            "reason": "SECURITY.md file not found in root folder.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          }
+        ],
+        "evaluated_measurements": 3,
+        "total_measurements": 3,
+        "coverage": 1.0
+      },
+      "error": null
+    }
+  ]
+}

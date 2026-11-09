@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "results": [
+    {
+      "name": "bumap-core",
+      "kind": "local",
+      "source": "sqmkit-eval/eval/repos/bumap-core",
+      "repository": "https://gitlab.opencode.de/bwi/bundesmessenger/admin-portal/bumap-core",
+      "evaluation": {
+        "name": "Project Description, Project Structure and Security Policy",
+        "weight": 1.0,
+        "status": "evaluated",
+        "score": 0.5,
+        "reason": "Weighted score of evaluated measurements",
+        "children": [
+          {
+            "name": "Project Description",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.75,
+            "reason": "Evaluation of the README file:\n\nproject_purpose:\nScore (avg): 4.0\n[QWEN] The README clearly states the project's purpose in the first paragraph, identifying \"bumap-core\" as a REST API for administering the BundesMessenger and a component of the BundesMessenger-Admin-Portals. This gives a clear understanding of what the project is. However, it could be slightly more detailed about the specific benefits or use cases for end-users, which prevents it from being a perfect score.\n\nsetup_instructions:\nScore (avg): 5.0\n[QWEN] The setup instructions are exceptionally detailed and comprehensive. They are logically divided into sections for developers and administrators. The developer section covers prerequisites, step-by-step local development setup, linting, testing, and local Swagger UI testing. The administrator section covers installation, extensive configuration (including detailed tables for environment variables and YAML settings for both PostgreSQL and SQLite), and the exact command to start the application.\n\ninfo_project_status:\nScore (avg): 5.0\n[QWEN] The project's status is clearly and explicitly described. The \"Updates\" section mentions regular updates and hotfixes for security incidents. More importantly, the \"Forks\" section explicitly clarifies that this repository is a mirror of an internal BWI repository and that active development does not take place in this specific repository. This sets clear and accurate expectations for users regarding the project's lifecycle and where actual development occurs.\n\ninfo_maintainer:\nScore (avg): 2.0\n[QWEN] The README does not contain a dedicated section explicitly stating who maintains or contributes to the project. While the \"Rechtliches\" (Legal) section mentions that the BundesMessenger is protected by the BWI GmbH and the repository is hosted under the BWI GitLab organization, it never explicitly states \"Maintained by BWI\" or lists the specific team, organization, or individuals responsible for ongoing maintenance and contributions. This information is only implied through branding and repository ownership rather than being directly addressed.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          },
+          {
+            "name": "Project Structure",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.75,
+            "reason": "Project structure evaluation:\n\ndirectory_organization:\nScore (avg): 4.0\n[QWEN] Question evaluated: \"The project follows appropriate directory organization conventions for its technology stack (e.g., src/, tests/, docs/).\" The project follows well-established Python conventions: a flat-layout top-level package `bumap_core/` (an accepted alternative to a src/ layout, complete with `__init__.py` and `__main__.py`), a root-level `tests/` directory, a `docs/` folder (containing `openapi.json`), a `config/` folder for runtime settings (`bumap_core_settings.yaml`), and standard root-level project files (`pyproject.toml`, `.gitignore`, `.pre-commit-config.yaml`, `CHANGELOG.md`, `LICENSE`, `README.md`, `publiccode.yml`, `poetry_scripts.py`). Alembic migrations are sensibly co-located under `bumap_core/database/migrations/` with `env.py`, `script.py.mako`, and versioned revision files (e.g., `d78e7cfc3e64_migrations_for_3_0_0_dev0.py`), and test fixtures/configs are properly isolated under `tests/config/` and `tests/secrets/`. It falls short of a 5 mainly because of the top-level `secrets/` directory containing what appear to be live credential files (`secrets/database.password`, `secrets/authorization.client_secret`) inside the repository tree \u2014 placing real secrets in the project tree is at odds with open-source conventions (typically handled via .env, environment variables, or secret managers; the presence of a `.gitignore` mitigates but does not remove the concern).\n\nnaming_conventions:\nScore (avg): 4.0\n[QWEN] Question evaluated: \"The project uses consistent naming conventions for files and directories (e.g., snake_case, camelCase).\" Naming is highly consistent overall: directories and modules use snake_case throughout (`tracked_ttl_cache.py`, `request_context_manager.py`, `matrix_authentication_service`, `federation_query_params.py`), test files uniformly follow the `test_*.py` convention and mirror source modules (e.g., `tests/middleware/test_cookie_encrypter.py` \u2194 `bumap_core/middleware/cookie_encrypter.py`), migrations follow the standard Alembic `<hash>_<description>` pattern, and root documents use conventional capitalization (README.md, CHANGELOG.md, LICENSE). However, several inconsistencies keep this from a 5: (1) the \"models\" concept is named three different ways \u2014 singular `bumap_core/model/`, plural `bumap_core/database/models/`, and `bumap_core/audit_log/model/content.py`; (2) a clear typo in `tests/repositories/test_user_respository.py` (\"respository\") while every sibling file correctly uses `*_repository.py`; (3) the `bumap_core/logging/` package (and `model/logging.py`) shadow/conflict with Python's standard-library `logging` module, a known naming hazard; (4) the test directory `tests/mas/` uses an abbreviation that doesn't match the source package `matrix_authentication_service/`; (5) the directory/file duplication `matrix_authentication_service/matrix_authentication_service.py` and the odd pairing `model/logger.py` alongside `model/logging.py`. Despite these, the dominant convention is applied uniformly across ~150 files, warranting a 4.\n\nseparation_of_concerns:\nScore (avg): 4.0\n[QWEN] Question evaluated: \"The project properly separates different concerns into appropriate directories (e.g., separating source, tests, configuration).\" Top-level separation is clean: application source in `bumap_core/`, automated tests in `tests/` (with module-level `conftest.py` files for endpoints, middleware, repositories, and services), runtime configuration in `config/` plus dedicated test configs in `tests/config/`, API documentation in `docs/openapi.json`, packaging in `pyproject.toml`, and developer tooling in `.pre-commit-config.yaml`. Within the package, a logical layered architecture separates HTTP handling (`endpoints/`, including `routers/` for v1 vs. legacy APIs) from business logic (`services/`), data access (`repositories/`), ORM persistence models (`database/models/`), API schemas (`model/`), cross-cutting infrastructure (`middleware/`, `cache/`, `context/`, `logging/`), external integrations (`synapse/`, `matrix_authentication_service/`), and configuration (`settings/`). Two weaknesses prevent a 5: (1) configuration concerns are split ambiguously between `app_config/` (app_config.py, app_config_settings.py) and `settings/` (bumap_core_settings.py, common_settings.py, federation_settings.py, license_settings.py), suggesting overlapping responsibilities for the same concern; (2) the `secrets/` directory holding `database.password` and `authorization.client_secret` at the repository root mixes sensitive credentials into the source tree rather than keeping them fully external, which weakens the source/configuration separation for an open-source project.\n\nmodularity:\nScore (avg): 4.0\n[QWEN] Question evaluated: \"The project demonstrates good modularity with a logical breakdown of components or modules.\" The modularity is strong and domain-driven: each functional domain (rooms, users, media, federation, notifications, audit log, legal notes, terms of use, license) is decomposed into parallel, cohesive units across layers \u2014 e.g., `endpoints/rooms.py` + `model/room.py`, `model/room_list.py`, `model/room_query_params.py` + `services/room_service.py` + `repositories/room_repository.py` \u2014 yielding a clear dependency flow of endpoints \u2192 services \u2192 repositories \u2192 database models. API versioning is cleanly modularized in `endpoints/routers/` (`v1_router.py`, `legacy_router.py`), cross-cutting concerns are isolated into small focused modules (`middleware/api_request_logger.py`, `middleware/request_id_provider.py`, `cache/tracked_ttl_cache.py`, `context/request_context.py`), external dependencies (Synapse, Matrix Authentication Service) are encapsulated in their own packages rather than scattered, and shared helpers are grouped in `utils/`. The test suite mirrors the module structure one-to-one with per-module `conftest.py` fixtures, reinforcing the module boundaries. Minor deductions: the `model/` package is a single flat namespace of ~35 files that could be further grouped by domain (rooms, users, federation, etc.); the `app_config`/`settings` boundary overlap mentioned elsewhere blurs one module responsibility; and the singular/plural split between `model/` and `database/models/` (schemas vs. ORM) is a reasonable distinction that the naming makes harder to perceive. Overall a logically decomposed, maintainable architecture, hence 4 rather than 5.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          },
+          {
+            "name": "Security Policy",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.0,
+            "reason": "SECURITY.md file not found in root folder.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          }
+        ],
+        "evaluated_measurements": 3,
+        "total_measurements": 3,
+        "coverage": 1.0
+      },
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "results": [
+    {
+      "name": "kausal-paths",
+      "kind": "local",
+      "source": "sqmkit-eval/eval/repos/kausal-paths",
+      "repository": "https://github.com/kausaltech/kausal-paths",
+      "evaluation": {
+        "name": "Project Description, Project Structure and Security Policy",
+        "weight": 1.0,
+        "status": "evaluated",
+        "score": 0.48,
+        "reason": "Weighted score of evaluated measurements",
+        "children": [
+          {
+            "name": "Project Description",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.5,
+            "reason": "Evaluation of the README file:\n\nproject_purpose:\nScore (avg): 4.0\n[CODING] The README opens with a concise, informative purpose statement: \"Kausal Paths is a tool for predicting the future emissions of cities based on historical emission data and various climate actions. Users can compare how emissions develop in different scenarios. Data is provided using a GraphQL API.\" This clearly explains what the software does (emission forecasting for cities), the inputs it uses (historical emission data, climate actions), the core user value (scenario comparison), and the technical interface (GraphQL API). The Climate-4-CAST / EU Interreg Baltic Sea Region logo further signals the project's context and funding. However, the description stops at a single paragraph: there is no explanation of the intended audience beyond \"cities\", no feature overview, no screenshots or links to documentation, and no discussion of why scenario-based emission modeling matters or how this differs from alternatives. The \"why it is useful\" aspect is therefore only implied through the scenario-comparison sentence rather than explicitly argued. Good, but not excellent.\n\nsetup_instructions:\nScore (avg): 5.0\n[CODING] The setup section is unusually thorough and well-structured. It lists prerequisites (package manager, git, python, uv, direnv) with beginner-level hints on hooking direnv into bash/zsh, explains submodule initialization (\"git submodule update --init kausal_common\" and the optional \"private/extensions\" with --checkout), documents the mise-provided configuration, describes virtualenv creation via \"uv venv\" / \"source .venv/bin/activate\", package installation via \"uv sync\", explicitly explains the src layout (\"import nodes, not import src.nodes\"), and covers optional dependency groups (\"uv sync --group notebook\"). It provides a concrete local_settings.py snippet, a detailed macOS troubleshooting block (snappy, postgresql@16, psycopg2, gdal/geos with GDAL_LIBRARY_PATH and GEOS_LIBRARY_PATH, vault), then database migrations, createsuperuser with Finnish translation hints, compilemessages, credential/DB-restore steps, and finally \"python manage.py runserver\" with the API endpoint URL. The only weakness is that several steps depend on private resources not available to the public (Vault access, the separate scripts repository, the private extensions submodule, asking a team member), which limits full end-to-end reproducibility for outside users. The depth and clarity of the instructions themselves justify a top score.\n\ninfo_project_status:\nScore (avg): 1.0\n[CODING] The README contains no statement about the project's status whatsoever. There is no mention of whether the project is in active development, beta/stable, production-ready, feature-frozen, deprecated, or no longer maintained. There is no version number, release history, changelog reference, roadmap, or badge indicating build/CI or maintenance activity. The only temporal hints are indirect (e.g., the EU Climate-4-CAST funding logo, and references to a \"notebook\" dependency group), none of which communicate maintenance status. A reader cannot determine from this document whether the software is safe to depend on or whether it is a finished or retired effort.\n\ninfo_maintainer:\nScore (avg): 2.0\n[CODING] There is no explicit maintainer or contributor information: no \"Authors\", \"Maintainers\", \"Credits\", or \"Contact\" section, no named individuals or organizations responsible for the code, and no reference to a CONTRIBUTING guide, issue tracker, mailing list, chat channel, or code of conduct. Contribution guidance is absent entirely \u2014 no branch/PR workflow, coding standards, or test/lint instructions. The only indirect signals are: (a) repeatedly asking the reader to \"ask a team member for access\" / \"ask a team mate where to find it\", implying an internal team behind the project; (b) the statement that the mise configuration is \"shared with Kausal Watch\", implying a relationship to the Kausal organization; and (c) the Climate-4-CAST / EU Interreg Baltic Sea Region Programme logo, which indicates the funder/project context. These hints suggest an organizational owner but do not identify who maintains the repository or how an outsider could contribute, so the criterion is only weakly and implicitly addressed.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          },
+          {
+            "name": "Project Structure",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.94,
+            "reason": "Project structure evaluation:\n\ndirectory_organization:\nScore (avg): 5.0\n[CODING] Question evaluated: Does the project follow appropriate directory organization conventions for its technology stack (e.g., src/, tests/, docs/)? Yes. This is a Python/Django/Wagtail project with a recognizable source layout: `manage.py` and `pyproject.toml` at the root, application packages under `src/` (including `src/paths` for project-level settings/URLs/ASGI/WSGI and domain apps such as `datasets`, `nodes`, `frameworks`, `pages`, `orgs`, `people`, and `users`), per-app test packages, and a top-level `docs/` directory. Supporting concerns are placed in conventional locations: `configs/` for dataset/framework YAML, `e2e-tests/` for Playwright tests, `docker/` and `docker-compose*.yml` for container setup, `.github/workflows/` for CI, `locale/` for translations, `tools/` for operational scripts, and `notebooks/` for analysis notebooks. There is minor root-level clutter (`load_nodes.py`, `run_tests.py`, `check-dev-environment.sh`), and the empty `kausal_common/`, `src/kausal_paths_extensions/`, and `private/extensions/` entries cannot be assessed from the tree alone, but these do not outweigh the otherwise strong, stack-appropriate organization.\n\nnaming_conventions:\nScore (avg): 4.0\n[CODING] Question evaluated: Does the project use consistent naming conventions for files and directories? Mostly. Python modules, packages, and tests consistently use snake_case (`dataset_materialization.py`, `test_dataset_round_trip.py`, `input_bindings.py`), Django migrations use numeric prefixes, and most directories are lowercase (`nodes`, `frameworks`, `admin_site`, `request_log`). Locale directories use standard Django locale codes such as `de_CH` and `es_US`. YAML configuration names are mostly lowercase and often kebab-case (`zuerich-2024`, `hsy-multidim`, `koeln-gpc`), though some are concatenated (`c4cdemo`, `bisko`). The clear inconsistencies are in `notebooks/`: `C4C-Dataset-Actions.py`, `C4C-Dataset-Baseline.py`, `C4C-YAML.py`, and `NZC-CCV-Dataset-Processor.py` use uppercase/PascalCase and hyphens, while neighboring files use snake_case (`manage_datasets.py`, `create_gpc_yaml.ipynb`, `city_value_comparison.R`). These are limited and context-specific, so naming is good but not perfectly uniform.\n\nseparation_of_concerns:\nScore (avg): 5.0\n[CODING] Question evaluated: Does the project properly separate different concerns into appropriate directories (e.g., separating source, tests, configuration)? Yes. Application code is under `src/`, tests are placed in per-app `tests/` packages and separately in `e2e-tests/`, documentation is under `docs/`, deployment/development infrastructure is under `docker/` and root Compose files, CI is under `.github/workflows/`, translations are under `locale/`, reusable scripts are under `tools/`, and exploratory/analysis code is under `notebooks/`. Domain configuration data is separated into `configs/` with further grouping by city and framework (`configs/zuerich-2025/`, `configs/frameworks/`, `configs/modules/`). Tool configuration files such as `.pre-commit-config.yaml`, `pyproject.toml`, `mise.toml`, and `.coveragerc` are kept at the root. A few test-like management commands (`src/nodes/management/commands/test_graphql.py`, `test_instance.py`) live under source, but they function as development utilities rather than the main test suite; overall the separation is strong.\n\nmodularity:\nScore (avg): 5.0\n[CODING] Question evaluated: Does the project demonstrate good modularity with a logical breakdown of components or modules? Yes. The backend is decomposed into Django apps by domain concern: `datasets`, `frameworks`, `nodes`, `orgs`, `pages`, `params`, `people`, `users`, `request_log`, and `admin_site`. The largest app, `nodes`, is further split into meaningful subpackages such as `actions/`, `constraints/`, `defs/`, `graphql/types/`, `pipeline/ops/`, `finland/`, and `ch/`, and tests are organized alongside the relevant app. `datasets` similarly separates `graphql/`, `management/commands/`, migrations, validation, and tests. Configuration is modularized by city, framework, and reusable module (`configs/modules/transportation/`, `configs/modules/health/`, `configs/frameworks/hsy/`), which mirrors the domain structure. Extension points such as `src/kausal_paths_extensions/` and `private/extensions/` further support modular customization. Some large, broad modules remain in `nodes/` and `paths/`, but the overall component boundaries are logical and maintainable.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          },
+          {
+            "name": "Security Policy",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.0,
+            "reason": "SECURITY.md file not found in root folder.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          }
+        ],
+        "evaluated_measurements": 3,
+        "total_measurements": 3,
+        "coverage": 1.0
+      },
+      "error": null
+    }
+  ]
+}

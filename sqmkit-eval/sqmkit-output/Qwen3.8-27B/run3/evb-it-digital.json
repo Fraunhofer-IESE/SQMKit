@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "results": [
+    {
+      "name": "evb-it-digital",
+      "kind": "local",
+      "source": "sqmkit-eval/eval/repos/evb-it-digital",
+      "repository": "https://gitlab.opencode.de/evb-it/digital/evb-it-digital",
+      "evaluation": {
+        "name": "Project Description, Project Structure and Security Policy",
+        "weight": 1.0,
+        "status": "evaluated",
+        "score": 0.37666666666666665,
+        "reason": "Weighted score of evaluated measurements",
+        "children": [
+          {
+            "name": "Project Description",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.38,
+            "reason": "Evaluation of the README file:\n\nproject_purpose:\nScore (avg): 3.0\n[QWEN] The README identifies the project as an \"EVB-IT digital contract tool\" and notes that it offers pre-built, executable HTML files for a \"Designer\" and \"Player\" mode. However, it does not provide a detailed explanation of what the tool actually does, what the EVB-IT standard is, or why this specific tool is useful to a user, making the description of its purpose and utility somewhat incomplete.\n\nsetup_instructions:\nScore (avg): 5.0\n[QWEN] The README provides comprehensive and well-structured setup instructions. It includes a \"Prerequisites\" section specifying the required Node (16) and npm (8) versions, a \"Getting Started\" section with clear commands to install dependencies and run the development environment (`cd app`, `npm install`, `npm run dev`), and a \"Building locally\" section explaining how to use the provided `build.sh` script.\n\ninfo_project_status:\nScore (avg): 1.0\n[QWEN] The README contains no information regarding the project's current status. There are no statements indicating whether the project is under active development, in maintenance mode, or no longer maintained, nor is there a roadmap or any lifecycle information.\n\ninfo_maintainer:\nScore (avg): 1.0\n[QWEN] The README does not mention who maintains or contributes to the project. There is no \"Contributors\" or \"Maintainers\" section, nor are there any links to a team, organization, or individual developers responsible for the software.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          },
+          {
+            "name": "Project Structure",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.75,
+            "reason": "Project structure evaluation:\n\ndirectory_organization:\nScore (avg): 4.0\n[QWEN] The project closely follows the conventions of its Vue 3 + Vite + TypeScript stack. The app/ directory contains the canonical Vite layout: vite.config.ts, tsconfig.json/tsconfig.app.json/tsconfig.node.json/tsconfig.test.json, tailwind.config.js, postcss.config.js, .eslintrc.cjs, .prettierrc.json, and multi-page entry HTML files (index.html, creator.html, player.html, verification.html) that map directly to the corresponding main-creator.ts, main-player.ts, and main-verification.ts entry points in src/. The src/ directory uses the standard Vue structure (views/, components/, stores/, router/, i18n/, assets/, composition/). E2E testing follows the canonical Cypress layout with cypress/e2e/, cypress/fixtures/, and cypress/support/ (including a helpers/ folder), plus cypress.config.ts at the app root. Tooling directories are conventional: .storybook/main.ts + preview.ts, .husky/pre-commit, scripts/, patches/ (patch-package style), and public/. Repository-level open-source metadata (LICENSE, README.md, CHANGELOG.md, publiccode.yml, SPDX_app.spdx) sits appropriately at the root. Two deviations prevent a perfect score: built-html/ commits build artifacts (EVB-IT_digital_Designer.html, EVB-IT_digital_Player.html) into the source repository alongside a .gitkeep, which is atypical for open-source repositories, and there is no dedicated docs/ directory (documentation is limited to two README.md files and screenshots/).\n\nnaming_conventions:\nScore (avg): 4.0\n[QWEN] Naming is highly consistent within each layer, even though different layers use different styles. Vue components and their folders use PascalCase throughout (AppButton.vue, AppDialog.vue, InspectorQuestion.vue, QuestionMultiChoicePreview.vue, VariableSelectTree.vue). Cypress specs and test fixtures use descriptive kebab-case consistently (questionnaire-preview.cy.ts, block-output-variables.cy.ts, block-with-nested-block.json, with-hidden-answer.json). The domain core (src/lib/core) uses snake_case consistently (app-data.ts, block.types.ts, survey-results.ts, library-element.types.ts), and there are clear, recurring suffix conventions: lib.ts, forms.ts, types.ts, config.ts for per-module helpers, *.store.ts for Pinia stores (block.store.ts, library.store.ts, playbook.store.ts), and .spec.ts for co-located unit tests. The cypress/support/helpers/ folder uses camelCase consistently (playbookActions.ts, questionActions.ts, surveyActions.ts). However, a few cross-cutting inconsistencies exist: unit-test suffixes are mixed between .spec.ts (AppDialog.spec.ts, lib.spec.ts) and .test.ts (AppExpressionInput/lib.test.ts); entry files mix dash and dot styles (main-creator.ts vs. main.primevue.ts); the root logos are named inconsistently (EVB-IT_Logo-2025_v1.2.svg vs. evb-it_logo.svg vs. cypress/fixtures/logo.png); and survey-results-v1_6_0.ts mixes kebab-case with an underscore. Component subfolders also mix PascalCase (AppButton/, AppModal/) with lowercase grouping folders (inspector/, library/, modals/, form/, questions/), which is defensible but not uniform.\n\nseparation_of_concerns:\nScore (avg): 4.0\n[QWEN] There is strong architectural separation. The most notable strength is the src/lib/ split into core/ (framework-agnostic domain logic: constants/, constructors/, interfaces/, migrations/, services/, types/, utils/, validators/) and adapters/ (platform integrations: api/, docx/ with builder/ and templates/, repositories/, window/), which cleanly separates the domain from its I/O boundaries. Product surfaces are separated in views/ (creator/, player/, verification/, shared/), each backed by its own router file (creator.ts, player.ts, verification.ts, common.ts) and entry point. Cross-cutting concerns are isolated appropriately: i18n/ (with locales/ and primevue/), config/ (defaults.ts, env.ts, translations.ts), stores/ for state, composition/ for composables, and generated/ for code produced by scripts/write-player-shell.js. Testing concerns are separated from source: E2E specs, fixtures, and support commands all live under cypress/, unit test fixtures under src/test/, and dependency fixes under patches/. Config files (eslint, prettier, tailwind, tsconfig, storybook, cypress) sit at the app/ root as convention dictates. What keeps this from a 5: utility code is split across two locations \u2014 src/utils/ (date.ts, string-utils.ts, type-checks.ts, uuid.ts, version-utils.ts) and src/lib/core/utils/ (array.ts, block.util.ts, schema.util.ts, xml.util.ts) \u2014 blurring the boundary between the domain core and app-level utilities; public/ contains test data (test-invalid-playbook.json, test-valid-playbook.json) rather than purely deployable assets; built-html/ mixes build output into the repository; and there is mild overlap between src/dialog/ (dialog.ts) and components/modals/.\n\nmodularity:\nScore (avg): 4.0\n[QWEN] The project shows excellent, deliberate decomposition at multiple levels. At the app level, three distinct products (creator, player, verification) each have their own HTML shell, entry point (main-creator.ts, main-player.ts, main-verification.ts), router module, and view subtree \u2014 a genuinely modular multi-app architecture. At the domain level, src/lib/core is broken into single-responsibility modules (constructors for playbook/block/document, one file per data migration in migrations/ each paired with its own .spec.ts, validators per entity, services for conditions/expressions/lookup/render-pipeline). At the UI level, question types are self-contained modules with consistent Form/Preview variants (QuestionFreeText/ contains QuestionFreeText.vue, QuestionFreeTextForm.vue, QuestionFreeTextPreview.vue; likewise QuestionMultiChoice, QuestionTable, etc.), inspector panels are split per target type (InspectorQuestion, InspectorDocument, InspectorTargetTableNodes, InspectorTargetIfMarkNodes), TipTap editor extensions are isolated per node type under TipTapExtensions/, reusable form controls live in components/form/, and shared UI primitives (AppButton, AppDialog, AppModal, AppTabs) are each in their own folder with co-located stories and specs (AppButton.stories.ts, AppDialog.spec.ts). Stores are split per domain (block, library, playbook, survey, settings, verification, layout, recentElements). Cypress helpers are modularized by domain (playbookActions.ts, questionActions.ts, surveyActions.ts, treetable.ts, datatable.ts). Minor deductions: components/ accumulates roughly 45 top-level folders, making it a broad catch-all directory, and the repeated generic filename lib.ts across many modules (e.g., components/VariableSelect/lib.ts, components/AppRichTextEditor/lib.ts, views/shared/columns/lib.ts, form/FormBuilder/lib.ts) reduces standalone discoverability. Overall, however, the logical breakdown of components and modules is very good, sitting at the upper end of \"good\" but not flawless.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          },
+          {
+            "name": "Security Policy",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.0,
+            "reason": "SECURITY.md file not found in root folder.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          }
+        ],
+        "evaluated_measurements": 3,
+        "total_measurements": 3,
+        "coverage": 1.0
+      },
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "results": [
+    {
+      "name": "ferienabenteuer",
+      "kind": "local",
+      "source": "sqmkit-eval/eval/repos/ferienabenteuer",
+      "repository": "https://gitlab.opencode.de/smart-city-bamberg/ferienabenteuer",
+      "evaluation": {
+        "name": "Project Description, Project Structure and Security Policy",
+        "weight": 1.0,
+        "status": "evaluated",
+        "score": 0.41666666666666663,
+        "reason": "Weighted score of evaluated measurements",
+        "children": [
+          {
+            "name": "Project Description",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.56,
+            "reason": "Evaluation of the README file:\n\nproject_purpose:\nScore (avg): 5.0\n[QWEN] The README clearly explains the project's purpose and usefulness. It states that the project is an offer of the \u201cFamilienregion Bamberg\u201d intended to support working parents in balancing family and work, and that the associated homepage allows events to be viewed and booked. It also specifies that the system supports parents through the registration and booking process and supports local providers in managing their offerings.\n\nsetup_instructions:\nScore (avg): 1.0\n[QWEN] The README provides no concrete setup instructions. It does not explain how to clone the repository, install dependencies, configure environments, build the frontends, start the Keystone 6 CMS backend, or run the project locally. It only notes that documentation is stored in the individual subproject directories and links to subproject READMEs, which is insufficient as standalone setup guidance.\n\ninfo_project_status:\nScore (avg): 5.0\n[QWEN] The README explicitly describes the project's status. The warning at the beginning states that this repository contains an older software version and that further development and the current code are located in another linked repository. This clearly indicates that this repository is not the active development location and points readers to where active development takes place.\n\ninfo_maintainer:\nScore (avg): 2.0\n[QWEN] The README only indirectly identifies responsible parties. It mentions \u201cFamilienregion Bamberg,\u201d \u201cStadt und Landkreis Bamberg,\u201d and that administrators/operators use the administrative frontend, but it does not name specific maintainers, teams, contacts, contributors, or provide any contribution process. Therefore, it only weakly indicates who is responsible for the project.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          },
+          {
+            "name": "Project Structure",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.69,
+            "reason": "Project structure evaluation:\n\ndirectory_organization:\nScore (avg): 4.0\n[QWEN] The project largely follows the directory conventions expected of its technology stack. It uses a monorepo layout with src/ at the top level, containing three clearly delineated applications: backend/ (Keystone.js/Node.js), frontend-buchung/ (Angular customer app), and frontend-verwaltung/ (Angular admin app), each self-contained with its own README.md, Dockerfile, docker-compose.yml, package.json, and configuration. Within these, framework conventions are respected: the backend has keystone.ts, schema.ts, extensions/, migrations/ (timestamped snake_case Prisma/Kysely-style migrations with migration_lock.toml), email_templates/, views/, and docker configuration; the Angular apps follow the canonical structure (src/app, src/assets, src/environments, index.html, main.ts, angular.json, tsconfig.app/spec.json). Supporting directories are appropriate: docs/ at root, publiccode.yml (German PublicCodeY) for public-sector metadata, and .editorconfig/.gitignore per app. Points deducted: there is no tests/ directory or spec files anywhere despite tsconfig.spec.json existing in both frontends; one email template folder is named \"account_deleted_due_to_inactivity copy/\" (a macOS-style duplicate left in the tree); backend contains both schema.prisma and schema.ts/schema.graphql, suggesting a stale file; frontend-buchung ships both package-lock.json and yarn.lock while the other apps use only yarn.lock, an inconsistent tooling setup; and funding-provider logos (KFW.png, Kombilogo_BMWSB_KFW.png, Logo_BMI.jpg) sit in root docs/ even though they are clearly marketing assets consumed by the landing page (funding-providers.component.ts), not documentation.\n\nnaming_conventions:\nScore (avg): 3.0\n[QWEN] Naming is mostly consistent within each technology domain, but has several visible inconsistencies at the repository level. Backend TypeScript files use camelCase (auth.filters.ts, codeGenerator.ts, keystone.ts), mutations use descriptive camelCase verb phrases (addTicketsToCart.ts, bookCartTickets.ts, generateEarlyAccessCodes.ts), email template folders use snake_case (booking_confirmed/, discount_application_granted/), and migrations use timestamped snake_case \u2014 all appropriate and internally consistent. Angular apps correctly use kebab-case for components and directives (care-days-calendar.component.ts, click-outside.directive.ts, landing-container.component.ts). However, notable inconsistencies exist: in messaging/handlers/mailing/, the file \"sendEmailWhenPasswortResetRequested.ts\" uses the German word \"Passwort\" while all related files use English (requestPasswordResetToken.ts, resetPassword.ts, changePassword.ts, and the password_reset_token migration); root and frontend docs use German filenames (Architektur.png, Frontend-Buchung.png, Veranstaltungen.png) while the rest of the repository is English; the \"account_deleted_due_to_inactivity copy/\" folder contains a space and a stray \"copy\" suffix; frontend-buchung/src/assets/images contains weak or leftover names such as pic1.png and ferienabenteuer_bamberg_inklusion_old.png (an \"_old\" suffix indicating dead assets committed to the repo); and package manager lock files are inconsistent (yarn.lock in two apps but both package-lock.json and yarn.lock in frontend-buchung).\n\nseparation_of_concerns:\nScore (avg): 4.0\n[QWEN] Concerns are well separated both at the application level and within each application. The three deployable units (backend, customer frontend, admin frontend) are fully isolated, each with its own Docker packaging, configuration, and README, and the admin app (frontend-verwaltung) is cleanly separated from the public booking app (frontend-buchung). Inside the backend, authentication (auth.ts, auth.filters.ts, auth.session.ts), GraphQL operations (extensions/mutations/, extensions/queries/), event handling (messaging/handlers/), email delivery (messaging/handlers/mailing/), background jobs (extensions/worker/), email content (email_templates/), and schema changes (migrations/) are all in dedicated locations, with the queue (eventQueue.ts, queueWorker.ts) abstracting async work. The Angular apps separate UI (components/, directives/, pipes/), feature areas (sites/, landing/), state management (stores/), and API access (graphql/ with generated code isolated in generated.ts), plus environment-specific config in environments/. Deductions: shared logic is duplicated rather than centralized \u2014 click-outside.directive.ts, care-days.component.ts, codegen.ts/codegen.online.ts, nginx.conf, and the entire graphql module exist in both frontend apps instead of a shared library; branding/funding images are placed in root docs/ rather than with the frontend assets that consume them; backend/docs/ holds CMS screenshots that overlap with the root docs; and the testing concern is entirely absent (no spec files or test directories despite tsconfig.spec.json).\n\nmodularity:\nScore (avg): 4.0\n[QWEN] Each application demonstrates a logical, fine-grained module breakdown. The backend is highly modular: each GraphQL mutation is its own file (34 files in extensions/mutations/ such as applyForDiscount.ts, bookCartTickets.ts, redeemEarlyAccessCode.ts), event handlers are one-per-concern in messaging/handlers/ (cartTimeout.ts, cancelBookingsAndReservationsWhenEventCancelled.ts), email sending is isolated in messaging/handlers/mailing/ with a shared helpers.ts, scheduled jobs are isolated in extensions/worker/, and email templates are data-driven per-template directories (content + subject) that decouple copy from code. The frontends are organized by domain: stores/ contains one module per entity (auth, bookings, discounts, events, custodians, seasons...), the landing page is decomposed into small presentational components (hero, partners, costs, inclusion, simple-language, funding-providers), and the admin app mirrors this with domain-specific components (invoices.component.ts, reservations.component.ts, email-templates.component.ts). The monorepo itself is a sound modular choice with independently buildable Docker images. The main weakness is the absence of a shared/common package: substantial code is duplicated verbatim between the two Angular apps (click-outside.directive.ts, care-days.component.ts, codegen configurations, graphql.module.ts, nginx.conf), meaning cross-app modularity is handled by copy-paste instead of a shared library, which will drift over time. There is also no modular test suite to protect these boundaries.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          },
+          {
+            "name": "Security Policy",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.0,
+            "reason": "SECURITY.md file not found in root folder.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          }
+        ],
+        "evaluated_measurements": 3,
+        "total_measurements": 3,
+        "coverage": 1.0
+      },
+      "error": null
+    }
+  ]
+}

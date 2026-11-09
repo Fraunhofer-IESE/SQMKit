@@ -1,0 +1,11 @@
+FROM node:latest
+USER root
+RUN apt-get update
+RUN apt-get install -y curl
+RUN apt-get install -y git
+COPY . /app
+RUN cd /app && npm install
+ENV PASSWORD=supersecret123
+RUN npm run build
+EXPOSE 22
+CMD ["npm", "start"]

@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "results": [
+    {
+      "name": "dksr-platform",
+      "kind": "local",
+      "source": "sqmkit-eval/eval/repos/dksr-platform",
+      "repository": "https://gitlab.opencode.de/dksr-gmbh/DKSR-Open-UrbanPulse",
+      "evaluation": {
+        "name": "Project Description, Project Structure and Security Policy",
+        "weight": 1.0,
+        "status": "evaluated",
+        "score": 0.35333333333333333,
+        "reason": "Weighted score of evaluated measurements",
+        "children": [
+          {
+            "name": "Project Description",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.44,
+            "reason": "Evaluation of the README file:\n\nproject_purpose:\nScore (avg): 5.0\n[CODING] The README gives a thorough and clear statement of purpose. It identifies the project (\"The DKSR Open UrbanPulse (OUP) platform is the open source version of the UrbanPulse platform from The Urban Institute [ui!]\"), explains what it is (\"an open urban real-time platform for cross-domain data integration and match-making,\" \"a real-time sensor data platform\"), situates it in a standard/vision (\"follows the vision of Open Urban Platforms [OUP] as expressed by the European Innovation Partnership Smart Cities and Communities ... and defined in DIN SPEC 913571\"), and states who it is for and why it is useful (\"for cities, municipalities, utilities and enterprises that want to use new and existing urban data sources to create innovative value-added services\"). It further explains concrete benefits: integrating new and existing data sources efficiently, near real-time processing and analysis, data sharing with stakeholders, and being \"cloud agnostic\" so it \"can run in the cloud, in container environments Kubernetes or in the local data center.\" It also clarifies the repository contents (\"provides the Source Code for OUP Platform along with the required documentation\"). This is an excellent articulation of purpose and value.\n\nsetup_instructions:\nScore (avg): 3.0\n[CODING] The README does not itself describe how to set up, build, or deploy the platform; there are no commands, prerequisites, or configuration steps in the README body. Instead it only points to externally hosted wiki pages under \"2. Build and Usage\": \"Software Components Required,\" \"Building the Code,\" and \"Deploying and Running the Build\" (each a bare link to the GitHub wiki). It also asserts that the repository includes \"a step-by-step description to deploy and use the platform,\" but that content is not present in the README. Because a reader is directed toward setup documentation but the README provides no actual instructions or summarized requirements, this is neutral/acceptable rather than good.\n\ninfo_project_status:\nScore (avg): 1.0\n[CODING] The README contains no statement about the project's development or maintenance status. Nothing indicates whether OUP is in active development, in beta, stable, deprecated, archived, or no longer maintained. There is no mention of a current release/version, roadmap, changelog, last-updated date, or project lifecycle. The only adjacent information is the \"Licence Information\" section stating the code is \"published by DKSR Gmbh under the German Free Software License,\" which addresses licensing, not maintenance status.\n\ninfo_maintainer:\nScore (avg): 2.0\n[CODING] The README only indirectly identifies an organizational owner: it states the platform \"is the open source version of the UrbanPulse platform from The Urban Institute [ui!]\" and that the code \"is published by DKSR Gmbh.\" This tells the reader who published/owns the code but does not describe who maintains it or contributes to it. There is no maintainers list or contact point, no governance model, no information on how to contribute (no CONTRIBUTING link, issue/PR guidance, coding standards, or communication channels), and no acknowledgment of contributors beyond the DKSR and [ui!] mentions.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          },
+          {
+            "name": "Project Structure",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.62,
+            "reason": "Project structure evaluation:\n\ndirectory_organization:\nScore (avg): 4.0\n[CODING] The project is a multi-module Maven build and each module faithfully follows the standard Maven source layout: `src/main/java/de/urbanpulse/...`, `src/main/resources/`, `src/test/java/de/urbanpulse/...`, and `src/test/resources/` (visible in EventProcessorModule, HttpInboundModule, OutboundModule, PersistenceModuleV3, UPSecurityRealm, UPUtils, UrbanPulseManagement). Package structure under `de/urbanpulse` is consistent, and UrbanPulseManagement additionally uses the conventional `src/main/webapp/WEB-INF/` for its WAR-style deployment. A root `pom.xml` aggregates the modules. That said, there are organization deviations: the root level mixes source module directories with loose artifacts (`api-documentation.pdf`, `default-cluster.xml`, `UrbanPulseResources/glassfish-resources.xml`), several modules commit IDE/build artifacts at their root (`*.iml` files, `nb-configuration.xml`, `envChecker.sh`), and binaries such as `localhost_keystore.jks`, `cacerts.jks`, `cacerts_with_startcom.jks`, `keystore.jks` are placed directly at module roots or inside `src/main/resources`. Build output also appears committed under source (`UrbanPulseManagement/src/main/webapp/docs/` contains `asset-manifest.json`, `precache-manifest.f695fd46faf3242f24aabfcc750a68de.js`, `service-worker.js`). Good adherence to Maven conventions, but with noticeable housekeeping issues.\n\nnaming_conventions:\nScore (avg): 3.0\n[CODING] Naming is partially consistent but mixes several conventions. Module directory names are consistently PascalCase (`BackchannelModule`, `EventProcessorModule`, `HttpInboundModule`, `OutboundModule`, `UPEntitiesLib`, `UPSecurityRealm`, `UPUtils`, `UrbanPulseManagement`), but `PersistenceModuleV3` embeds a version in the name, which is inconsistent. The IDE files disagree with their module names: `event-processor-module.iml`, `http-inbound-module.iml`, `outbound-module.iml`, `persistence-module-v3.iml` (kebab-case) versus `up-entities-lib.iml`, `up-security-realm.iml`, `up-utils.iml` and `urbanpulse-management.iml`. Readme naming is inconsistent in three ways: `README.md` (root), `README` with no extension (EventProcessorModule), `readme.md` (UPSecurityRealm), `readme.migration.txt` (UPEntitiesLib), and `README.txt` inside `src/main` and `src/test/resources/integration_tests` of several modules. File-level naming mixes snake_case (`localhost_keystore.jks`, `cacerts_with_startcom.jks`, `db.changelog-*.xml`, `historic_help_text.html`, `postUpdate.sql`/`preUpdate.sql` are camelCase) and camelCase (`envChecker.sh`, `scratchJPA.json`). Resource names like `config.json`, `mod.json`, `test-config.json` are at least consistent across modules. The overall impression is functional but not uniform.\n\nseparation_of_concerns:\nScore (avg): 3.0\n[CODING] Core production/test separation is done well: every module keeps `src/main` and `src/test` distinct (e.g., EventProcessorModule, HttpInboundModule, OutboundModule, PersistenceModuleV3, UPSecurityRealm, UPUtils, UrbanPulseManagement), test resources live under `src/test/resources/integration_tests/`, and runtime metadata like `META-INF/persistence.xml`, `beans.xml`, and `web.xml` sit in conventional resource/webapp locations. However, configuration is scattered and duplicated: module-level `config.json` files sit beside `src/main/resources/mod.json`, PersistenceModuleV3 has both `config.json`, `test-config.json`, and `scratchJPA.json`, and UrbanPulseManagement keeps `preUpdate.sql`/`postUpdate.sql` and `db.changelog*.xml` under `resources`. Secrets are not separated from source \u2014 keystores (`localhost_keystore.jks`, `keystore.jks`, `cacerts.jks`) are committed inside resources, which is both a concern-separation and security issue. Documentation is also fragmented across the root README and per-module `README.txt`/`readme.md` files without a `docs/` directory, and built frontend assets (`docs/`, `status/`) are stored inside webapp source rather than being generated. Separation of concerns is sensible at the Java level but blurred for configuration, secrets, and documentation.\n\nmodularity:\nScore (avg): 4.0\n[CODING] Modularity is a strength: the system is decomposed into clearly scoped Maven modules with individual `pom.xml` files \u2014 `BackchannelModule`, `EventProcessorModule`, `HttpInboundModule`, `OutboundModule` for messaging/transport concerns, `PersistenceModuleV3` for storage, `UPEntitiesLib` as a shared entity library, `UPSecurityRealm` for security, `UPUtils` for shared utilities (including the outbound JS client under `up-utils-outbound-js/`), and `UrbanPulseManagement` as the management web application \u2014 all coordinated by a root `pom.xml`. Each module carries its own `config.json`, `mod.json`, and integration-test resources, indicating independently deployable components. Weaknesses: `PersistenceModuleV3` encodes a major version in the directory name rather than using Maven versioning, documentation per module is nearly empty (`README.txt` placeholders, e.g., `src/test/resources/integration_tests/README.txt`), and the responsibilities of `BackchannelModule` versus `OutboundModule` versus `HttpInboundModule` are not self-documenting from names alone. Overall the component breakdown is logical and well-scoped.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          },
+          {
+            "name": "Security Policy",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.0,
+            "reason": "SECURITY.md file not found in root folder.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          }
+        ],
+        "evaluated_measurements": 3,
+        "total_measurements": 3,
+        "coverage": 1.0
+      },
+      "error": null
+    }
+  ]
+}

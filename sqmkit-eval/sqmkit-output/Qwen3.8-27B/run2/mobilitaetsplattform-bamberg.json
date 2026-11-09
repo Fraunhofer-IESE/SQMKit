@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "results": [
+    {
+      "name": "mobilitaetsplattform-bamberg",
+      "kind": "local",
+      "source": "sqmkit-eval/eval/repos/mobilitaetsplattform-bamberg",
+      "repository": "https://gitlab.opencode.de/smart-city-bamberg/mobilitaetsplattform",
+      "evaluation": {
+        "name": "Project Description, Project Structure and Security Policy",
+        "weight": 1.0,
+        "status": "evaluated",
+        "score": 0.37666666666666665,
+        "reason": "Weighted score of evaluated measurements",
+        "children": [
+          {
+            "name": "Project Description",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.44,
+            "reason": "Evaluation of the README file:\n\nproject_purpose:\nScore (avg): 4.0\n[QWEN] The README clearly describes the project's purpose and usefulness across multiple sections. The \"Vision der Mobilit\u00e4tsplattform\" section explains that the platform allows people in Bamberg to plan routes via an app, focusing on sustainability, speed, or convenience, with flexible booking and payment via a single ticket. The \"Projektaufbau\" section elaborates that the project aims to seamlessly connect public transport with private and rented vehicles in both route planning and payment. The \"Nutzen f\u00fcr die Kommune\" section further explains the utility for the municipality: gaining sovereignty over mobility data, centralizing street maps, timetable data, traffic sensor data, prohibition zone management, and public transport usage data. While the purpose and benefits are well articulated from both user and municipal perspectives, a 5 is not given because the description is heavily vision-focused and could more concretely explain what the released Open Source code specifically does versus the broader platform vision.\n\nsetup_instructions:\nScore (avg): 1.0\n[QWEN] The main README contains no setup instructions whatsoever. There is no mention of how to install dependencies, clone the repository, configure the project, build the application, or run it locally. The only related content is in the \"Technische Dokumentation\" section, which merely provides links to sub-READMEs (\"web-app/README.md\" and \"mobile-app/README.md\") for the web and mobile apps. While these sub-READMEs may contain setup details, the main README itself offers zero guidance for setting up the project, no prerequisites, no build commands, and no instructions on how to get started. For a reviewer or new contributor landing on this repository, the absence of any setup information in the top-level README is a significant gap.\n\ninfo_project_status:\nScore (avg): 3.0\n[QWEN] The README indirectly conveys the project's status but does not explicitly label it. It states that \"Mit der Ver\u00f6ffentlichung des Open Source Codes ist im September 2025 ein wichtiger Meilenstein im Projekt Mobilit\u00e4tsplattform und -App der Smart City Bamberg erreicht worden\" (the publication of the Open Source code marked an important milestone in September 2025), and notes that \"Der Einsatz in Bamberg im Echtbetrieb ist ein weiteres Ziel des Projekts\" (live operation in Bamberg is another goal) with further technical and non-technical questions still to be resolved. This implies the project is actively ongoing with future work ahead. However, there is no explicit statement such as \"this project is under active development,\" \"actively maintained,\" or a roadmap indicating the current development phase. The status is inferable but not directly communicated.\n\ninfo_maintainer:\nScore (avg): 3.0\n[QWEN] The README identifies key parties involved in the project: the \"Verkehrsbetrieb der Stadtwerke Bamberg (STVP)\" initiated the project and was a partner of the Smart City program, and the \"Bamberger Startup wikimove\" cooperated in developing the code. Funding sources (BMWSB and KfW) are also mentioned. However, the README does not explicitly state who currently maintains the repository, who handles pull requests, how to contact maintainers, or what the contribution process looks like. It describes the project's origins and development partners but lacks a clear \"Maintainers\" or \"Contributing\" section. A reader cannot easily determine who to reach out to for support or how to contribute code.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          },
+          {
+            "name": "Project Structure",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.69,
+            "reason": "Project structure evaluation:\n\ndirectory_organization:\nScore (avg): 4.0\n[QWEN] The project follows the standard directory conventions of each technology stack in the monorepo. The Spring Boot/Gradle service (backend/mobility-manager-backend-svc) uses the canonical src/main/java and src/main/resources layout with build.gradle.kts, settings.gradle.kts, gradlew, and a buildSrc build-logic module. The Flutter app (mobile-app) follows the standard template: lib/, test/, android/, ios/, assets/, pubspec.yaml, plus lib/src split into common/, data/, and ui/ \u2014 a recognized Flutter clean-architecture layout. The React/Vite web app (web-app) uses src/ with index.html, vite.config.ts, tsconfig.json, a separate cypress/ directory for e2e tests, and deploy/ for nginx/env deployment config. Infrastructure concerns (keycloak/, routing/ with docker-compose files) are properly placed under backend/. Minor drawbacks prevent a top score: there is no top-level docs/ directory (documentation is fragmented into per-module READMEs), the visible backend tree shows no test source set, and mobile-app commits a .metadata file that is normally ignored.\n\nnaming_conventions:\nScore (avg): 3.0\n[QWEN] Within each stack, conventions are largely consistent: Dart files use snake_case throughout mobile-app (app_failure.dart, date_time_extension.dart, marker_leg_start_bus.png), React components use PascalCase (Header.tsx, WmvCard.tsx, ConfirmationModal.tsx) with camelCase utility/hook files (useUrlParamsState.ts, convertToQueryString.ts), and top-level directories use kebab-case (web-app, mobile-app, mobility-manager-backend-svc). However, there are visible cross-cutting inconsistencies: 'Readme.md' vs 'README.md' casing is mixed (keycloak/Readme.md, routing/nginx-proxy/Readme.md, otp-build/Readme.md, otp-config/Readme.md versus routing/README.md and web-app/README.md), plus README.adoc vs README.md; environment naming is inconsistent (.env.development/.env.production/.env.test at the web-app root versus deploy/envs/.env.dev/.env.prod/.env.test); web-app icon assets mix cases (arrowDown.svg in camelCase, crosshairs_noMiddleCircle.svg in mixed case, support-request.svg and e-scooter.svg in kebab-case); the web-app state folder contains a camelCase 'toUpdate/' directory among PascalCase/kebab siblings; test directories are named inconsistently (hooks/__tests__ vs services/zone/tests); and there are outright naming errors/typos (baterryLow.svg, biekAndScooter.svg, PalnningModePreviewPredicatesView.tsx, maiaudoProvider.svg vs meiaudoCar.svg). These recurring deviations make the naming only acceptable rather than consistent.\n\nseparation_of_concerns:\nScore (avg): 4.0\n[QWEN] Concerns are well separated at every level. At the repo root, application code (backend/, web-app/, mobile-app/) is separated from branding assets (logo/) and metadata (publiccode.yml, LICENSE). Within backend/, operational infrastructure (keycloak/, routing/) is kept apart from the application service. In the service, src/main/resources separates application config (application.yaml, application-local-dev.yaml) from database migrations (db/) and GraphQL schemas (graphql/). The Flutter app cleanly separates the data layer (repositories, models, API clients such as routing/otp_api.dart, vehicle/, zones/) from presentation (ui/home, ui/itinerary, ui/routing, ui/common) with a dedicated di.dart for dependency injection. The web app separates api/, services/ (per domain: trip, zone, layer-management), models/ (domain types), state/ (Redux slices), components/, pages/, utils/, plugins/, and e2e tests (cypress/), with assets in assets/. Deductions: large feature components (CustomerDatabase/, TripDetailsAndManagement/, VehicleInformationModal/) are commingled in the shared components/ folder next to generic widgets (Accordion/, FormFields/); two parallel state mechanisms coexist (Redux in state/ plus Jotai atoms in atoms/); the state/toUpdate/ folder signals an unfinished reorganization; and unit tests are co-located with source in the web app (e.g., services/UserService.test.ts, components/CustomPopover/CustomPopover.test.tsx) rather than in a dedicated test tree, mixing test and production files.\n\nmodularity:\nScore (avg): 4.0\n[QWEN] The monorepo shows a logical breakdown by deployment target: a backend service, a web administration app, a mobile app, and supporting infrastructure modules (keycloak, routing/OTP), each self-contained with its own build system, CI config (.gitlab-ci.yml), license, and README. Inside the web app, modularity is domain-driven: models/ is split by domain (budget-plan/, trip/, vehicle-fee-pricing/, fleet-management/, customer-budget-membership/, each with request/response submodules), services/ and state/ mirror those domains, and a reusable design system (wmv-components/ with Checkbox/, WmvCard/, WmvModal/, etc.) is documented via Storybook (stories/ with per-component .stories.tsx files). The mobile app is modularized per feature (home/, itinerary/, routing/) and per data domain (routing/, vehicle/, zones/, location/), using cubit/state files per feature. Plugin wrappers (plugins/dayjs, plugins/currency, plugins/yup) cleanly encapsulate library configuration. Points holding it back from a 5: the web components/ directory becomes a catch-all for large feature modules, the design-system/ folder holds only a single file (NewDataTable.tsx) separate from wmv-components/, the dual Redux+Jotai state split and the 'toUpdate' state folder indicate partially completed modularization, and the backend is a single monolithic service with no visible test module in the tree.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          },
+          {
+            "name": "Security Policy",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.0,
+            "reason": "SECURITY.md file not found in root folder.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          }
+        ],
+        "evaluated_measurements": 3,
+        "total_measurements": 3,
+        "coverage": 1.0
+      },
+      "error": null
+    }
+  ]
+}

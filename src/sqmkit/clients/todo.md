@@ -1,0 +1,1 @@
+Do we want "fat clients" with functionality in them?

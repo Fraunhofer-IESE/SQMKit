@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "results": [
+    {
+      "name": "ferienabenteuer",
+      "kind": "local",
+      "source": "sqmkit-eval/eval/repos/ferienabenteuer",
+      "repository": "https://gitlab.opencode.de/smart-city-bamberg/ferienabenteuer",
+      "evaluation": {
+        "name": "Project Description, Project Structure and Security Policy",
+        "weight": 1.0,
+        "status": "evaluated",
+        "score": 0.43666666666666665,
+        "reason": "Weighted score of evaluated measurements",
+        "children": [
+          {
+            "name": "Project Description",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.56,
+            "reason": "Evaluation of the README file:\n\nproject_purpose:\nScore (avg): 5.0\n[QWEN] The README clearly explains what the project is and why it is useful. It states that the project is an offer from \u201cFamilienregion Bamberg\u201d aimed at supporting working parents with family-work compatibility, and that it provides a portal where vacation/festival events can be viewed and booked. It also specifies the two main user groups: parents, who can register, book, cancel, and manage bookings, and providers/administrators, who can manage offers, providers, and discounts. The screenshots and architecture section further support the stated purpose.\n\nsetup_instructions:\nScore (avg): 1.0\n[QWEN] The README does not provide any actual setup instructions. There are no prerequisites, installation steps, build commands, environment configuration details, database setup instructions, or run instructions for the backend or frontends. It only mentions that the project consists of subprojects and that \u201cDokumentation ist in den einzelnen Unterprojekten im entsprechenden Verzeichnis hinterlegt,\u201d which is a pointer to other documentation rather than setup guidance in the README itself.\n\ninfo_project_status:\nScore (avg): 5.0\n[QWEN] The README explicitly describes the project status at the beginning with a warning: \u201cIn diesem Repository ist ein \u00e4lterer Softwarestand enthalten. Die Weiterentwicklung sowie der aktuelle Code befinden sich in diesem Repository [link].\u201d This clearly tells readers that this repository contains an older version of the software and that current development is happening elsewhere. Therefore, the maintenance/development status is well communicated.\n\ninfo_maintainer:\nScore (avg): 2.0\n[QWEN] The README gives some organizational context by saying the project is an offer from \u201cFamilienregion Bamberg\u201d and mentions that the city and district of Bamberg provide the public homepage. It also mentions administrators/operators and funding sources. However, it does not clearly state who maintains the code, who is responsible for development, who the contributors are, or how external contributors can contribute. There is no explicit maintainer, team, contribution guide, contact person, or governance information.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          },
+          {
+            "name": "Project Structure",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.75,
+            "reason": "Project structure evaluation:\n\ndirectory_organization:\nScore (avg): 4.0\n[QWEN] The project follows its stack's conventions well. It is a monorepo with a top-level README.md, docs/ (screenshots such as Frontend-Buchung.png, Frontend-Verwaltung.png, Architektur.png), publiccode.yml, and all application code under src/. The backend is a KeystoneJS + Prisma + TypeScript app laid out along Keystone conventions: keystone.ts, schema.ts, admin/config.tsx, views/, email_templates/, migrations/ (with migration_lock.toml), plus Dockerfile, docker-compose.yml, docker-compose.override.yml, tsconfig.json and package.json. Both Angular apps (frontend-buchung, frontend-verwaltung) match the Angular CLI layout almost exactly: angular.json, src/app, src/assets, src/environments (environment.ts + environment.development.ts), src/main.ts, styles.scss, tsconfig.app.json/tsconfig.spec.json, tailwind.config.ts, codegen.ts, nginx.conf; the booking frontend additionally has main.server.ts, server.ts and app.module.server.ts for SSR. Deductions keep this from a 5: no tests/ directory or *.spec.ts files appear anywhere despite tsconfig.spec.json files existing in both frontends (a directory the criterion explicitly cites); the backend spreads core files (auth.ts, auth.session.ts, environment.ts, messages.ts, codeGenerator.ts) directly in the package root instead of a lib/core folder; email_templates/ contains an \"account_deleted_due_to_inactivity copy/\" folder with a space; and frontend-buchung carries both package-lock.json and yarn.lock, suggesting an ambiguous toolchain.\n\nnaming_conventions:\nScore (avg): 4.0\n[QWEN] Naming is disciplined within each layer. Backend TypeScript files use camelCase consistently (keystone.ts, schemaExtensions.ts, mailConnection.ts, auth.filters.ts, and all mutations like bookCartTickets.ts, applyForDiscount.ts, deleteAccount.ts). Angular code follows its kebab-case file conventions (care-days-calendar.component.ts, cart-info.component.ts, click-outside.directive.ts, image-proxy.pipe.ts, landing-page.effects.ts) with lowercase module files (app.module.ts, sites.module.ts, prime.module.ts) and kebab-case store folders (password-reset/, landing/). Prisma migrations use a uniform timestamped snake_case scheme (20230621140401_user_added, 20240418142502_organizer_removed_homepage_and_misc), and email template folders use snake_case with a consistent content.html/subject.txt pattern. However, there are visible inconsistencies: asset filenames mix underscore (ferienabenteuer_bamberg_icon.svg, ferienabenteuer_bamberg_inklusion.png) with kebab/plain styles (checked.svg, tent.svg, pic1.png); font directories use spaced/PascalCase names (\"DM Sans\", \"MaterialIcons\", \"Calibri\"); top-level docs images mix styles (Kombilogo_BMWSB_KFW.png, Logo_BMI.jpg, Architektur.png); the \"\u2026inactivity copy\" folder breaks the snake_case pattern with a space; sendEmailWhenPasswortResetRequested.ts uses the German \"Passwort\" while sibling files use English (changePassword.ts, resetPassword.ts); and frontend-buchung ships both package-lock.json and yarn.lock while the other apps use only yarn.lock.\n\nseparation_of_concerns:\nScore (avg): 4.0\n[QWEN] Concerns are largely well separated. At the top level, documentation (docs/, README.md, publiccode.yml) is kept out of src/, and the three deployable units (backend, frontend-buchung, frontend-verwaltung) are cleanly isolated, each with its own README.md, Dockerfile, docker-compose.yml/override, nginx.conf and lock files \u2014 the backend exposes a GraphQL API (schema.graphql, schema.prisma) consumed by both Angular apps. Inside the backend, responsibilities are split into extensions/mutations/ (write operations), extensions/queries/ (reads), extensions/worker/ (cron jobs such as markOverdueBookings.ts, findFinishedEvents.ts), messaging/handlers/ (queue logic like deleteEmptyBookingWhenBookingCancelled.ts), messaging/handlers/mailing/ (pure email senders), email_templates/ (rendered content), migrations/ (schema changes), and dedicated auth files (auth.ts, auth.session.ts, auth.filters.ts) plus environment.ts for configuration. In the frontends, UI (components/, sites/, landing/), state (stores/ split by domain), routing (app-routing.module.ts, sites-routing.module.ts), generated GraphQL code (app/graphql/generated.ts), directives/pipes, static assets (src/assets) and environments are each in their own place. Deductions: no test separation exists at all (no tests/ folder or spec files in any app, despite tsconfig.spec.json implying the Angular convention); root-level backend files blur the line between core and feature code; and duplicated artifacts across the two frontends (identical click-outside.directive.ts, duplicated logo images, duplicate codegen configs) indicate concerns that should be shared but are copied instead.\n\nmodularity:\nScore (avg): 4.0\n[QWEN] The project shows strong logical breakdown. Three independently containerized modules (backend + two Angular SPAs) form a clean service boundary. The backend is finely grained: 34 single-purpose mutation modules in extensions/mutations/ (e.g., bookCartTickets.ts, duplicateEvent.ts, generateInvoice.ts), separate queue workers, and one file per event in messaging/handlers/ (cartTimeout.ts, cancelBookingsAndReservationsWhenEventCancelled.ts) with a dedicated mailing/ subfolder for the 24 email-sending handlers, aggregated via schemaExtensions.ts. The booking frontend is organized by feature: landing/ with its own landing.module.ts and section components (hero.component.ts, events.component.ts, partners.component.ts), sites/ with subfeatures (account/, auth/, checkout/, events/, legal/), shared components/, and domain-specific NgRx stores (auth/, bookings/, children/, discounts/, events/, security/, verification/\u2026). The admin frontend mirrors this with its own feature set (bookings, custodians, discounts, invoices, reservations, seasons) and a separate prime/ module for PrimeNG. Email templates are modular per use case, and migrations are atomic, self-describing units. It falls short of a 5 because the admin's sites/ layer is somewhat flat (bookings.component.ts, custodians.component.ts, invoices.component.ts sit directly in sites/ rather than in their own folders like events/), shared logic and assets are duplicated across the two frontends instead of a shared library, and several subdirectories (graphql/mutations/, graphql/queries/, landing/components/, sites/account/, sites/auth/) appear in the tree without visible contents, making the granularity of those modules unclear.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          },
+          {
+            "name": "Security Policy",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.0,
+            "reason": "SECURITY.md file not found in root folder.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          }
+        ],
+        "evaluated_measurements": 3,
+        "total_measurements": 3,
+        "coverage": 1.0
+      },
+      "error": null
+    }
+  ]
+}

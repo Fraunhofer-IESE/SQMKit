@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "results": [
+    {
+      "name": "behoerden-klartext-backend",
+      "kind": "local",
+      "source": "sqmkit-eval/eval/repos/behoerden-klartext-backend",
+      "repository": "https://gitlab.opencode.de/behoerden-klartext/backend",
+      "evaluation": {
+        "name": "Project Description, Project Structure and Security Policy",
+        "weight": 1.0,
+        "status": "evaluated",
+        "score": 0.41666666666666663,
+        "reason": "Weighted score of evaluated measurements",
+        "children": [
+          {
+            "name": "Project Description",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.31,
+            "reason": "Evaluation of the README file:\n\nproject_purpose:\nScore (avg): 2.0\n[CODING] The README does not explicitly explain what the project does or why it is useful. The title \"Beh\u00f6rden-KlarText Backend\" and the \"Allgemeine Informationen\" heading provide only weak contextual clues, while the actual description is deferred to `docs/general-information.md` via an include directive. Since that content is not present in the evaluated README, a reader cannot determine the project's purpose or value from this document alone.\n\nsetup_instructions:\nScore (avg): 3.0\n[CODING] The README contains a well-organized set of setup-related sections: API documentation, configuration, deployment (\"Bereitstellung\"), Python image usage, requirements management, pre-commit, dev-container, and tests. However, all of the substantive instructions are delegated through `::include{file=...}` directives, and no actual installation, configuration, or run commands are visible in the evaluated content. The structure suggests setup guidance exists, but the README itself does not directly describe the steps.\n\ninfo_project_status:\nScore (avg): 2.0\n[CODING] There is no explicit statement about whether the project is actively developed, stable, deprecated, or unmaintained. The presence of a \"Fahrplan\" (roadmap) section weakly implies future work, but even that section is only an include directive and its contents are not shown. Therefore, the README does not clearly communicate the project's status.\n\ninfo_maintainer:\nScore (avg): 2.0\n[CODING] The README does not identify maintainers, contributors, or contribution guidelines. It includes a \"Credits\" section via `::include{file=docs/credits.md}`, but no names or roles are visible. The SPDX header names the Bundesministerium f\u00fcr Arbeit und Soziales (BMAS) as the copyright holder, which is a weak ownership signal but does not establish who maintains the project or how others can contribute.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          },
+          {
+            "name": "Project Structure",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.94,
+            "reason": "Project structure evaluation:\n\ndirectory_organization:\nScore (avg): 5.0\n[CODING] Question: Does the project follow appropriate directory organization conventions for its technology stack, such as src/, tests/, and docs/? Score: 5. The project uses a clear Python backend layout: application code is under src/ (app.py, endpoints.py, settings.py, models/, services/, utils/), tests are under tests/, documentation is under docs/ (api.md, configuration.md, openapi.json, etc.), runtime configuration is under configs/, CI pipeline fragments are under CI_config/, and deployment files such as Dockerfile and docker-compose*.yml are at the root. Root-level tooling and dependency files (.coveragerc, ruff.toml, requirements*.in/.txt, .pre-commit-config.yaml) are also conventional. A root main.py acts as a simple entrypoint and does not materially disrupt the organization. Overall, the structure is standard and easy to navigate.\n\nnaming_conventions:\nScore (avg): 4.0\n[CODING] Question: Does the project use consistent naming conventions for files and directories? Score: 4. Most names are consistent: Python modules use snake_case such as api_input.py, check_model_api_availability.py, process_configs.py, and test_endpoints.py; configuration files use lowercase snake_case such as llm_models.yml and protected_words.yml; and standard names like README.md, Dockerfile, and LICENSES/ are appropriate. However, there are minor inconsistencies: .gitlab/issue_templates/Default.md uses an uppercase filename while .gitlab/merge_request_templates/default.md uses lowercase, and CI_config/ uses mixed capitalization compared with the lower-case configs/ directory. These are small deviations rather than systemic problems, so the naming is good but not perfectly uniform.\n\nseparation_of_concerns:\nScore (avg): 5.0\n[CODING] Question: Does the project properly separate different concerns into appropriate directories, such as source, tests, and configuration? Score: 5. The tree clearly separates application source code under src/, tests under tests/ (including test_endpoints.py and tests/unittests/test_openai.py and test_settings.py), documentation under docs/, runtime configuration under configs/, CI configuration under CI_config/ and .gitlab/, and secret examples under secrets/. Deployment and dependency metadata are kept at the root. Minor quirks exist, such as tests being split between the tests root and tests/unittests/, and CI information appearing in both .gitlab-ci.yml and CI_config/, but the project does not mix source, tests, and configuration in a confusing way.\n\nmodularity:\nScore (avg): 5.0\n[CODING] Question: Does the project demonstrate good modularity with a logical breakdown of components or modules? Score: 5. The src/ directory is divided into meaningful layers: app.py and endpoints.py for application entry and routes, settings.py for configuration, models/ for API and domain schemas (api_input.py, api_output.py, general.py, llms.py), services/ for business logic (feedback.py, stem.py, and simplify/ with openai.py and registry.py), and utils/ for cross-cutting helpers such as base_logger.py, otel.py, model_selector.py, and process_configs.py. The simplify service in particular uses a registry plus provider module, which is a clean modular pattern. The endpoint layer could eventually be split into multiple routers, but the current breakdown is logical and well encapsulated for the project size.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          },
+          {
+            "name": "Security Policy",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.0,
+            "reason": "SECURITY.md file not found in root folder.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          }
+        ],
+        "evaluated_measurements": 3,
+        "total_measurements": 3,
+        "coverage": 1.0
+      },
+      "error": null
+    }
+  ]
+}

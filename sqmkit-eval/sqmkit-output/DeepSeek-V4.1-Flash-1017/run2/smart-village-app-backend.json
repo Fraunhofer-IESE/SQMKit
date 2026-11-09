@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "results": [
+    {
+      "name": "smart-village-app-backend",
+      "kind": "local",
+      "source": "sqmkit-eval/eval/repos/smart-village-app-backend",
+      "repository": "https://gitlab.opencode.de/bad-belzig/smart-village-app-mainserver",
+      "evaluation": {
+        "name": "Project Description, Project Structure and Security Policy",
+        "weight": 1.0,
+        "status": "evaluated",
+        "score": 0.43999999999999995,
+        "reason": "Weighted score of evaluated measurements",
+        "children": [
+          {
+            "name": "Project Description",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.38,
+            "reason": "Evaluation of the README file:\n\nproject_purpose:\nScore (avg): 2.0\n[CODING] The README provides only a very thin description of purpose. It states: \"This main-server is one main part of the whole Smart Village App project. For more information visit https://github.com/ikuseiGmbH/smart-village-app.\" It also points readers to the German website (https://smart-village.app) \"to get in touch with us and present your ideas and visions.\" Beyond these links, there is no explanation of what the Smart Village App actually does, what functionality this server provides, or why it is useful to a prospective user or contributor. There are only indirect hints (a \"GraphQL API,\" \"User management,\" \"Database configuration\"), but no clear statement of the project's purpose or value proposition. This is insufficient to fully understand the project, hence a poor score.\n\nsetup_instructions:\nScore (avg): 5.0\n[CODING] The setup instructions are detailed and step-by-step. They include: (1) Ruby installation with concrete commands (`ruby-install 2.6.8`, environment variable exports); (2) Bundler installation (`gem install bundler -v '2.3.20'`); (3) Master key configuration (`config/master.key`); (4) Database configuration with a full example `config/database.yml` (adapter mysql2, encoding utf8mb4, development/test database names); (5) Database and user setup via `rake db:create db:migrate`, `rake db:seed`, and Rails console commands to change the user password; (6) Running the server (`rails s`); and (7) Login instructions with URL, username, and password. This makes it easy to get the project running. Minor flaws exist (inconsistent numbering like \"#### 1. Ru the following commands\" then jumping to \"#### 3.\", and a typo \"Ru\"), but overall the instructions are comprehensive and clearly structured.\n\ninfo_project_status:\nScore (avg): 1.0\n[CODING] The README does not describe the project's status at all. There is no mention of whether the project is in active development, stable, deprecated, or no longer maintained. While the \"Tech Stack\" section lists older versions (Ruby 2.6.8, Rails 5.2.4), which could implicitly suggest an older codebase, there is no explicit statement about the development or maintenance status of the project. This criterion is essentially unaddressed.\n\ninfo_maintainer:\nScore (avg): 2.0\n[CODING] The README does not have an explicit section describing who maintains or contributes to the project. There are only indirect references: the CodeClimate badge links point to \"ikuseiGmbH/smart-village-app-mainserver,\" the project link references \"ikuseiGmbH,\" and the logo image is sourced from \"smart-village-solutions.\" These imply an organization is behind the project, but the README never clearly states who the maintainers are, how to contribute, or how to engage with the team beyond the vague invitation to \"visit the german website to get in touch with us.\" There is no contributing guide, maintainer list, or contact information for the project team.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          },
+          {
+            "name": "Project Structure",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.94,
+            "reason": "Project structure evaluation:\n\ndirectory_organization:\nScore (avg): 5.0\n[CODING] Evaluation question: Does the project follow appropriate directory organization conventions for its technology stack? The repository follows standard Ruby on Rails and RSpec conventions very closely. Application code is under app/ with the expected subdirectories such as controllers/, models/, views/, jobs/, mailers/, services/, channels/, helpers/, and assets/. GraphQL-specific code is grouped under app/graphql/. Configuration is under config/ and config/environments/, database migrations and schema are under db/, and tests are under spec/ with helpers, factories, requests, routing, services, and view specs. Documentation and example GraphQL payloads are under doc/, deployment files are under docker/ and root-level Compose files, and public static content is under public/. No significant misplaced source, test, or configuration directories were identified.\n\nnaming_conventions:\nScore (avg): 4.0\n[CODING] Evaluation question: Does the project use consistent naming conventions for files and directories? The project is largely consistent with Rails conventions: Ruby, ERB, SCSS, YAML, and spec files use snake_case, while classes follow CamelCase and generally match their file paths, e.g., app/graphql/mutations/create_or_update_survey_poll.rb, app/models/notification/push_device_assignment.rb, and app/services/public_transportation/import_service.rb. However, there are small inconsistencies: public/mobile-app/configs/ contains camelCase filenames such as homeAbout.json, homeCarousel.json, and homeService.json, while other JSON and locale files use snake_case, such as config/locales/data_resource.en.yml. These are limited exceptions rather than systemic problems, so the score is 4 rather than 5.\n\nseparation_of_concerns:\nScore (avg): 5.0\n[CODING] Evaluation question: Does the project properly separate different concerns into appropriate directories? Concerns are clearly separated. Production code lives under app/, tests live under spec/ and are further organized by test type (controllers/, models/, requests/, routing/, services/, and views/), test fixtures are isolated in spec/factories/, test support code is in spec/support/, and database artifacts are in db/migrate/ and db/schema.rb. Configuration is centralized in config/, environment-specific settings in config/environments/, documentation in doc/, and deployment/container configuration in docker/ and root-level Compose/CI files. Within app/, MVC concerns, GraphQL, background jobs, mailers, services, channels, helpers, and assets are also separated into dedicated directories. This is a strong separation of responsibilities.\n\nmodularity:\nScore (avg): 5.0\n[CODING] Evaluation question: Does the project demonstrate good modularity with a logical breakdown of components or modules? Modularity is strong and domain-oriented. The GraphQL layer is split into mutations/, resolvers/, types/, input_types/, and query_types/, with dedicated files for individual operations such as create_tour.rb, schedule_push_notification.rb, and waste_location_search.rb. Models are grouped by domain under app/models/data_resources/, app/models/notification/, app/models/survey/, and app/models/waste/, with reusable model behavior isolated in app/models/data_resources/resource_modules/. Cross-cutting controller and model concerns are in concerns/ directories, while external integrations and business operations are extracted into app/services/, and asynchronous work is isolated in app/jobs/. This creates a logical, maintainable decomposition of the application.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          },
+          {
+            "name": "Security Policy",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.0,
+            "reason": "SECURITY.md file not found in root folder.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          }
+        ],
+        "evaluated_measurements": 3,
+        "total_measurements": 3,
+        "coverage": 1.0
+      },
+      "error": null
+    }
+  ]
+}

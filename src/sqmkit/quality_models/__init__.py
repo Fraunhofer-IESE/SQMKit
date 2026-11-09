@@ -1,0 +1,18 @@
+# Copyright (C) Fraunhofer IESE 2026 Jonathan Ullrich
+#
+# SPDX-License-Identifier: AGPL-3.0-or-later
+#
+# This program is free software: you can redistribute it and/or modify
+# it under the terms of the GNU Affero General Public License as
+# published by the Free Software Foundation, either version 3 of the
+# License, or (at your option) any later version.
+#
+# This program is distributed in the hope that it will be useful,
+# but WITHOUT ANY WARRANTY; without even the implied warranty of
+# MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+# GNU Affero General Public License for more details.
+#
+# You should have received a copy of the GNU Affero General Public License
+# along with this program. If not, see <https://www.gnu.org/licenses/>.
+
+"""Bundled quality models. Each ``*.json`` file in this directory is a quality model that can be run by name, e.g. ``sqmkit run oss-adoption ./repo``. Add your own file here to ship it with the package, or pass a path instead of a name."""

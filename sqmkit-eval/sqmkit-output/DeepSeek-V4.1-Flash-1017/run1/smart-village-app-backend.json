@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "results": [
+    {
+      "name": "smart-village-app-backend",
+      "kind": "local",
+      "source": "sqmkit-eval/eval/repos/smart-village-app-backend",
+      "repository": "https://gitlab.opencode.de/bad-belzig/smart-village-app-mainserver",
+      "evaluation": {
+        "name": "Project Description, Project Structure and Security Policy",
+        "weight": 1.0,
+        "status": "evaluated",
+        "score": 0.41666666666666663,
+        "reason": "Weighted score of evaluated measurements",
+        "children": [
+          {
+            "name": "Project Description",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.31,
+            "reason": "Evaluation of the README file:\n\nproject_purpose:\nScore (avg): 2.0\n[CODING] The README only indirectly references the project's purpose. It states: \"This main-server is one main part of the whole Smart Village App project. For more information visit https://github.com/ikuseiGmbH/smart-village-app.\" and links to the German website https://smart-village.app. These lines indicate the server is a component of a larger app, but they never explain what the Smart Village App actually does, what problems it solves, or why this server (and its GraphQL API, user/permission management features) is useful. The reader is forced to follow external links to understand the project's raison d'\u00eatre. Because the purpose is only vaguely implied rather than described, the score is 2 (Poor).\n\nsetup_instructions:\nScore (avg): 4.0\n[CODING] The README provides substantial, step-by-step setup instructions. It covers \"1. Ruby installation\" (with CFLAGS/PKG_CONFIG_PATH exports and a ruby-install command for 2.6.8), \"2. Bundler installation\" (`gem install bundler -v '2.3.20'`), \"Master key configuration\" (creating `config/master.key`), \"Database configuration\" with a full example `config/database.yml`, \"Database and user setup\" (`rake db:create db:migrate`, `rake db:seed`, and a Rails console snippet to change the user password), \"Run the server locally\" (`rails s`), plus login credentials (admin@smart-village.app) and pointers to the GraphQL API at `/graphiql` with example files in `doc/`. This is more than adequate. It loses a point for minor defects: a typo (\"#### 1. Ru the following commands\"), inconsistent numbering (\"#### Import a SQL dump\", \"#### 3.\"), no instructions for cloning the repository or installing MySQL/system dependencies, and the \"correct key\" for master.key is never explained. Hence 4 (Good) rather than 5.\n\ninfo_project_status:\nScore (avg): 1.0\n[CODING] The README contains no statement whatsoever about the project's development status. There is no mention of active development, maintenance mode, deprecation, archived status, release/version history, or roadmap. The only hints are the CodeClimate maintainability/test-coverage badges and a hard-coded \"Tech Stack\" listing Ruby 2.6.8 and Rails 5.2.4, which are simply version information and do not describe whether the project is maintained. Since the project status criterion is entirely unaddressed, the score is 1 (Strongly Disagree).\n\ninfo_maintainer:\nScore (avg): 2.0\n[CODING] The README does not explicitly identify maintainers or describe how to contribute. It only offers an indirect pointer: \"Please visit the german website to get in touch with us and present your ideas and visions: https://smart-village.app.\" and links to the `ikuseiGmbH` GitHub organization/repository (also visible in the CodeClimate badge URLs). This implies an organizational owner (ikuseiGmbH), but there are no named maintainers, no contact email, no mention of a CONTRIBUTING guide, issue/PR guidelines, or code-of-conduct. The identity of the maintainer can only be inferred from link URLs, so the score is 2 (Disagree/Poor).",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          },
+          {
+            "name": "Project Structure",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.94,
+            "reason": "Project structure evaluation:\n\ndirectory_organization:\nScore (avg): 5.0\n[CODING] Question evaluated: Does the project follow appropriate directory organization conventions for its technology stack? Score: 5. The repository follows standard Ruby on Rails organization very closely. Application code is under `app/` with conventional subdirectories such as `controllers/`, `models/`, `views/`, `jobs/`, `mailers/`, `services/`, `channels/`, and `graphql/`. Configuration lives in `config/`, including `environments/`, `initializers/`, and `locales/`; database migrations and schema are in `db/`; RSpec tests are in `spec/`; documentation and example files are in `doc/`; static/public files are in `public/`; and container-related configuration is grouped in `docker/`. Root-level files such as `Gemfile`, `Rakefile`, `config.ru`, `Dockerfile`, and `docker-compose.yml` are also in conventional locations. The placement of GraphQL schema, types, mutations, and resolvers under `app/graphql/` is appropriate for this stack.\n\nnaming_conventions:\nScore (avg): 4.0\n[CODING] Question evaluated: Does the project use consistent naming conventions for files and directories? Score: 4. The codebase is overwhelmingly consistent: Ruby files and directories use `snake_case`, Rails files use expected suffixes such as `_controller.rb`, `_spec.rb`, and `.html.erb`, and namespaced areas such as `notification/`, `oauth/`, `public_transportation/`, and `survey/` are lowercase and snake-cased. Test specs generally mirror source names. However, there are some noticeable inconsistencies: `spec/factories/adresses.rb` misspells \u201caddresses\u201d while the model and spec use `address`/`addresses`; `app/graphql/types/query_types/waste_location_type_type.rb` has an awkward repeated `type` suffix; and there are both `vote_for_survey.rb` and `votes_for_survey.rb` mutation files, which makes their distinction unclear. Factory naming is also slightly inconsistent, e.g. `spec/factories/survey.rb` is singular while most factories are pluralized. These are minor compared with the otherwise strong convention adherence, but they justify a score of 4 rather than 5.\n\nseparation_of_concerns:\nScore (avg): 5.0\n[CODING] Question evaluated: Does the project properly separate different concerns into appropriate directories? Score: 5. Source code, tests, configuration, database concerns, documentation, static assets, and deployment files are clearly separated. Source lives under `app/`; test code is isolated under `spec/` and further split into `controllers/`, `models/`, `graphql/mutations/`, `services/`, `requests/`, `routing/`, `views/`, `factories/`, and `support/`. Configuration is in `config/`, including environment-specific files, initializers, locales, routes, and puma/storage/cable settings. Database migrations and schema are under `db/`, documentation examples under `doc/`, and deployment-related files such as `Dockerfile`, `docker-compose.yml`, `docker/`, and `stack.yml` are kept outside application code. Within `app/`, responsibilities are appropriately divided among controllers, models, views, services, jobs, mailers, channels, and GraphQL code.\n\nmodularity:\nScore (avg): 5.0\n[CODING] Question evaluated: Does the project demonstrate good modularity with a logical breakdown of components or modules? Score: 5. The application is broken into cohesive modules rather than large monolithic directories. Models are grouped by domain, e.g. `data_resources/`, `data_resources/resource_modules/`, `waste/`, `notification/`, and `survey/`. Controllers are namespaced for `notification/`, `oauth/`, `public/`, and `users/`. The GraphQL layer is separately organized into `mutations/`, `resolvers/`, `types/`, `types/input_types/`, and `types/query_types/`, with additional grouping for `public_transportation/`. Services such as `api_request_service.rb`, `category_service.rb`, `gtfs_redis_adapter.rb`, `push_notification.rb`, and `waste_notification.rb` provide focused functionality. Background work and email responsibilities are isolated in `jobs/` and `mailers/`. This is a logical, maintainable component breakdown, with only minor naming/duplication issues noted elsewhere.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          },
+          {
+            "name": "Security Policy",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.0,
+            "reason": "SECURITY.md file not found in root folder.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          }
+        ],
+        "evaluated_measurements": 3,
+        "total_measurements": 3,
+        "coverage": 1.0
+      },
+      "error": null
+    }
+  ]
+}

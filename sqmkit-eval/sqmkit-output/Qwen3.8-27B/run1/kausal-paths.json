@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "results": [
+    {
+      "name": "kausal-paths",
+      "kind": "local",
+      "source": "sqmkit-eval/eval/repos/kausal-paths",
+      "repository": "https://github.com/kausaltech/kausal-paths",
+      "evaluation": {
+        "name": "Project Description, Project Structure and Security Policy",
+        "weight": 1.0,
+        "status": "evaluated",
+        "score": 0.41666666666666663,
+        "reason": "Weighted score of evaluated measurements",
+        "children": [
+          {
+            "name": "Project Description",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.5,
+            "reason": "Evaluation of the README file:\n\nproject_purpose:\nScore (avg): 4.0\n[QWEN] The opening section clearly explains the project's purpose: \u201cKausal Paths is a tool for predicting the future emissions of cities based on historical emission data and various climate actions.\u201d It also states that \u201cUsers can compare how emissions develop in different scenarios\u201d and that \u201cData is provided using a GraphQL API.\u201d This makes the project's usefulness reasonably clear, especially for scenario comparison and emissions forecasting, though it does not provide much additional context about target users, broader impact, or real-world use cases.\n\nsetup_instructions:\nScore (avg): 5.0\n[QWEN] The README includes a detailed \u201cInstallation\u201d section covering prerequisites, package managers, git submodules, direnv shell hooking, uv virtual environment setup, dependency installation, local configuration, macOS-specific dependencies and library paths, database migrations, superuser creation, translation compilation, credentials setup, and how to run the backend. It even ends with the exact GraphQL endpoint: \u201chttp://127.0.0.1:8000/v1/graphql/\u201d. This is a thorough and practical setup guide.\n\ninfo_project_status:\nScore (avg): 2.0\n[QWEN] The README does not explicitly describe the project's status, such as whether it is under active development, in beta, stable, or no longer maintained. There are some indirect signals, such as the \u201cDevelopment\u201d section, references to a funded \u201cClimate-4-CAST Project,\u201d and instructions involving team access, which suggest ongoing work, but there is no direct statement about maintenance status or development activity.\n\ninfo_maintainer:\nScore (avg): 1.0\n[QWEN] The README does not identify who maintains or contributes to the project. It does not name an organization, maintainers, core contributors, or provide a contribution guide. It only vaguely mentions \u201ca team member\u201d for access and shows a \u201cClimate-4-CAST Project\u201d funding image, which is not enough to describe the project's maintainers or contribution process.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          },
+          {
+            "name": "Project Structure",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.75,
+            "reason": "Project structure evaluation:\n\ndirectory_organization:\nScore (avg): 4.0\n[QWEN] Question: Does the project follow appropriate directory organization conventions for its technology stack? Largely yes \u2014 this is a mature Python/Django (with Wagtail, Celery, Playwright e2e) project that follows the modern src-layout: all application code lives under src/ with properly structured Django apps (each with models.py, migrations/, apps.py, tests/), manage.py and conftest.py at the root, locale/ for i18n translations using standard Django structure (locale/de/LC_MESSAGES/django.po), docs/ for documentation with meaningful subfolders (architecture/, plans/, operations/, trailhead/), e2e-tests/ isolated for Playwright, configs/ for YAML model data, tools/ for operational scripts, and docker/ + .devcontainer/ for containerized environments. Packaging/tooling files (pyproject.toml, uv.lock, .python-version, .coveragerc, .pre-commit-config.yaml, .github/workflows/) are placed conventionally. It falls short of a 5 due to a few conventions-breaking leftovers: kausal_common/ sits at the repo root alongside the src/common/ package (an apparent artifact of an in-progress src-layout migration, acknowledged by docs/src-layout-migration.md), root-level scripts like load_nodes.py and check-dev-environment.sh duplicate the purpose of the tools/ directory, and e2e-tests/ contains both package-lock.json and pnpm-lock.yaml, indicating inconsistent tooling choices.\n\nnaming_conventions:\nScore (avg): 4.0\n[QWEN] Question: Does the project use consistent naming conventions for files and directories? Mostly yes, with visible warts. The Python code is extremely consistent: all modules and directories use snake_case (wagtail_hooks.py, api_router.py, bulk_action_tags.py, gql_client/, admin_site/), test files uniformly follow test_*.py inside tests/ subpackages, Django migrations follow standard numbering, and locale codes use the correct Django-style underscore form (es_US, de_CH). However, the configs/ YAML tree mixes kebab-case and snake_case in the same levels: pirkkala_hinku.yaml sits next to kebab-named peers like espoo-2026.yaml and tampere-c4c.yaml; frameworks/ contains hinku_tuuli.yaml next to syke-multidim.yaml; modules/ contains GERMANY_commerce_and_industry_statistics.yaml with unexpected SCREAMING_CASE; and city subfolders use different suffix styles (zuerich-2024/aviation-2024.yaml vs zuerich-dev/2kw-emissions-dev.yaml). notebooks/ breaks Python snake_case with hyphenated, mixed-case names like C4C-Dataset-Actions.py and NZC-CCV-Dataset-Processor.py. Additionally, the frameworks app contains two migrations numbered 0020 (0020_frameworkconfig_extra_and_more.py and 0020_show_nzc_actions_pages.py) requiring a merge migration (0021_merge_20260429_1746.py), a sign of process friction. Python naming is exemplary; configuration and notebook naming is only adequately consistent.\n\nseparation_of_concerns:\nScore (avg): 4.0\n[QWEN] Question: Does the project properly separate different concerns into appropriate directories? Yes, with clear boundaries: production source (src/) is separated from documentation (docs/), from data/model definitions (configs/), from unit tests (per-app tests/ plus root conftest.py and run_tests.py), from browser e2e tests (e2e-tests/ with its own playwright.config.ts), from translation assets (locale/), from deployment/development environments (docker/, .devcontainer/, docker-compose*.yml, mise/), and from operational scripts (tools/, docker/post-migrate/, docker/pre-entry/ with numbered scripts). Within src/, domain concerns are split into dedicated Django apps (datasets, frameworks, nodes, orgs, pages, params, people, users, request_log, admin_site, paths for settings/URLs, common for shared utilities), and GraphQL query text is separated from client code in gql_client/queries/*.gql. Deductions: the nodes app is a large catch-all that bundles many distinct concerns (pipeline execution, constraint solving, dataset materialization, import/export, GraphQL schema, ~25 management commands) into one app; kausal_common/ at the root overlaps with src/common/, creating an ambiguous second home for shared code; and notebooks/ mixes .py scripts, .ipynb files, and an .R script (city_value_comparison.R) in one heterogeneous directory.\n\nmodularity:\nScore (avg): 4.0\n[QWEN] Question: Does the project demonstrate good modularity with a logical breakdown of components or modules? Strongly at the top level: each Django app is a self-contained unit with its own models, migrations, tests, factories, and (where relevant) GraphQL schemas, and cross-cutting pieces are isolated into small purpose-built packages (common/ with polars extensions and cache helpers, gql_client/, devtool/ as a standalone CLI with __main__.py, optimizer/, request_log/). Within the biggest app, nodes/, concerns are further factored into subpackages \u2014 defs/ (graph/node/port/transform definitions), pipeline/ with ops/, constraints/, actions/ (with typed action implementations like energy_saving.py, linear.py, shift.py), graphql/types/, and site-specific packages (finland/, ch/). The configs/ directory shows excellent data modularity: reusable frameworks/ (hinku.yaml, hsy/, ikka/, syke.yaml), a shared module library (modules/transportation/, modules/health/, modules/fair_share/, modules/values/), shared quantities/quantity_kinds.yaml, and per-city compositions, with large cities decomposed into per-sector subdirectories (athens/, zuerich-2025/). It is held back from a 5 by the flat sprawl inside nodes/ (~70 top-level modules, including a family of instance_* modules \u2014 instance_loader.py, instance_parser.py, instance_serialization.py, instance_graph.py, instance_graph_cache.py \u2014 that would logically form their own subpackage), 74 migrations in a single app reflecting a long-evolving monolith, an unexplained empty-looking kausal_paths_extensions entry, and the orphaned root kausal_common/ package that obscures the intended module boundary.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          },
+          {
+            "name": "Security Policy",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.0,
+            "reason": "SECURITY.md file not found in root folder.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          }
+        ],
+        "evaluated_measurements": 3,
+        "total_measurements": 3,
+        "coverage": 1.0
+      },
+      "error": null
+    }
+  ]
+}

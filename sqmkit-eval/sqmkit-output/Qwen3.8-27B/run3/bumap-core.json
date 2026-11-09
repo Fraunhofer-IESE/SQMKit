@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "results": [
+    {
+      "name": "bumap-core",
+      "kind": "local",
+      "source": "sqmkit-eval/eval/repos/bumap-core",
+      "repository": "https://gitlab.opencode.de/bwi/bundesmessenger/admin-portal/bumap-core",
+      "evaluation": {
+        "name": "Project Description, Project Structure and Security Policy",
+        "weight": 1.0,
+        "status": "evaluated",
+        "score": 0.45666666666666667,
+        "reason": "Weighted score of evaluated measurements",
+        "children": [
+          {
+            "name": "Project Description",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.56,
+            "reason": "Evaluation of the README file:\n\nproject_purpose:\nScore (avg): 3.0\n[QWEN] The README does state the project's purpose near the top: \"bumap-core\" ist eine Rest-API zum Administrieren des BundesMessenger und ist Bestandteil des BundesMessenger-Admin-Portals. It also links to the OpenAPI spec (docs/openapi.json), which helps clarify functionality. However, the \"why it is useful\" aspect is thin: the README does not explain the concrete problems the API solves (e.g., which administration tasks it enables such as user/room management, CSV user import, audit logging, license verification), the target audience beyond \"developers\" and \"administrators\" in generic headings, or how it fits into the wider BundesMessenger architecture beyond the links. Implementation details later (auth, caching, database, import tasks) hint at capabilities, but there is no explicit value proposition or feature overview. Hence acceptable but not strong.\n\nsetup_instructions:\nScore (avg): 4.0\n[QWEN] Setup documentation is detailed and practical. The \"F\u00fcr Entwickler\" section lists prerequisites (Python 3.14.x and Poetry 2.4.1), a numbered 8-step developer setup (clone, cd, poetry install, pre-commit install, run tests, poetry build), and a full local Swagger UI workflow including docker-compose startup, creating and provisioning an admin user in the Matrix Authentication Service, starting the server with \"poetry run dev\", and testing at http://localhost:8080/docs. The \"F\u00fcr Administratoren\" section covers installation (pip install from a package index), a comprehensive configuration guide with tables of environment variables, YAML settings, and PostgreSQL/SQLite database configuration with defaults and examples, plus the production start command (uvicorn --factory bumap_core.main:create_app). Minor issues: the clone URL contains a typo (\"bundesmessaenger\"), there is a broken/placeholder URL in the synapse admin_api_url example (\"http:/synapse-server.com\"), and the table header says \"Umgebungsvariabel\" though values are YAML settings \u2014 but overall the instructions are thorough and usable, warranting a 4 rather than 5.\n\ninfo_project_status:\nScore (avg): 4.0\n[QWEN] The README clearly communicates the project's status, most notably in the \"Repository\"/\"Forks\" callout: \"Dieses Repository ist ein Mirror eines internen BWI Repos. Die aktive Entwicklung findet nicht in diesem Repository statt.\" It also describes ongoing maintenance under \"Updates\" (\"Neben regelm\u00e4\u00dfigen Updates werden bei Sicherheitsvorf\u00e4llen kurzfristig Hotfixes zur Verf\u00fcgung gestellt\"), recommends the official Helm Chart for production use, and notes that fork history is rewritten during mirroring (implying the mirror is actively synced). This is unusually explicit about the mirror/active-development location. A small deduction because it does not state an explicit maintenance cadence, current release/version, or deprecation policy, and the \"Forks\" section implies future maintenance burden rather than a clear lifecycle statement.\n\ninfo_maintainer:\nScore (avg): 2.0\n[QWEN] The README gives very little information about who actually maintains or contributes to the project. There is no \"Maintainers\", \"Contributors\", \"Team\", or \"Contact\" section; no individual or team names; and no direct contact channel (email, mattermost/Matrix room, or support contact). The only maintainer-related signals are indirect: the project lives under the BWI organization on GitLab (gitlab.opencode.de/bwi/...), the \"Rechtliches\" section notes the BundesMessenger brand is protected by BWI GmbH, and there are links to an issue tracker for \"Fehler und Verbesserungsvorschl\u00e4ge\". The note that active development happens in an internal BWI repository tells you roughly where the work happens (BWI internally) but not who. Because the information is present only implicitly through organizational ownership and there is no named maintainer/contribution guidance, this scores low.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          },
+          {
+            "name": "Project Structure",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.81,
+            "reason": "Project structure evaluation:\n\ndirectory_organization:\nScore (avg): 4.0\n[QWEN] The project is a Python backend (evidenced by pyproject.toml, .pre-commit-config.yaml, poetry_scripts.py, and Alembic migrations) and follows recognizable Python project conventions: a top-level package (bumap_core/), a tests/ directory that mirrors the source tree, a docs/ directory containing openapi.json, a config/ directory for runtime YAML, and standard root metadata files (README.md, CHANGELOG.md, LICENSE, publiccode.yml). Tests are co-located by domain and include their own fixtures (conftest.py) and config (tests/config/*.test.yaml), which is appropriate. Two things keep this from a perfect 5: (1) it uses a flat layout (bumap_core/ at the repo root) rather than the increasingly recommended src/ layout (src/bumap_core/), which is acceptable but slightly less robust; and (2) a secrets/ directory at the root (secrets/authorization.client_secret, secrets/database.password) \u2014 even if gitignored via .gitignore \u2014 is an atypical element to have visible in the project tree.\n\nnaming_conventions:\nScore (avg): 4.0\n[QWEN] Naming is overwhelmingly consistent snake_case: files such as app_config.py, tracked_ttl_cache.py, authorization_callback_cookie.py, and directories such as bumap_core/, matrix_authentication_service/, and audit_log/ all follow the same convention, and tests consistently use the test_ prefix (test_app_config.py, test_tracked_ttl_cache.py). Configuration files (bumap_core_settings.yaml) and Alembic migrations (0aeaadc7c1cb_migrations_for_2_4_0_dev0.py) follow their respective tool conventions. However, there are a few concrete inconsistencies: (1) model/ (singular, under bumap_core/ and under audit_log/) versus models/ (plural, under database/) both hold \"model\" code, which is confusing; (2) a typo in tests/repositories/test_user_respository.py (should be \"repository\"); (3) files inside secrets/ use dotted names (authorization.client_secret) rather than snake_case; and (4) several modules repeat the directory name as the file name (app_config/app_config.py, synapse/synapse.py, matrix_authentication_service/matrix_authentication_service.py), which is redundant. These are minor but real deviations from otherwise consistent naming.\n\nseparation_of_concerns:\nScore (avg): 5.0\n[QWEN] Separation of concerns is the project's strongest aspect. At the top level it cleanly divides source (bumap_core/), tests (tests/), configuration (config/ + settings/), documentation (docs/openapi.json), and packaging/metadata (pyproject.toml, publiccode.yml, CHANGELOG.md). Within the source package it implements a clear layered architecture with distinct responsibilities per directory: endpoints/ (HTTP/API layer, including versioned routers routers/legacy_router.py and routers/v1_router.py), services/ (business logic, e.g., room_service.py, user_service.py), repositories/ (data access, e.g., room_repository.py, user_repository.py), database/models/ + database/migrations/ (ORM and schema), model/ (Pydantic DTOs/request-response schemas), middleware/ (cross-cutting HTTP concerns), settings/ (configuration objects), auth/ (OAuth/authorization), and utils/ (shared helpers). Each service maps to a repository and a domain, and cross-cutting concerns (logging, cache, context, request_id) are isolated into their own modules. This endpoint\u2192service\u2192repository\u2192database layering, combined with a mirrored, independently structured test suite, is a textbook example of proper concern separation.\n\nmodularity:\nScore (avg): 4.0\n[QWEN] The project shows good modularity with a logical, domain- and layer-based breakdown. Functional modules (auth, cache, context, database, endpoints, logging, middleware, model, repositories, services, settings, synapse, utils, audit_log, app_config) each have a clear single responsibility, and within the auth module concerns are further decomposed into focused files (authorization_server.py, authorization_validator.py, and separate cookie variants). Endpoints are split by domain (rooms.py, users.py, media.py, notifications.py, legal_notes.py, terms_of_use.py) and versioned through routers/, supporting independent evolution of API versions. The test suite mirrors this modular structure (tests/auth/, tests/endpoints/, tests/services/, tests/repositories/, etc.), indicating modules are independently testable, and migrations are versioned and individually named. What holds this back from a 5: the model/ directory is a large flat collection of ~35 model files with no domain-based sub-grouping (making it a \"grab-bag\" module), and several modules are single-file (starlette/responses.py, matrix_authentication_service/matrix_authentication_service.py) which, while acceptable, represent shallow modules. Overall the breakdown is logical and maintainable, just not perfectly granular.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          },
+          {
+            "name": "Security Policy",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.0,
+            "reason": "SECURITY.md file not found in root folder.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          }
+        ],
+        "evaluated_measurements": 3,
+        "total_measurements": 3,
+        "coverage": 1.0
+      },
+      "error": null
+    }
+  ]
+}

@@ -1,0 +1,57 @@
+{
+  "schema_version": 1,
+  "results": [
+    {
+      "name": "dksr-platform",
+      "kind": "local",
+      "source": "sqmkit-eval/eval/repos/dksr-platform",
+      "repository": "https://gitlab.opencode.de/dksr-gmbh/DKSR-Open-UrbanPulse",
+      "evaluation": {
+        "name": "Project Description, Project Structure and Security Policy",
+        "weight": 1.0,
+        "status": "evaluated",
+        "score": 0.35333333333333333,
+        "reason": "Weighted score of evaluated measurements",
+        "children": [
+          {
+            "name": "Project Description",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.44,
+            "reason": "Evaluation of the README file:\n\nproject_purpose:\nScore (avg): 5.0\n[QWEN] The README provides an excellent and thorough description of the project's purpose and usefulness. It clearly states: \"The DKSR Open UrbanPulse (OUP) platform is the open source version of the UrbanPulse platform from The Urban Institute. It is an open urban real-time platform for cross-domain data integration and match-making.\" It further explains what the platform does (a real-time sensor data platform), references the governing vision and standards (European Innovation Partnership, DIN SPEC 913571), identifies the target audience (\"cities, municipalities, utilities and enterprises\"), and articulates the value proposition: \"the OUP enables both small and large cities and businesses to efficiently integrate new and existing data sources, process and analyze data in near real-time, and ultimately share the data with various stakeholders.\" Additionally, it highlights a key differentiator: \"Unlike many other platforms, OUP is cloud agnostic and can run in the cloud, in container environments [Kubernetes] or in the local data center.\" This is a comprehensive and well-structured purpose description.\n\nsetup_instructions:\nScore (avg): 3.0\n[QWEN] The README does not include actual setup instructions inline. Instead, it provides a \"Documentation\" section with a \"Build and Usage\" subsection that contains links to wiki pages: \"Software Components Required,\" \"Building the Code,\" and \"Deploying and Running the Build.\" While these links clearly point to relevant setup-related documentation, the README itself does not describe any setup steps, prerequisites, or commands. A user reading only the README would need to navigate to external wiki pages to find the actual instructions. This is a partial fulfillment of the criterion\u2014the README acknowledges and points to setup documentation but does not itself describe the setup process.\n\ninfo_project_status:\nScore (avg): 1.0\n[QWEN] The README contains no information about the project's status. There is no mention of whether the project is under active development, in maintenance mode, deprecated, or no longer maintained. There are no status badges (e.g., CI/CD, build status, activity indicators), no \"Status\" section, and no language indicating the current state of the project. While the use of present tense (\"This Github repository here provides the Source Code...\") implies the repository is current, this is an implicit suggestion rather than an explicit description of the project's development or maintenance status. The criterion is not met.\n\ninfo_maintainer:\nScore (avg): 2.0\n[QWEN] The README provides minimal information about the project's stewardship. Under \"Licence Information,\" it states: \"This code is published by DKSR Gmbh under the German Free Software License.\" This identifies the publishing organization (DKSR GmbH) and the license, which gives some indication of who is responsible for the code. However, there is no \"Contributing\" section, no list of maintainers or team members, no description of how one can contribute to the project, no contact information for maintainers, and no contribution guidelines. The README identifies the publisher but does not meaningfully describe who maintains the project day-to-day or how external contributors can participate.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          },
+          {
+            "name": "Project Structure",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.62,
+            "reason": "Project structure evaluation:\n\ndirectory_organization:\nScore (avg): 4.0\n[QWEN] The project is a multi-module Java/Maven project and largely follows standard Maven directory conventions. Nearly all modules (EventProcessorModule, HttpInboundModule, OutboundModule, PersistenceModuleV3, UPSecurityRealm, UPUtils, UrbanPulseManagement) use the canonical src/main/java, src/test/java, and src/main/resources layout, and UrbanPulseManagement correctly uses src/main/webapp with a WEB-INF folder (web.xml, beans.xml, glassfish-web.xml) for its Java EE web application. UPUtils even uses a src/main/asciidoc directory for documentation, which is a recognized Maven convention, and a per-module root pom.xml plus top-level pom.xml is proper. However, there are notable deviations: README.txt files are placed inside src/main (e.g., EventProcessorModule/src/main/README.txt) which is unusual, BackchannelModule and UPEntitiesLib lack src/test directories, the React build output (asset-manifest.json, precache-manifest...js, service-worker.js) is committed inside src/main/webapp/docs/, and root-level loose files (api-documentation.pdf, default-cluster.xml) sit outside any module. These prevent a perfect score.\n\nnaming_conventions:\nScore (avg): 3.0\n[QWEN] Naming is consistent within many categories: all module directories use PascalCase (BackchannelModule, EventProcessorModule, UrbanPulseManagement), keystore files consistently use snake_case (localhost_keystore.jks, cacerts.jks, keystore.jks, cacerts_with_startcom.jks), changelog files follow a stable pattern (db.changelog-6.1.0.xml, db.changelog-11.0.0.xml), and configuration files are lowercase (config.json, pom.xml, mod.json). However, there are clear inconsistencies: README files are named five different ways across the project (README in EventProcessorModule, README.txt in src/main of several modules, README.md at root, readme.md in UPSecurityRealm, readme.migration.txt in UPEntitiesLib); module prefixes are inconsistent (UPEntitiesLib, UPSecurityRealm, UPUtils vs. UrbanPulseManagement, UrbanPulseResources, and *Module vs. *Lib/*Utils suffixes); the .iml files use kebab-case (event-processor-module.iml, up-entities-lib.iml) that does not match their PascalCase parent directories; and camelCase outliers like scratchJPA.json (PersistenceModuleV3) and postUpdate.sql/preUpdate.sql break the otherwise lowercase/hyphenated pattern of sibling files.\n\nseparation_of_concerns:\nScore (avg): 3.0\n[QWEN] At the module level, source, tests, and resources are properly separated: de/urbanpulse source code lives under src/main/java, tests under src/test/java (with dedicated test resources like integration_tests/README.txt in EventProcessorModule, HttpInboundModule, OutboundModule), and runtime configuration under src/main/resources (mod.json, db.changelog.xml, ehcache.xml, META-INF/persistence.xml). Test configuration is even isolated (test-config.json in PersistenceModuleV3), and web assets are separated from server configuration under src/main/webapp (status/, docs/, WEB-INF/). However, several concerns are mixed inappropriately: keystore files (localhost_keystore.jks, cacerts.jks, keystore.jks) are duplicated between module roots and src/main/resources (OutboundModule), IDE metadata (.iml files in eight modules, nb-configuration.xml in UPSecurityRealm and UrbanPulseManagement) is committed alongside source, build artifacts (React service worker/precache files) are checked into src/main/webapp/docs/, a working file scratchJPA.json sits in PersistenceModuleV3, and documentation is scattered (README.txt inside src/main, api-documentation.pdf at the repository root, asciidoc nested inside a library module) rather than consolidated in a docs/ area.\n\nmodularity:\nScore (avg): 4.0\n[QWEN] The project demonstrates a genuinely logical modular decomposition as a multi-module Maven build: functional modules are clearly delineated by responsibility (HttpInboundModule for inbound traffic, OutboundModule for outbound communication, EventProcessorModule for event processing, BackchannelModule, PersistenceModuleV3 for data persistence, UrbanPulseManagement as the web/application layer), and cross-cutting concerns are extracted into reusable libraries (UPEntitiesLib for shared entities, UPUtils for utilities, UPSecurityRealm for security), all unified under the consistent de.urbanpulse package namespace. Each module is self-contained with its own pom.xml, config.json, and mod.json, indicating a deliberate plugin-style module architecture. Deductions: the version number embedded in PersistenceModuleV3 signals a legacy module that should have been renamed rather than versioned in its directory name, module naming is uneven (*Module vs. *Lib/*Utils and the UP- vs. UrbanPulse- prefixes), UrbanPulseResources is a degenerate module containing only glassfish-resources.xml, and UPUtils contains a stray de-unrelated package path (src/main/java/city/ui/) that blurs module boundaries.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          },
+          {
+            "name": "Security Policy",
+            "weight": 0.3333333333333333,
+            "status": "evaluated",
+            "score": 0.0,
+            "reason": "SECURITY.md file not found in root folder.",
+            "children": [],
+            "evaluated_measurements": 1,
+            "total_measurements": 1,
+            "coverage": 1.0
+          }
+        ],
+        "evaluated_measurements": 3,
+        "total_measurements": 3,
+        "coverage": 1.0
+      },
+      "error": null
+    }
+  ]
+}
